@@ -1,0 +1,170 @@
+---
+title: '🎉 Git(3)-subicura 튜토리얼 정리'
+thumbSrc: '/static/images/class.webp'
+date: '2022-02-24'
+tags: ['Git']
+draft: false
+summary: '본 포스트는 DreamCoding의 깃,깃허브 제대로 배우기 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/class.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/class.webp)
+
+1. 시작하기
+2. 기본 명령어
+3. 작업 분기
+4. GitHub 공유
+5. GitHub Flow
+
+---
+
+## 1. 시작하기
+
+> 💡 시작하기 파트 요약
+
+- Git의 특징 Git의 기본 기능은 <mark>이력 관리</mark> 입니다. Git은 브랜치branch기능을 제공하여 동시에 여러 작업을 진행하고 합치고 충돌을 해결할 수 있습니다. Git은 분산 버전 관리 시스템이고 로컬에 원격 저장소의 모든 데이터를 복제하기 때문에 사실상 개발자 수만큼 백업이 되어 있습니다. Git은 데이터 무결성을 보장합니다.
+- Git의 단점 Git은 알면 알수록 복잡하고 개발자마다 사용하는 명령어도 다르고 사용하는 프로그램도 제각각입니다. 쉽게 익힐 수 있는 정석적인 방법이 없습니다.
+- 가이드 안내
+- <mark>최신 명령어 소개</mark> - `git checkout` 사용법과 함께 최근 추가된 `git switch`, `git restore`
+  명령어를 소개합니다.
+- 준비
+
+  - [Git 설치](https://subicura.com/git/prepare/git-setup.html)
+  - [GitHub 가입](https://subicura.com/git/prepare/github-setup.html)
+  - [터미널 설정](https://subicura.com/git/prepare/terminal-setup.html)
+  - [VisualStudioCode 설치](https://subicura.com/git/prepare/vscode-setup.html)
+  - [Sourcetree 설치](https://subicura.com/git/prepare/sourcetree-setup.html)
+
+---
+
+## 2. 기본 명령어
+
+> 💡 나에게 생소한 명령어만 요약함
+
+- `git status # gst`
+
+##### gst 는 뭔가요?
+
+명령어 뒤에 주석으로 써있는 부분은 alias로 `oh-my-zsh`을 설치하면 사용할 수 있는 별칭입니다.`git status`대신 `gst`만 입력해도 동일하게 동작합니다. alias를 적극적으로 써보세요!
+
+- `git reset [<commit>] [--soft | --mixed [-N] | --hard | --merge | --keep]`
+
+##### git reset - 이전 상태로 (이력 제거)
+
+특정 커밋까지 이력을 초기화합니다. 바로 전, 또는 n번 전까지 작업했던 내용을 취소할 수 있습니다. 열심히 작업했는데, 전혀 엉뚱한 걸 했거나 작업한 내용이 필요 없어질 때 사용합니다. ⚠️ 이력이 지워지기 때문에 주의해야 합니다.
+
+`git reset`은 다양한 옵션이 존재하는데 여기선 `--hard` 옵션을 사용합니다.
+
+- `git revert <commit>…`
+
+##### git revert - 이전 상태로 (이력 유지)
+
+특정 커밋을 취소하는 새로운 커밋을 만듭니다. 일반적으로 특정 버전을 배포했는데 문제가 생기면 문제가 생긴 커밋을 `revert`합니다. (빠른 조치/롤백) 다시 원복한 상태로 작업을 이어서 하고 해당 문제를 수정하면 다시 커밋하는 방식을 사용합니다.
+
+( Visual Studio Code 실습은 옛날 버전을 이용해서 드림코딩 앨리 강의를 좀 더 참고하려고 한다..)
+
+---
+
+## 3. 작업 분기
+
+> 💡 **⚡️ 목표** 브랜치 기능을 이용하여 동시에 여러 작업을 진행하고 합치고 충돌을 해결하는 방법을 알아봅니다.
+
+- `git switch (-c|-C) <new-branch>`
+
+##### git switch -c - 브랜치 생성
+
+새 브랜치를 만들 때, 현재 브랜치의 상태를 기준으로 만들기 때문에 현재 브랜치가 무엇인지 꼭 확인해야 합니다.
+
+```css
+# git checkout -b add-color # 예전 Git 버전 명령어
+git switch -c add-color # gsw -c add-color
+```
+
+✅ git switch의 `-c` 옵션은 브랜치 생성과 브랜치 이동을 한번에 수행합니다. 다음 명령어와 동일합니다.
+
+```css
+git branch add-color
+git swtich add-color
+```
+
+##### git switch - 브랜치 변경 / 브랜치 추가
+
+`add-color` 브랜치에서 진행한 작업이 기존 `main` 브랜치와 독립적인 것을 확인합니다.
+
+```css
+# git checkout main # 예전 Git 버전 명령어
+git switch main # gsw main, gsw 한칸 띄고 <tab>을 눌러보세요
+
+# git checkout -b update-red # 예전 Git 버전 명령어
+git switch -c update-red # gsw -c update-red
+```
+
+##### conflict - 충돌 해결
+
+이 부분은 4. `update-red` 브랜치를 `main`으로 머지 하는 부분이 잘 이해가 안됐다.
+
+##### red 파일 내용
+
+```css
+<<<<<<< HEAD
+뻘건색
+=======
+붉은색
+>>>>>>> update-red
+```
+
+충돌이 발생하면 양쪽 브랜치에서 동시에 변경된 사항을 표시해 줍니다.
+`<<<<<<<`
+, `=======`
+, `>>>>>>>`
+이 내용이 충돌이 발생한 지점을 의미합니다.
+
+위에 내용은 `main` 브랜치에서 작업한 내용이고 아래 내용은 `update-red` 브랜치에서 작업한 내용이네요. 둘중에 어떤 내용이 맞는지 개발자가 스스로 판단하고 선택해야 합니다.
+
+여기선, `붉은색`만 남기고 다른 줄을 삭제합니다. `<<<<<<<`, `뻘건색`, `=======`, `>>>>>>>`를 모두 제거합니다.
+
+충돌을 해결했다면 기존과 동일한 방식으로 커밋을 진행합니다. 차이점은 `git commit`에서 `-m` 메시지를 입력하지 않는다는 점입니다. 충돌을 수정한 내용을 자동으로 메시지로 만들기 때문에 따로 입력하지 않아도 됩니다.
+
+---
+
+## 4. GitHub 공유
+
+> 💡 **⚡️ 목표** GitHub을 이용하여 원격 저장소와 연동하는 방법을 알아봅니다.
+
+먼저 GItHub에서 레포지터리를 생성한 후
+터미널에서
+
+##### git push - 원격 저장소 저장
+
+앞에서 실습했던 로컬 저장소를 GitHub에 푸시합니다. 로컬 저장소의 커밋 목록이 그대로 복제될 예정입니다.
+
+```css
+git remote add <name> <url>
+git push [-u | --set-upstream] [<repository> [<refspec>…]]
+```
+
+##### 작업
+
+1. `main` 브랜치에 `원격 저장소`(GitHub)를 `origin`(기본)으로 설정합니다.
+2. 메인 브랜치를 `main`으로 설정합니다. (이미 `main`이므로 생략 가능)
+3. 설정한 `원격 저장소`에 `로컬 저장소`의 모든 커밋을 `푸시`합니다. `u` 옵션을 이용하여 이후에 푸시할 땐 별다른 원격 저장소 이름을 지정하지 않고 `git push`를 사용할 수 있습니다.
+
+```css
+git remote add origin https://github.com/subicura-git/sample.git
+git branch -M main
+git push -u origin main # gp -u origin main
+```
+
+GitHub 저장소의 접근권한이 제한되어 있어 아이디, 패스워드를 입력하라고 합니다. 아이디, 패스워드를 입력하면 정상적으로 푸시가 완료됩니다. 처음에만 하면 그다음부터는 입력안해도 되는 것 같음
+
+✅ 원격 저장소의 주소를 설정할 때, https와 ssh를 선택할 수 있습니다. https는 아이디/패스워드 방식을 사용하고 ssh는 개인키와 공개키를 이용합니다. 이번 실습에선 https 방식을 이용합니다.
+
+---
+
+## 5. GitHub Flow
+
+![Gitflow image](https://subicura.com/git/assets/img/github-flow.2fafce92.png 'Gitflow image'){: .center-image}
+
+플로우 보면서 실습해보기..
