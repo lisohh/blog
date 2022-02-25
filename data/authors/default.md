@@ -8,4 +8,6 @@ email: sohyunlee0902@gmail.com
 github: 'https://www.github.com/lisohh'
 ---
 
-자기 소개하기
+Nice to meet you!
+I’m lisohh! and I’m a frontend developer.
+I wonder about everything.🧐
