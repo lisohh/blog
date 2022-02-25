@@ -8,6 +8,6 @@ email: sohyunlee0902@gmail.com
 github: 'https://www.github.com/lisohh'
 ---
 
-Nice to meet you!
-I’m lisohh! and I’m a frontend developer.
+Nice to meet you!<br/>
+I’m lisohh! and I’m a frontend developer.<br/>
 I wonder about everything.🧐
