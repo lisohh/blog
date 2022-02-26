@@ -2,7 +2,7 @@ const siteMetadata = {
   title: 'Lisohh Blog',
   author: 'lisohh',
   headerTitle: 'lil.dev',
-  description: '항상 궁금한 개발자의 궁금 저장소',
+  description: '항상 궁금한 개발자 lisoh의 궁금 저장소',
   language: 'ko-KR',
   siteUrl: 'https://www.lisohh.tech',
   siteRepo: 'https://www.github.com/lisohh/blog',
