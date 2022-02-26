@@ -1,6 +1,6 @@
 ---
 name: lisohh
-avatar: /static/images/프로필사진.png
+avatar: /static/images/lisoh_profile.png
 occupation: Frontend Web developer
 # company: 컴패니
 email: sohyunlee0902@gmail.com
