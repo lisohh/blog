@@ -1,0 +1,165 @@
+---
+title: '🎉 JS(12,13)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-16'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  **자바스크립트 동작원리**
+
+---
+
+## Promise (12강)
+
+프로미스는 비동기를 간단하게 처리할 수 있도록 자바스크립트가 제공하는 오브젝트이다.
+
+- `state`를 이해하고
+- 'producer`(정보 제공자)와 `consumer`(정보 사용자)로 나누어진다.
+
+### 1. Producer
+
+`promise`함수는 `resolve`,`reject`함수를 콜백함수로 받는다.
+
+```JS
+// when new Promise is created, the executor runs automatically.
+// 프로미스를 만드는 순간 네트워크 통신이 시작되고 콜백함수가 바로 실행된다.
+const promise = new Promise((resolve, reject) => {
+  // doing some heavy work (network, read files)
+  console.log('doing something...');
+  setTimeout(() => {
+    resolve('ellie');
+    // reject(new Error('no network'));
+  }, 2000);
+});
+
+```
+
+### 2. Consumers: then, catch, finally
+
+```JS
+promise //
+  .then(value => {
+    console.log(value);
+  })
+  //에러가 발생했을 때 호출
+  .catch(error => {
+    console.log(error);
+  })
+  //성공하든 실패하든 마지막에 수행하는 함수
+  .finally(() => {
+    console.log('finally');
+  });
+```
+
+### 3. Promise chaining
+
+```js
+const fetchNumber = new Promise((resolve, reject) => {
+  setTimeout(() => resolve(1), 1000)
+})
+
+fetchNumber
+  .then((num) => num * 2)
+  .then((num) => num * 3)
+  .then((num) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(num - 1), 1000)
+    })
+  })
+  .then((num) => console.log(num))
+```
+
+### 4. Error Handling
+
+```js
+const getHen = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve('🐓'), 1000)
+  })
+const getEgg = (hen) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error(`error! ${hen} => 🥚`)), 1000)
+  })
+const cook = (egg) =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve(`${egg} => 🍳`), 1000)
+  })
+
+getHen() //
+  .then(getEgg)
+  .then(cook)
+  .then(console.log)
+  .catch(console.log)
+```
+
+---
+
+## Async & Await (13강)
+
+### 1. async
+
+```js
+async function fetchUser() {
+  // do network reqeust in 10 secs....
+  return 'ellie'
+}
+
+const user = fetchUser()
+user.then(console.log)
+console.log(user)
+```
+
+### 2. await ✨
+
+```js
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function getApple() {
+  await delay(2000)
+  return '🍎'
+}
+
+async function getBanana() {
+  await delay(1000)
+  return '🍌'
+}
+
+async function pickFruits() {
+  const applePromise = getApple()
+  const bananaPromise = getBanana()
+  const apple = await applePromise
+  const banana = await bananaPromise
+  return `${apple} + ${banana}`
+}
+
+pickFruits().then(console.log)
+```
+
+### 3. useful APIs ✨
+
+```js
+function pickAllFruits() {
+  return Promise.all([getApple(), getBanana()]).then((fruits) => fruits.join(' + '))
+}
+pickAllFruits().then(console.log)
+
+function pickOnlyOne() {
+  return Promise.race([getApple(), getBanana()])
+}
+
+pickOnlyOne().then(console.log)
+```
