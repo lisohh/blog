@@ -1,0 +1,183 @@
+---
+title: '🎉 JS(3)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-08'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  **자바스크립트 동작원리**
+3.
+
+---
+
+## **데이터타입**(3강)
+
+웹 프로그래밍에서 제일 중요한 것 : 입력.연산.출력(전송)
+
+### **변수(Variable), rw(read/write):메모리에 저장 후에도 읽고 쓰기가 가능**
+
+변경될 수 있는 값.
+
+| {} 코드블럭                                               |
+| :-------------------------------------------------------- |
+| 코드 밖에서는 {}코드블럭 안에 있는 코드에 접근할 수 없다. |
+
+| let (added in ES6)                                                               |
+| :------------------------------------------------------------------------------- |
+| 한가지 박스를 가리키는 포인터를 만드는 것. 여기에 다른 값을 넣어 교체할 수 있다. |
+
+```js
+let name = 'apopo'
+console.log(name)
+name = 'hello'
+console.log(name)
+```
+
+| var(don't ever use this!)       |
+| :------------------------------ |
+| ES6이전에 쓰던 변수 선언 명령어 |
+
+값을 할당하기도 전에 출력할 수 있으므로 (undefined) 이제는 쓰지 않는다.<br />
+어디에 선언했는지 상관없이 값을 끌어올려주는 걸 hoisting이라고 하는데<br />
+var은 hoisting을 사용해서 변수 선언을 가장 위로 끌어올린다.<br />
+또한 var은 코드블럭도 무시하는 전역 변수로 선언된다.
+
+### **고정값 (Constants) r(read):메모리에 저장된 후에는 읽기만 가능**
+
+되도록이면 const를 쓰고 선언 후 나중에 값을 변경해야 할 때만 let을 쓰자.
+
+| const (added in ES6)                                                                         |
+| :------------------------------------------------------------------------------------------- |
+| 한번 값을 할당하면 더이상 값을 교체할 수 없게 만드는 명령어. 값을 가리키는 포인터가 잠겨있음 |
+
+immutable datatype이다.
+이렇게 못바꾸게 하는 이유는 3가지가 있다.
+
+- security
+- thread safety
+- reduce human mistakes
+
+### **다양한 데이터 타입들 (Variable types)**
+
+- primitive, Single item (더이상 작게 나눌 수 없는 한가지의 데이터타입):<br /> number, string, boolean, null, undefined, symbol
+- object, box container : 싱글 타입들을 묶어서 하나의 그룹으로 관리
+- function, first-class function(변수에 할당 가능, 인자로 사용 가능, 반환값으로 사용 가능)
+
+로우 레벨 언어(c,java)의 다양한 데이터 타입들도 공부하면 데이터 사이즈를 더욱 세세하게 정할 수 있다.
+Js에서는 number만 쓰면 어떤 크기의 수든 쓸 수 있다! 아주 간단!
+
+**특별한 상황에서의 number 값들**
+
+```js
+const infinity = 1 / 0 //Infinity로 출력됨
+const negativeInfinity = -1 / 0 //negativeInfinity으로 출력됨
+const nAn = 'not a number' / 2 //NaN으로 출력됨
+const bigInt = 12345678975654897486465135487694861531553n //bigint라고 출력됨
+```
+
+**string**
+
+```js
+const char = 'c' //한가지의 글자든 여러개의 글자든 다 string으로 할당
+const brendan = 'brendan'
+const greeting = 'hello' + brendan
+console.log(`value: ${greeting}, type: ${typeof greeting}`)
+const helloBob = `hi ${brendan}!` //template literals (string) :
+    ``(백틱)기호를 이용해 원하는 string을 ${}안에 적으면 그 string의 값이 출력됨
+console.log(`value: ${helloBob}, type: ${typeof helloBob}`)
+```
+
+**boolean**<br />
+
+- **false**: 0, null, undefined, NaN, ''<br />
+- **true**: any other value
+
+```js
+const canRead = true
+const test = 3 < 1 //false
+console.log(`value" ${canRead}, type: ${typeof canRead}`)
+console.log(`value: ${test}, type: ${typeof test}`)
+```
+
+**null**<br />
+null이라고 할당하면 아예 빈 값을 지정해준것
+
+```js
+let nothing = null
+console.log(`value: ${nothing}, type: ${typeof nothing}`)
+```
+
+**undefined**<br />
+아무 값이 지정되어 있지 않은 상태
+
+```js
+let x
+console.log(`value: ${x}, type: ${typeof x}`)
+```
+
+**symbol**<br />
+create unique identifiers for objects<br />
+우선순위를 주고 싶을 때,고유한 식별자를 주고 싶을 때 씀<br />
+동일한 내용을 가지고 심볼을 다르게 만들면 서로 다른 심볼로 간주함.
+
+```js
+const symbol1 = Symbol('id')
+const symbol2 = Symbol('id')
+console.log(symbol1 === symbol2) //false
+```
+
+만약 같은 값을 가지고 다른 심볼을 만들었을 때 동일한 심볼로<br />
+간주하고 싶으면 `Symbol.for();`을 사용한다.
+
+```js
+const gsymbol1 = Symbol.for('id')
+const gsymbol2 = Symbol.for('id')
+console.log(gsymbol1 === gsymbol2) //true
+```
+
+**object**<br />
+
+```js
+const apopo = { name: 'apopo', age: 20 }
+//한번 할당된 object는 다른 object로 할당이 불가하지만
+//object안에서는 다른 값들을 할당할 수 있다.
+//apopo.name,apopo.age등으로 꺼낼 수 있다.
+```
+
+### **다이나믹 타이핑(dynamically typed language)**
+
+변수를 선언할 때 데이터 타입을 선언하지 않고<br />
+프로그래밍이 동작할 때 할당된 값에 따라 타입이 변경될 수 있다.(자동형변환)<br />
+이 점이 단점으로 작용할 때가 있어 TypeScript가 나오게 되었다.
+
+```js
+let text = 'hello'
+console.log(`value: ${text}, type: ${typeof text}`) //hello, string
+text = 1
+console.log(`value: ${text}, type: ${typeof text}`) //1, number
+text = '7' + 5
+console.log(`value: ${text}, type: ${typeof text}`) //75, string
+text = '8' / '2'
+console.log(`value: ${text}, type: ${typeof text}`) //2, number
+```
+
+```css
+Note!
+Immutable data types: premitive types, frozen objects (i.e. object.freeze()) Mutable data
+types: all objects by default are mutable in JS favor immutable data type always for a few reasons:
+    - security
+    - thread safety
+    - reduce human mistakes
+```

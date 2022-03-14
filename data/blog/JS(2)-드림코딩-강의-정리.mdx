@@ -1,0 +1,79 @@
+---
+title: '🎉 JS(2)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-07'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  **자바스크립트 동작원리**
+3.
+
+---
+
+## 2. 자바스크립트 동작원리
+
+### **환경설정 및 'asnyc'와 'defer'의 차이점**(2강)
+
+node.js에는 자바스크립트 엔진이 있어서 브라우저 없이도 파일을 실행할 수 있다.
+수업은 vscode로 진행 - open live server로 바로 html파일 실행
+
+**API**
+
+Application Programming Interface의 약자로<br />
+웹 APIs는 브라우저가 제공하는, 브라우저가 이해할 수 있는 함수들이다.!<br />
+-> console은 언어에 포함되지 않지만 많이 쓰이므로<br />
+node.js와 web APIs에서 제공해 똑같은 console창을 이용해 출력할 수 있다.
+
+<mark>또 이렇게 브라우저에서 나오는 개발 툴들을 이용하면</mark>
+<mark>공부할 때나 실무에서 모두 유용하게 쓸 수 있다!</mark>
+
+Console tab, Source tab(디버깅 시 유용 - break point), Network tab 등!
+
+**자바스크립트 공부 추천 사이트**
+developer.mozilla.org : 설명이 자세하니까 이거보고 공부하기
+
+**asnyc vs defer**
+
+> - head안에 script를 포함하게 되면 script로 쓰인 js파일을 fetching하느냐고<br />
+>   시간이 오래 걸린다.<br />
+>   그래서 body의 끝부분에 script를 넣기도 하는데<br />
+> - 만약에 해당 html파일이 script안의 js파일에 많이 의존을 하는 관계라면<br />
+>   js가 fetching될 때까지 또 오래 기다려야한다.
+
+**asnyc**<br />
+그래서 script를 head안에 넣고 async를 사용하게 되면
+![asnyc img](public/static/images/script_asnyc.png)
+html을 다운받아 변환하다가 script를 만났을 때 asnyc를 보고 html과 js를 <mark>병행해서 다운받게 된다!</mark>
+그다음 js가 다 fetching이 되면 바로 실행을 한 후에 이어서 html을 변환하게 된다.<br />
+이 방식의 장점은 body끝에 사용하는 것보다는 js를 다운로드 받는 시간을 절약할 수 있다는 것이고<br />
+단점으로는 html의 변환이 끝나기 전에 js가 실행되어 문제가 생기거나 사용자에게 페이지 전달 시간이 길어질 수 있다는 점이다.
+
+**defer**<br />
+head안에 asnyc대신 defer를 사용하게 되면<br />
+![defer img](public/static/images/script_defer.png)
+defer명령을 만났을 때 "우리 이 src에 있는 js파일 다운받자~" 하고<br />
+일단 변환하던 html을 마저 끝까지 변환한 후 (이 때 js도 같이 fetching~ )<br />
+js를 실행한다. <br />
+-> <mark>defer이 가장 좋은 옵션이쥬</mark>
+
+**use strict**
+순수 vanilaJs를 사용할 경우(TypeScript를 쓸 때는 신경안써도 됨)<br />
+
+```code
+'use strict';
+```
+
+js파일 맨 위에 'use strict'를 선언해서
+strict 모드로 문법에 딱 맞게 작성하도록 하는게 좋다!

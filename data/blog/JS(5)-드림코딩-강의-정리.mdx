@@ -1,0 +1,119 @@
+---
+title: '🎉 JS(5)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-10'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  자바스크립트 동작원리
+3.
+
+---
+
+## 함수(5강)
+
+절차적인 언어같은 경우는 함수가 굉장히 중요하다.
+자바스크립트도 procedural language중에 하나이다.
+
+### 1. Function
+
+input(x)을 넣으면 output(f(x))이 나오는 것이 바로 함수
+함수의 이름을 정하는 것이 중요!!
+
+- fundamental building block in the program
+- subprogram can be used multiple times
+- performs a task or calculates a value
+
+### 2. Function declaration
+
+```css
+함수 작성법 : function name(param1, param2) { body... return; }<br />
+하나의 함수는 한가지의 일만 해야한다 : one function === one thing<br />
+동사형태로 이름을 지어야 한다. : naming: doSomething, command, verb<br />
+e.g. createCardAndPoint -> createCard, createPoint<br />
+`function` is object in JS
+```
+
+### 3. Parameters
+
+primitive parameters: passed by value<br/>
+object parameters: passed by reference
+
+### 4. Default parameters (added in ES6)
+
+```css
+function showMessage(message, from = 'unknown') {
+  console.log(`${message} by ${from}`);
+}
+showMessage('Hi!');
+```
+
+### 5. Rest parameters
+
+`...`을 쓰면 배열 형태로 인자가 전달된다.
+
+```css
+function printAll(...args) {
+  for (let i = 0; i < args.length; i++) {
+    console.log(args[i]);
+  }
+
+  //for of
+  for (const arg of args) {
+    console.log(arg);
+  }
+
+  args.forEach((arg) => console.log(arg));
+}
+printAll('dream', 'coding', 'ellie');
+```
+
+### 6. Local scope
+
+클로저나 렉시클 인바이러먼트?를 쓸 때 중요
+
+<mark>밖에서는 안이 보이지 않고 안에서만 밖을 볼 수 있다.</mark>
+-> 지역 변수
+
+### 7. Return
+
+함수에서는 계산한 값을 return을 통해 반환한다.
+
+### 8. Early return, early exit
+
+조건이 맞지 않을 때는 빨리 return을 해서 함수를 종료하고
+조건이 맞는 경우 그 다음 계산을 진행한다.
+
+### 9. Function expression
+
+함수를 선언함과 동시에 변수에 할당함 -> 이름이 없는 함수.
+함수 선언을 하면 hoisting이 가능하지만 함수 표현식은 hoisting이 불가능하다.
+함수 표현식에서 이름을 지은 함수는 디버깅을 할 때 사용한다.
+
+### 10. Callback function
+
+함수를 parameters에 전달해서 상위 함수의 값에 따라 전달된 함수를 호출한다.
+
+### 11. Arrow function
+
+함수를 간결하게 만들어주는 anonymous 함수
+블럭도 안쓰고 이름도 안쓰고 `return`도 안쓰고 `=>`으로 간결하게 표현한다.
+블럭을 써도 되는데 그러면 `return`을 사용한다.
+함수형 프로그래밍에서 빛을 발한다~!
+
+### 12. IIFE
+
+Immediately Invoked Function expression
+함수를 바로바로 실행하고 싶을때 쓰는 함수

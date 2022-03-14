@@ -1,0 +1,174 @@
+---
+title: '🎉 JS(4)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-09'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  **자바스크립트 동작원리**
+3.
+
+---
+
+## 연산.반복문(4강)
+
+다른 언어에서도 공통적으로 쓸 수 있는 operators~
+
+### 1. String concatenation (문자 연결)
+
+```css
+console.log('my' + ' cat');
+console.log('1' + 2);
+console.log(`string literals: 1 + 2 = ${1 + 2}`);
+```
+
+### 2. Numeric operators (숫자 연산자)
+
+```css
+console.log(1 + 1); // add
+console.log(1 - 1); // substract
+console.log(1 / 1); // divide
+console.log(1 * 1); // multiply
+console.log(5 % 2); // remainder
+console.log(2 ** 3); // exponentiation
+```
+
+### 3. `++`, `--` operators
+
+```css
+let counter = 2;
+const preIncrement = ++counter;
+// counter = counter + 1;
+// preIncrement = counter;
+console.log(`preIncrement: ${preIncrement}, counter: ${counter}`);
+const postIncrement = counter++;
+// postIncrement = counter;
+// counter = counter + 1;
+console.log(`postIncrement: ${postIncrement}, counter: ${counter}`);
+const preDecrement = --counter;
+console.log(`preDecrement: ${preDecrement}, counter: ${counter}`);
+const postDecrement = counter--;
+console.log(`postDecrement: ${postDecrement}, counter: ${counter}`);
+```
+
+### 4. `=` operators
+
+```css
+let x = 3;
+let y = 6;
+x += y; // x = x + y;
+x -= y;
+x *= y;
+x /= y;
+```
+
+### 5. `<=` operators
+
+```css
+console.log(10 < 6); // less than
+console.log(10 <= 6); // less than or equal
+console.log(10 > 6); // greater than
+console.log(10 >= 6); // greater than or equal
+```
+
+### 6. Logical operators (`||`, `&&`, `!`)(논리 연산자)
+
+<mark>비교 연산자는 true값을 찾으면 그 뒤로는 연산을 하지 않는다.</mark>
+<br />
+그러므로 간단한 value값을 제일 먼저 놓는게 효율적이다. 무거운 expression은 맨 뒤에 놓기~!
+
+### 7. Equality Operators (`==`, `===`)
+
+== loose equality, with type conversion
+타입까지는 비교하지 않는다.
+
+=== strict equality, no type conversion
+타입까지 비교한다!
+
+object equality by reference
+
+```css
+const ellie1 = { name: 'ellie' };
+const ellie2 = { name: 'ellie' }; //ellie1과 ellie2는 서로 다른 레퍼런스를 가리킨다.
+const ellie3 = ellie1;
+console.log(ellie1 == ellie2); //reference값이 다르므로 false
+console.log(ellie1 === ellie2); //reference값이 다르므로 false
+console.log(ellie1 === ellie3); //reference값을 ellie1에 할당한 것이라 true
+```
+
+```css
+// equality - puzzler
+console.log(0 == false); //값이 다르므로 true
+console.log(0 === false); //타입이 다르므로 false
+console.log('' == false); //true
+console.log('' === false); //타입이 다르므로 false
+console.log(null == undefined); //true
+console.log(null === undefined); //타입이 다르므로 false
+```
+
+### 8. Conditional operators : if (조건 연산자)
+
+`if`,`else if`,`else`
+
+### 9. Ternary operators (삼항 연산자)
+
+condition ? value1 : value2;
+너무 nesting을 하면 가독성이 떨어지므로 간단한 경우에서만 쓰자.
+
+### 10. Switch operators (switch 연산자)
+
+`switch` - `case`
+`if`문을 너무 반복하게 되면 `switch`문을 쓰는게 좋다.
+
+### 11. while loop (while 반복문)
+
+`while () {}`
+()안의 식이 참일 때만 {}안에 있는 식을 계속 반복해서 실행
+
+### 12. do-while loop (do-while 반복문)
+
+`do`블럭을 먼저 실행하고 `while`이 참인지 아닌지 검사
+블럭을 먼저 실행하고 싶다면 요걸 쓴다.
+
+````css
+
+### 13. for loop (for 반복문)
+```css
+//for loop, for(begin; condition; step)
+for (i = 3; i > 0; i--) {
+  console.log(`for: ${i}`);
+}
+
+for (let i = 3; i > 0; i = i - 2) {
+  // inline variable declaration
+  console.log(`inline variable for: ${i}`);
+}
+````
+
+### 14. nested loop (중첩 반복문)
+
+실행 속도가 느려서 되도록 쓰지 않는게 좋다.
+
+```css
+for (let i = 0; i < 10; i++) {
+  for (let j = 0; j < 10; j++) {
+    console.log(`i: ${i}, j:${j}`);
+  }
+}
+```
+
+### break, continue
+
+`continue`는 if문이 참일 때 넘어가는 것.

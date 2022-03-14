@@ -1,0 +1,300 @@
+---
+title: '🎉 JS(6,7,8)-드림코딩 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-11'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 유투브 드림코딩 앨리 JS 기초 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [자바스크립트 기초 강의 (ES5+): 같이 노트를 작성하며 배워요 📒](https://www.youtube.com/playlist?list=PLv2d7VI9OotTVOL4QmPfvJWPJvkmv6h-2)
+
+💁🏻
+
+1.  자바스크립트의 역사와 목적 및 동향
+2.  **자바스크립트 동작원리**
+3.
+
+---
+
+## Class(6강)
+
+연관있는 속성,행동을 묶어놓은,<br />
+fields와 methods들을 묶어놓은 container
+캡슐화라고도 함
+
+**Class**(붕어빵 틀)
+
+- template
+- declare once
+- no data in
+
+**Object**(팥붕어빵,피자붕어빵,크림붕어빵 등)
+
+- instance of a Class
+- created many times
+- data in
+
+### 1. Class 선언
+
+`class`를 쓰는 방법
+
+```JS
+class Person {
+  // constructor
+  constructor(name, age) {
+    // fields //name,age가 fields
+    this.name = name;
+    this.age = age;
+  }
+
+  // methods
+  speak() {
+    console.log(`${this.name}: hello!`);
+  }
+}
+
+const apopo = new Person('apopo', 20);
+console.log(apopo.name);
+console.log(apopo.age);
+apopo.speak();
+```
+
+### 2. Getter & Setter
+
+`class`를 사용하는 사용자가 메소드를 잘못 사용하는 걸 막아주는 게<br />
+`Getter`,`Setter`다!
+
+`Setter`안에 사용자에게 권장하는 값, 값의 범위를 지정함
+
+```JS
+class User {
+  constructor(firstName, lastName, age) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+  }
+
+  get age() {
+    return this._age;
+  }
+
+  set age(value) {
+    // if (value < 0) {
+    //   throw Error('age can not be negative');
+    // }
+    this._age = value < 0 ? 0 : value;
+  }
+}
+
+const user1 = new User('Steve', 'Job', -1);
+console.log(user1.age);
+```
+
+### 5. Public & Private
+
+생성자를 쓰지 않고 fields를 정의한다.
+`#`를 쓰면 `private`fields로 정의된다.
+
+### 6. Static
+
+데이터와 상관없이 동일한 값과 메소드를 작성할 때 사용한다.
+`object`에 할당되는 게 아니라 `class`자체에 붙음
+
+### 7. 상속 & 다양성
+
+**상속**
+반복되는 속성값을 재사용하게 만드는 것. 유지보수가 더 쉽다.<br />
+`extends`키워드를 사용해서 확장한다.
+
+**다양성**
+`super` : 부모의 메소드를 호출하면서 변형까지 할 수 있게 만들어주는 키워드
+
+### 8. instance of
+
+클래스 체킹하는 키워드.
+왼쪽에 있는 `object`가 오른쪽에 있는 값의 `instance`인지 확인한다.
+
+```JS
+console.log(rectangle instanceof Rectangle); //true
+console.log(triangle instanceof Rectangle); //false
+console.log(triangle instanceof Triangle); //true
+console.log(triangle instanceof Shape); //true
+console.log(triangle instanceof Object); //true
+console.log(triangle.toString()); //object Object
+```
+
+### 9. javaScript mdn
+
+자바스크립트 내부에 포함되어있는 objects를 한눈에 볼 수 있는 사이트
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+
+---
+
+## Object (7강)
+
+### 1. Object?
+
+`primitive type`과 달리, 여러 개의 인자들을 받아올 때 사용한다.<br />
+`{}`나 `new`키워드를 이용해 만들 수 있다.<br />
+동적인 언어라는 자바스크립트의 특성을 이용해 뒤에 인자를 더 추가할 수도, 삭제할 수도 있다.
+
+### 2. Computed properties
+
+동적으로 `key`의 값을 유연하게 받아올 때 유용하다.
+
+```JS
+// key should be always string
+console.log(ellie.name);
+console.log(ellie['name']);
+//두 콘솔의 값이 같다. []를 이용해서 값에 접근할 수 있음
+ellie['hasJob'] = true;
+console.log(ellie.hasJob);
+
+function printValue(obj, key) {
+  console.log(obj[key]);
+}
+printValue(ellie, 'name');
+printValue(ellie, 'age');
+```
+
+### 3. Property value shorthand
+
+함수를 이용해서 값만 전달해주면 더 간단하게 값을 넣을 수 있다.<br/>
+person4같은 경우.<br/>
+이런 함수는 보통 대문자로 이름을 지어준다.
+
+```JS
+const person1 = { name: 'bob', age: 2 };
+const person2 = { name: 'steve', age: 3 };
+const person3 = { name: 'dave', age: 4 };
+const person4 = new Person('elile', 30);
+console.log(person4);
+```
+
+### 4. Constructor Function
+
+위의 3번을 위한 함수~
+
+```JS
+function Person(name, age) {
+  // this = {};
+  this.name = name;
+  this.age = age;
+  // return this;
+}
+```
+
+### 5. in operator: property existence check (key in obj)
+
+오브젝트 안에 `key`가 있는지 없는지 확인할 수 있는 키워드<br/>
+만약 정의되지 않은 키값을 넣으면 `undefined`가 출력됨
+
+### 6. for..in vs for..of
+
+`for (key in obj)`로도 쓸 수 있다.
+반복문으로 오브젝트안의 키 값을 하나씩 다 가져오는 것.
+
+`for (value of iterable)`
+순차적으로 값을 가져와서 출력 또는 계산할 수 있다.
+
+### 7. Fun cloning
+
+타겟 안에 다른 레퍼런스에 있는 값을 가져와서 할당할 수 있다.<br/>
+이 부분은 좀 더 공부해볼것.<br/>
+`Object.assing(dest, [obj1, obj2, obj3...])`
+
+---
+
+## Array (8강)
+
+### 1. Array 선언
+
+```JS
+const arr1 = new Array();
+const arr2 = [1, 2];
+```
+
+### 2. Index position
+
+### 3. Looping over an array
+
+` print all fruits`
+
+```js
+// a. for
+for (let i = 0; i < fruits.length; i++) {
+  console.log(fruits[i])
+}
+
+// b. for of
+for (let fruit of fruits) {
+  console.log(fruit)
+}
+
+// c. forEach
+fruits.forEach((fruit) => console.log(fruit))
+```
+
+### 4. Addtion, deletion, copy
+
+```js
+// push: add an item to the end
+fruits.push('🍓', '🍑')
+console.log(fruits)
+
+// pop: remove an item from the end
+const poped = fruits.pop()
+fruits.pop()
+console.log(fruits)
+
+// unshift: add an item to the benigging
+fruits.unshift('🍓', '🍋')
+console.log(fruits)
+
+// shift: remove an item from the benigging
+fruits.shift()
+fruits.shift()
+console.log(fruits)
+
+// note!! shift, unshift are slower than pop, push
+// splice: remove an item by index position
+fruits.push('🍓', '🍑', '🍋')
+console.log(fruits)
+fruits.splice(1, 1)
+console.log(fruits)
+fruits.splice(1, 0, '🍏', '🍉')
+console.log(fruits)
+
+// combine two arrays
+const fruits2 = ['🍐', '🥥']
+const newFruits = fruits.concat(fruits2)
+console.log(newFruits)
+```
+
+### 5. Searching
+
+```js
+// indexOf: find the index
+console.clear()
+console.log(fruits)
+console.log(fruits.indexOf('🍎'))
+console.log(fruits.indexOf('🍉'))
+console.log(fruits.indexOf('🥥'))
+
+// includes
+console.log(fruits.includes('🍉'))
+console.log(fruits.includes('🥥'))
+
+// lastIndexOf
+console.clear()
+fruits.push('🍎')
+console.log(fruits)
+console.log(fruits.indexOf('🍎'))
+console.log(fruits.lastIndexOf('🥥'))
+```
