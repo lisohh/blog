@@ -1,0 +1,88 @@
+---
+title: '✨ 바닐라 JS 크롬 앱 만들기 #6 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-17 16:00:00'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 노마드 코더 바닐라 JS로 크롬 앱 만들기 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [바닐라 JS로 크롬 앱 만들기](https://nomadcoders.co/javascript-for-beginners/lobby)
+
+💁🏻
+
+1.  INTRODUCTION
+2.  WELCOME TO JAVASCRIPT
+3.  JAVASCRIPT ON THE BROWSER
+4.  LOGIN
+5.  CLOCK
+6.  **QUOTES AND BACKGROUND**
+7.  TO DO LIST
+8.  WEATHER
+
+---
+
+# Quotes and background
+
+## 6.0 Quotes
+
+### 수업 목표: 1. Array안에 있는 element에 접근하기 & 2. 명언이랑 작가를 화면에 보여주기
+
+1. array 만들기 - quote.js에
+2. quote.js에서 div랑 span들을 가져와야해.
+
+<mark>Randomness</mark>
+1. Array의 길이만큼 숫자에 접근해야해 -> Math.module 사용 (js가 공짜로 제공)
+
+Math.random()은 0부터 1사이의 랜덤한 숫자를 제공해<br />
+Math.random() \* 10하면 우리가 원하는 한자리 수 숫자를 얻을 수 있어.
+대신, 이 값을 정수로 쓰기 위해 정수로 만드는 세가지 방법을 쓸거야.
+1.round ->반올림해서 정수로 만들어줘
+2.ceil ->숫자를 무조건 올림
+3.floor ->숫자를 무조건 내림. 소수점 이하 버림
+
+지금은 floor을 쓸거야.
+
+```js
+Math.floor(Math.random() * 10)
+//10은 명언 개수를 의미야
+```
+
+2.
+
+```js
+quote.innerText = todaysQuote.quote
+author.innerText = todaysQuote.author
+```
+
+## 6.1 background
+
+### 수업 목표 : random한 배경 사진을 화면에 보이게 하기
+
+quote.js랑 비슷<br />
+
+1. array만들기
+2. random으로 나오도록 식 만들어주기
+3. JS에서 이미지를 만들어서 HTML에 추가해보기 (이전에는 다 HTML에서 가져왔지)
+   JS에서 이미지를 만들기
+
+- document.createElement(img)를 이용해서 만들 수 있어
+- 그리고 우린 bgImage.src를 쓸 수 있으니
+  bgImage.src = `img/${chosenImage}`;
+
+HTML에 추가해보기
+
+- bgImage를 HTML의 Body 내부에 추가하는거야.
+- js 파일에 documet.body.appendChild(bgimage);로 추가하면돼.
+
+## 6.2 Recap
+
+1. 숫자 랜덤 만들기 `Math.random()*10` => 정수만들려고 일단 키우기
+2. 숫자 소수점 내림 `Math.floor()`
+3. document.createImage() -> html 태그 만드는 법 js에서!
+4. document.body.appendChild();

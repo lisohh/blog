@@ -1,0 +1,282 @@
+---
+title: '✨ 바닐라 JS 크롬 앱 만들기 #4 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-17 14:00:00'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 노마드 코더 바닐라 JS로 크롬 앱 만들기 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [바닐라 JS로 크롬 앱 만들기](https://nomadcoders.co/javascript-for-beginners/lobby)
+
+💁🏻
+
+1.  INTRODUCTION
+2.  WELCOME TO JAVASCRIPT
+3.  JAVASCRIPT ON THE BROWSER
+4.  **LOGIN**
+5.  CLOCK
+6.  QUOTES AND BACKGROUND
+7.  TO DO LIST
+8.  WEATHER
+
+---
+
+# Login
+
+## 4.0 The Document Object
+
+모든 것은 HTML로부터 시작되어야해.<br />
+우선 HTML을 작성한 다음 거기있는 `element`들을 끌고 오는거야.<br />
+그런 다음 JS에서 이런 저런 작업들을 하게 해주는거지.
+
+HTML에서 `input`을 생성하는 것 부터 시작하자. 그 다음 `button`을 만들어줄거야.
+
+이제까지 만든 걸 div안에 집어넣을거야.<br />
+이 div안에 "form"이란 class를 추가해줄거야
+
+```js
+<div class="form">
+```
+
+또는 id를 추가해도 돼.<br />
+다만 여기서 사용한 className을 다시 사용하면 안돼.
+
+## HTML에서 input이랑 button을 끌어오는 방법
+
+### 1.
+
+```js
+const loginInput = loginForm.querySelector('input')
+//마찬가지로 button도
+const loginButton = loginForm.querySelector('button')
+//이렇게 쓸 수 있고
+```
+
+=> 이러면 input button을 찾을 수 있지.<br />
+왜냐하면 아까 document에서 getElementById로 login-form을 가져왔기 때문에,<br />
+바로 document가 아닌 login-form에서 찾을 수 있는거야.
+
+loginForm은 HTML element거든.(아까 HTML에서 작성했으니까.)<br />
+=> HTML element 안을 바로 검색할 수 있다는 뜻!<br />
+=> 좀 더 정밀조사가 가능하다는 의미!
+
+### 2. 더 짧게하려면<br />
+
+아까 맨 윗줄이었던
+
+```js
+const loginForm = document.getElementById('login-form')
+```
+
+을 지우고
+input과 button을 document에서 찾으면 돼.<br />
+=>
+
+```js
+const loginInput = document.querySelector('#login-form input')
+//document에서 찾아야 하므로 상위 카테고리인 login-from div를 id로 붙여준다.
+```
+
+중요한건 <mark>오직 1개의 element에서만 찾을 수 있다는 것.</mark>
+
+### user가 button을 클릭할 때 감지하는 법
+
+click event를 loginButton에 연결하는 거야
+
+```js
+loginButton.addEventListener('click', handleLoginBtnClick)
+
+function handleLoginBtnClick() {
+  console.log('loginInput.value')
+}
+```
+
+위처럼 쓰면 입력창에 입력한 값이 `console`창에 잘 나올거야.<br />
+한가지 더 고려해야할 거는<br />
+사실 아무런 값이 없을 때는 이 event가 작동이 안되는게 좋아서<br />
+`if-else`문으로 값이 입력되지 않았을 떄는 버튼을 누를 수 없게 해보자.
+
+## 4.1 Form Submission
+
+### username 유효성 검사
+
+username이 비어있어도 안되고, 너무 길어도 안된다.
+
+```js
+function onLoginBtnClick() {
+  const value = loginInput.value;
+  if(value === "") {
+    alert("Please write your name);
+  } else if(value.length > 15) {
+    alert("Your name is too long.");
+  }
+}
+```
+
+JS만으로 기능을 구현해야 할 때는 이렇게 작성하지만,<br />
+브라우저 자체의 기능을 사용할 수도 있어.<br />
+=> html에서 <br />
+input 자체의 기능을 더 활용할 수 있다. <br />
+필수로 입력하게 하는 `required`를 쓰거나<br />
+최대 입력 길이를 `maxLength`로 조절하는 거야.
+
+input의 유효성 검사를 작동시키기 위해서는 input을 form안에 넣어줘야해.<br />
+여기서는 login-form을 div에서 form으로 바꾸는거야.<br />
+
+<mark>form을 사용하면 그 대신, 버튼을 누를 때 마다 새로고침이 돼.</mark>
+<br />
+말그대로 웹사이트를 재시작하는 거야. <br />
+이렇게 되는 이유는 Form이 submit되고 있기 때문이야. HTML의 form을 사용하면 JS에서 button click event를
+안써도 돼.
+
+## 4.2 Events
+
+submit이라는 event가 발생하는 걸 아예 막거나 중간에 개입해서<br />
+submit event가 발생했다는걸 파악하고 싶다!<br />
+-> loginForm 자체의 submit에 관심을 가져야해.
+
+```js
+const loginForm = document.querySelector('#login-form')
+
+loginForm.addEventListener('submit', onLoginSubmit)
+//submit event는 엔터를 누르거나 버튼을 클릭할 때 발생
+
+function onLoginSubmit() {
+  const username = loginInput.value
+  console.log(username)
+}
+```
+
+->submit event에서 username은 잘 받아내고 있는데<br />
+아직 새로고침은 막지 못했어.<br />
+여기서 새로고침이 일어나는 건 form submit의 기본 동작이야.<br />
+우리가 해야할 일은 이 기본동작이 발생하지 않도록 하는거야
+
+```js
+loginForm.addEventListener('submit', onLoginBtnClick)
+```
+
+사실은, event가 발생했을 때 브라우저가 함수를 호출하게 되는데,<br />
+비어있는 채로 호출하지 않고, function(여기) - 여기에 첫번째 인수(argument)로써 <br />
+추가적인 정보를 가진 체로 호출하게 될거야.
+
+모든 eventListener function의 첫번째 argument는<br />
+항상 지금 막 벌어진 일들에 대한 정보가 될거야.
+그리고 JS가 그 정보를 무료로 우리에게 주니까, <br />
+우리는 그 argument를 담을 공간만 마련하면 돼.
+
+```js
+function onLoginSubmit(event) {
+  event.preventDefault()
+  //preventDefault function의 기능은 어떤 event의 기본 행동(브라우저가 하는 행동)이든지
+  //발생되지 않도록 막는거야.
+  console.log(event)
+}
+```
+
+## 4.3 Events Part Two
+
+링크의 기본동작은? 클릭 시 다른 페이지로 이동하는 것.
+
+#### html에서 a 만드는 법
+
+```html
+<a href="https://nomadcoders.co">Go to courses</a>
+```
+
+## 4.4 Getting Username
+
+### 수업 목표 : 입력 Input창에 username을 입력하고 제출한 후에는 Input form을 없애고 싶어~!
+
+#### 방법
+
+1. Form 부분을 HTML 파일에서 아예 지우기
+2. CSS를 이용해서 Form 숨기기 -> 요거로
+
+```css
+.hidden {
+  display: none;
+}
+```
+
+어떤 요소에게든 `hidden`이라는 classname을 주면, 그 요소를 숨기게 될거야.
+
+근데 이제 우리는 user가 username을 제출한 후에 form을 감출거니까 <br />
+
+- 유저가 이름을 form을 통해 제출했을 때
+- 기본 동작은 막아주고 (새로고침)
+- 유저 이름은 const username = loginInput.value로 저장해주고
+- classname "hidden"을 더해줄거야
+
+```js
+function onLoginSubmit(event) {
+  event.preventDefault()
+  const username = loginInput.value
+  loginform.classList.add('hidden')
+}
+```
+
+이렇게 하면 끝!
+
+## 4.5 Saving Username
+
+### 수업 목표 : value 저장하는 법 배우기. 왜냐하면 매번 user에게 물어보기 귀찮으니까.
+
+#### API localStorage
+
+localStorage는 우리가 브라우저에 뭔가를 저장할 수 있게 해줘<br />
+그래서 나중에 가져다가 쓸 수 있지.<br />
+localStorage에 뭐가 들어있는지 알려면 개발자 도구를 이용하면 돼.
+
+setItem을 활용하면 localStorage에 정보를 저장할 수 있어.<br />
+콘솔 창에서
+
+```
+localStorage.setItem("key","value")
+//이 코드를 실행하면 username을 저장할 수 있고
+localStorage.getItem("key")
+//이 코드를 실행하면 username을 가져올 수 있고
+localStorage.removeItem("key")
+//이 코드를 실행하면 지울 수 있지.
+```
+
+## 4.6 Loading Username
+
+### 수업 목표 : form을 보여주기 전, addEventListener를 하기 전에 localStorage가 비어있는지 확인하기.
+
+If localStorage가 비어있으면 -> form부터 보여주기<br />
+안비어있으면 -> form보여주지 않기.(유저정보가 있으면) h1 보여주기.
+
+```js
+const savedUsername = localStorage.getItem('username')
+
+if (savedUsername === null) {
+  //show the form
+  loginForm.classList.remove(HIDDEN - CLASSNAME)
+  loginForm.addEventListener('submit', onLoginSubmit)
+} else {
+  //show the greetings
+  greetings.classList.remove(HIDDEN - CLASSNAME)
+  greetings.innerText = 'Hello ${savedUsername}'
+}
+
+//반복되는 코드 조합은 함수로 바꿔주자.
+function paintGreetings(username) {
+  greetings.innerText = 'Hello ${savedUsername}'
+  greetings.classList.remove(HIDDEN - CLASSNAME)
+}
+```
+
+## 4.7 Super Recap
+
+localStorage는 정보를 저장하고 불러오고 삭제하는<br />
+브라우저가 가지고 있는 작은 DB같은 API다!
+
+localStorage에는 key와 value가 있어.<br />
+존재하는 정보에 대한 key를 검색하면 그 value를 string으로 받게 되는거야.

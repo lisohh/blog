@@ -1,0 +1,141 @@
+---
+title: '✨ 바닐라 JS 크롬 앱 만들기 #5 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-17 15:00:00'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 노마드 코더 바닐라 JS로 크롬 앱 만들기 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [바닐라 JS로 크롬 앱 만들기](https://nomadcoders.co/javascript-for-beginners/lobby)
+
+💁🏻
+
+1.  INTRODUCTION
+2.  WELCOME TO JAVASCRIPT
+3.  JAVASCRIPT ON THE BROWSER
+4.  LOGIN
+5.  **CLOCK**
+6.  QUOTES AND BACKGROUND
+7.  TO DO LIST
+8.  WEATHER
+
+---
+
+# Clock
+
+## 5.0 Intervals
+
+### 수업 목표: setInterval 개념 이해하기
+
+<mark>interval : '매번'일어나야 하는 무언가를 말해</mark> -> 이 개념이 JS에 내장되어 있어! :)
+
+함수를 매 2초 마다 실행하고 싶은거야.
+이런 기능을 제공하는 Tool이 바로 setInterval()이야.
+setInterval()은 두 개의 argument를 받아.
+
+1. 첫번째 argument는 네가 실행하고자 하는 Functio이야.
+2. 두번째 argument는 호출되는 function 간격을 몇 ms(milliseconds)로 할 지 쓰면 돼.
+
+```js
+function sayHello() {
+  console.log('hello')
+}
+
+//이 함수를 5초마다(5000ms) 호출되도록 만들자
+setInterval(sayHello, 5000)
+```
+
+## 5.1 Timeouts and Dates
+
+### 수업 목표 : 이전 영상에서는 1 function을 정해둔 시간 간격으로 계속 호출하려고 했는데,<br />이번엔 function을 1번만 호출하되, 정해둔 시간이 흐른 후에 호출되게 해볼거야.
+
+<mark>setTimeout</mark>을 써볼거야.
+
+```js
+function sayHello() {
+  console.log('hello')
+}
+
+setTimeout(sayHello, 5000)
+```
+
+1. 첫번째 argument에는 호출할 함수 이름을 쓰고
+2. 두번째 argument는 함수 호출까지 얼마나 기다릴지를 ms로 적어주면 돼.
+
+이번엔 JS가 가지고 있는 Date object라는 멋진 Tool을 써볼게.
+
+브라우저 console창에서 new Date를 치면 현재 날짜가 나와.<br />
+MDN에서 JavaScript의 Date 부분에 'Instance methods'보면<br />
+정말 쓸 수 있는게 많은데, Function이 정말 많아.
+
+```js
+date.getDay()
+date.getFullYear()
+date.getHours()
+date.getMinutes()
+date.getSeconds()
+```
+
+뭔가를 계속해서 다시 실행하고 싶다면 Interval을 써야한다.
+시계는 매 초 마다 새로운 Date Object를 만들고 있는거야.
+우린 이 세개의 Function을 매 초 마다 호출해줘야 해.
+
+```js
+const clock = document.querySelector('h2#clock')
+
+function getClock() {
+  const date = new Date()
+  console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+  setInterval(getClock, 1000)
+  //setInterval전에 getClock을 불러서 함수를 즉시호출해서
+  //web site가 load되자마자 getClock()를 실행하고
+  //또 매 초 마다 다시 실행되도록 할게
+}
+```
+
+new Date object는 현재 날짜, 시간, 분, 초에 대한 정보를 가지고 있고<br />
+우리는 그런 object를 매 초 마다 create 하고 있어.
+
+##5.2 PadStart
+
+###수업목표: String이 항상 적어도 최소한 2개의 문자를 가지고 있게 만들자. <br />1자리 수일때 앞에 '0'을 붙이게 하자.
+
+<mark>PadStart()</mark> => string앞에 쓸 수 있는 function이야.
+
+console창에 "1".padStart(2,"0")이라고 쓰면 - 여기서 2는 필요 문자 개수<br />
+string에 문자 수가 2개가 아닐때 문자 "0"을 start부분에 써주므로 "01"이 나오게 되는거지.
+마찬가지로 같은 기능인 padEnd()는 End 부분에 써주는거야.
+
+숫자와 텍스트
+
+```js
+new.Date().getHours()
+//-> 숫자값 도출
+
+String(new Date().getHours())
+//->"숫자값"
+
+function getClock() {
+  const date = new Date()
+  const hours = String(date.getHours()).padStart(2, '0')
+  const minutes = String(date.getMinutes()).padStart(2, '0')
+  const seconds = String(date.getSeconds()).padStart(2, '0')
+  clock.innerText = `${hours}:${minutes}:${seconds}`
+}
+
+getClock()
+```
+
+## 5.3 Recap
+
+1. getClock() function을 만들었고
+2. 그 안에 Date Object생성 - getClock() 호출 시 날짜와 시간 정보 알려줌
+3. number 타입의 값을 string()을 통해 string으로 만들어주기
+4. padStart사용 -> 내가 갖고 있는 string을 보다 길게 만들 때 사용
+5. setInterval(getClock,1000); -> 1초 마다 다시 값을 반복해서 호출해 실시간처럼 보이게 함

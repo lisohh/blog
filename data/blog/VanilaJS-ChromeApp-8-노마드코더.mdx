@@ -1,0 +1,88 @@
+---
+title: '✨ 바닐라 JS 크롬 앱 만들기 #8 강의 정리'
+thumbSrc: '/static/images/study_cat.gif'
+date: '2022-03-17 18:00:00'
+tags: ['JS']
+draft: false
+summary: '본 포스트는 노마드 코더 바닐라 JS로 크롬 앱 만들기 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/study_cat.gif']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/study_cat.gif)
+
+> ✨ [바닐라 JS로 크롬 앱 만들기](https://nomadcoders.co/javascript-for-beginners/lobby)
+
+💁🏻
+
+1.  INTRODUCTION
+2.  WELCOME TO JAVASCRIPT
+3.  JAVASCRIPT ON THE BROWSER
+4.  LOGIN
+5.  CLOCK
+6.  QUOTES AND BACKGROUND
+7.  TO DO LIST
+8.  **WEATHER**
+
+---
+
+# Weather
+
+## 8.0 Geolocation
+
+### 수업 목표: todo list 만들기 시작! Form 만들기. list 만들기
+
+navigator.geolocation.getCurrentPosition();<br />
+
+```js
+function onGeoOk() {
+  const lat = position.coords.latitude
+  const lng = position.coords.longitude
+  console.log('You live in', lat, lng)
+}
+function onGeoError() {
+  alert("Can't find you. No weather for you")
+}
+navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError)
+```
+
+openweathermap.org에 가서 api를 보자.<br />
+
+## 8.1 Weather API
+
+### 수업 목표: latitude, longitude,API key와 함께 API 부르기
+
+#### API
+
+다른 서버와 이야기할 수 있는 방법
+
+openweathermap API를 사용해서
+내 위치에 따른 날씨 정보를 얻어내보자.
+
+```js
+const API_KEY = '내 API KEY값을 여기 써야함'
+
+function onGeoOk() {
+  const lat = position.coords.latitude
+  const lng = position.coords.longitude
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+  fetch(url)
+  .then(response => response.join()
+  .then(data => {
+        const weather = document.querySelector("#weather span:first-child");
+        const city = document.querySelector("#weather span:last-child");
+      const name = data.name;
+      const weather = data.weather[0].main;
+      weather.innerText = `&{data.weather[0].main} / ${data.main.temp}`;
+      city.innerText = data.name;
+  });
+  //fetch는 Promise야.
+}
+function onGeoError() {
+  alert("Can't find you. No weather for you")
+}
+navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError)
+```
+
+#### fetch(url)
