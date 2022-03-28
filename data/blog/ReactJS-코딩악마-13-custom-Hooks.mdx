@@ -60,8 +60,8 @@ export default function useFetch(url) {
 }
 ```
 
-이렇게 만든 useFetch훅을 DayList.js에서 불러와서 useEffect대신 사용할 수 있는데<br/>
-이 떄 해당 url주소만 useEffect에게 넘겨주면 된다.
+이렇게 만든 `useFetch`훅을 DayList.js에서 불러와서 `useEffect`대신 사용할 수 있는데<br/>
+이 떄 해당 url주소만 `useEffect`에게 넘겨주면 된다.
 
 ```js
 import { Link } from 'react-router-dom'
@@ -82,7 +82,7 @@ export default function DayList() {
 }
 ```
 
-Day.js에서도 마찬가지로 useFetch를 import해서 사용할 수 있다.
+Day.js에서도 마찬가지로 `useFetch`를 import해서 사용할 수 있다.
 
 ```js
 import { useParams } from 'react-router-dom'

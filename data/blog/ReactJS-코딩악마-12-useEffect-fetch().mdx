@@ -38,13 +38,13 @@ images: ['/static/images/reactjs.webp']
 
 # useEffect,fetch()로 API 호출
 
-useEffect라는 훅이 있는데 useState와 마찬가지로 react에서 import해온다.<br/>
-useEffect는 어떤 상태 값이 바뀌었을 때 동작하는 함수를 작성할 수 있다.
+`useEffect`라는 훅이 있는데 `useState`와 마찬가지로 react에서 import해온다.<br/>
+`useEffect`는 어떤 상태 값이 바뀌었을 때 동작하는 함수를 작성할 수 있다.
 
-useEffect는 첫번째 매개변수로 함수를 받는다.<br/>
+`useEffect`는 첫번째 매개변수로 함수를 받는다.<br/>
 이 함수가 호출된 타이밍은 랜더링 결과가 실제 돔에 반영된 직후 이다.<br/>
 그러니까 이 모습이 다 그려지고 나서 함수가 찍힌 것.<br/>
-그리고 컴퍼넌트가 사라지기 직전에도 마지막으로 호출된다.
+그리고 컴포넌트가 사라지기 직전에도 마지막으로 호출된다.
 
 ```js
 import { useEffect, useState } from 'react'
@@ -76,11 +76,11 @@ export default function DayList() {
 }
 ```
 
-useEffect의 두번째 매개변수로는 배열을 넣어주는데,<br/>
+`useEffect`의 두번째 매개변수로는 배열을 넣어주는데,<br/>
 여기서의 배열은 의존성 배열이다.<br/>
 렌더링 후 딱 한번만 값을 호출하려면 빈 배열을 입력하면 된다.
 
-Day.js도 마찬가지로 useEffect를 사용해서 데이터를 호출한다.
+Day.js도 마찬가지로 `useEffect`를 사용해서 데이터를 호출한다.
 
 ```js
 import { useEffect, useState } from 'react'

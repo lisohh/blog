@@ -36,13 +36,14 @@ images: ['/static/images/reactjs.webp']
 
 ---
 
-# 더미 데이터 구현, map() 반복문
+# 더미 데이터 구현, `map()` 반복문
 
-본격적인 페이지 만들기 시작!<br/>
-component 폴더에 Header.js파일을 만들어놓고<br/>
-src폴더에는 db폴더를 만들고 그 안에 data.json 파일을 만든다.
+### 본격적인 페이지 만들기 시작!<br/>
 
-Header.js
+component 폴더에 `Header.js`파일을 만들어놓고<br/>
+src폴더에는 db폴더를 만들고 그 안에 `data.json` 파일을 만든다.
+
+`Header.js`
 
 ```js
 import React from 'react'
@@ -66,9 +67,9 @@ export default function Header() {
 }
 ```
 
-data.json
+`data.json`
 
-```json
+```js
 {
   "days": [
     {
@@ -121,12 +122,12 @@ data.json
 }
 ```
 
-그다음 component폴더 안에 DayList.js파일을 만들고 dummy 데이터를 불러온다.
+그다음 component폴더 안에 `DayList.js`파일을 만들고 dummy 데이터를 불러온다.
 `import dummy from "../db/data.json";`
 
-map()반복문을 사용해서 단어 수만큼의 li를 만들어 주면 좋다.<br/>
-map()은 배열을 받아서 또 다른 배열을 반환하는 건데 이때 반환되는 배열의 요소는 jsx로 작성하면 된다.<br/>
-화살표 함수로 바로 return문을 작성한다.
+`map()`반복문을 사용해서 단어 수만큼의 `li`를 만들어 주면 좋다.<br/>
+`map()`은 배열을 받아서 또 다른 배열을 반환하는 건데 이때 반환되는 배열의 요소는 jsx로 작성하면 된다.<br/>
+화살표 함수로 바로 `return`문을 작성한다.
 
 ```js
 import React from 'react'
@@ -145,8 +146,8 @@ export default function DayList() {
 }
 ```
 
-마찬가지로 dummy 데이터를 사용하는 Day.js파일도 component폴더안에 만들어준다.<br/>
-그리고 App.js에 Day.js를 import해준다.
+마찬가지로 dummy 데이터를 사용하는 `Day.js`파일도 component폴더안에 만들어준다.<br/>
+그리고 App.js에 `Day.js`를 import해준다.
 
 ```js
 import React from 'react'

@@ -38,19 +38,19 @@ images: ['/static/images/reactjs.webp']
 
 # 이벤트 처리
 
-버튼에 이벤트 처리를 적용해봅니다.
+버튼에 이벤트 처리를 적용해보자.
 
 ### 이벤트를 만드는 방법 1 : 미리 함수를 만들어놓고 이벤트 걸어주기
 
-```reactjs
+```js
 export default function Hello() {
   //미리 함수를 만들어놓고
   function showName() {
-    console.log("Mike");
+    console.log('Mike')
   }
 
   function showAge(age) {
-    console.log(age);
+    console.log(age)
   }
 
   return (
@@ -61,18 +61,17 @@ export default function Hello() {
       {/* onClick={showName()}라고 쓰면 showName이 반환하는 값을 받아온다. */}
       <button>Show age</button>
     </div>
-  );
+  )
 }
 ```
 
-### 이벤트를 만드는 방법 2 : onClick={}의 {}안에 직접 함수 넣기
+### 이벤트를 만드는 방법 2 : `onClick={}`의 {}안에 직접 함수 넣기
 
-```reactjs
-
+```js
 export default function Hello() {
   //이렇게 ()안에 age를 넣고 바로 받아올 수 있다.
   function showAge(age) {
-    console.log(age);
+    console.log(age)
   }
 
   return (
@@ -89,11 +88,11 @@ export default function Hello() {
       {/* 이벤트를 만드는 두번째 방법 : onClick={}의 {}안에 직접 함수 넣기 */}
       {/* 이 방법의 장점은 매개변수를 전하기 편하다는 점이다. */}
     </div>
-  );
+  )
 }
 ```
 
-### 이벤트를 만드는 방법 input
+### 이벤트를 만드는 방법 `input`
 
 ```reactjs
 export default function Hello() {

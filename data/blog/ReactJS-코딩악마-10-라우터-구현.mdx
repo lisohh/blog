@@ -38,11 +38,11 @@ images: ['/static/images/reactjs.webp']
 
 # 라우터 구현 react-router-dom 설치
 
-라우터 구현을 위해 react-router-dom을 설치한다.<br/>
+라우터 구현을 위해 `react-router-dom`을 설치한다.<br/>
 터미널에 `npm install react-router-dom` 명령어를 입력하면 된다.
 
-설치 후 App.js에 BrowserRouter, Route, Switch를 import한다.<br/>
-설치 후 App.js는 아래와 같이 바꿔준다.
+설치 후 `App.js`에 `BrowserRouter`, `Route`, `Switch`를 import한다.<br/>
+설치 후 `App.js`는 아래와 같이 바꿔준다.
 
 ```js
 import React from 'react'
@@ -65,14 +65,14 @@ function App() {
     </BrowserRouter>
   )
 }
-
-export default App
 ```
 
-이렇게 하면 Switch 내부는 url에 따라 다른 페이지를 보여주고<br/>
+#### `export default App`
+
+이렇게 하면 `Switch` 내부는 `url`에 따라 다른 페이지를 보여주고<br/>
 외부는 모든 페이지에 공통으로 노출된다.
 
-그 다음은 Route를 작성하는데<br/>
+그 다음은 `Route`를 작성하는데<br/>
 `<Route path="/"></Route>`라고 작성하면<br/>
 기본적으로 첫 페이지로 이동하도록 설정되어 있다.
 
@@ -105,11 +105,11 @@ export default function Day() {
 }
 ```
 
-다음은 DayList.js파일에 가서 각 버튼에 맞는 페이지를 연결하는 건데<br/>
-HTML태그는 a 태그를 사용하지만<br/>
-react-router-dom은 link를 사용한다.
+다음은 `DayList.js`파일에 가서 각 버튼에 맞는 페이지를 연결하는 건데<br/>
+`HTML`태그는 `a` 태그를 사용하지만<br/>
+`react-router-dom`은 `link`를 사용한다.
 
-DayList.js
+`DayList.js`
 
 ```js
 import React from 'react'
@@ -130,20 +130,26 @@ export default function DayList() {
 ```
 
 그러나 지금은 날짜들을 눌렀을 때 계속 같은 날짜만 출력하므로,
-각 날짜에 맞는 단어들을 부르기 위해서는 Link를 수정한다.
+각 날짜에 맞는 단어들을 부르기 위해서는 `Link`를 수정한다.
 
-DayList.js
-`<Link to={`/day/${day.day}`}>Day {day.day}</Link>`
+`DayList.js`
 
-App.js에서는 ':'을 이용해 dynamic한 url 사용을 할 수 있게 해준다.<br/>
-useParams도 import해야 쓸 수 있다.<br/>
-`<Route path="/day/:day">`
+```js
+<Link to={`/day/${day.day}`}>Day {day.day}</Link>
+```
 
-route에 정해주지 않은 주소를 브라우저에 입력했을 경우에는<br/>
+`App.js`에서는 ':'을 이용해 dynamic한 `url` 사용을 할 수 있게 해준다.<br/>
+`useParams`도 import해야 쓸 수 있다.<br/>
+
+```js
+<Route path="/day/:day">
+```
+
+`route`에 정해주지 않은 주소를 브라우저에 입력했을 경우에는<br/>
 지정된 단어가 없으므로 단어가 출력되지 않는다.<br/>
-이런 경우를 고려해 EmptyPage.js라는 컴포넌트를 하나 만들고 에러메시지를 작성한다.<br/>
-App.js파일에 EmptyPage.js도 import한다.<br/>
-그리고 Switch태그 안에서 가장 밑에 EmptyPage를 넣어준다. => 위에 작성하면 모든 페이지가 EmptyPage로 가게되기 때문!
+이런 경우를 고려해 `EmptyPage.js`라는 컴포넌트를 하나 만들고 에러메시지를 작성한다.<br/>
+`App.js`파일에 `EmptyPage.js`도 import한다.<br/>
+그리고 `Switch`태그 안에서 가장 밑에 `EmptyPage`를 넣어준다. => 위에 작성하면 모든 페이지가 `EmptyPage`로 가게되기 때문!
 
 ```js
 import React from 'react'

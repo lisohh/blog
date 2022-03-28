@@ -38,22 +38,22 @@ images: ['/static/images/reactjs.webp']
 
 # state,useState
 
-state는 컴포넌트가 가지고 있는 속성값이다.<br/>
+`state`는 컴포넌트가 가지고 있는 속성값이다.<br/>
 이 속성값이 변하면, React는 자동으로 속성값을 업데이트 해준다.<br/>
 => 그러므로 속성값을 잘 관리하면 화면을 다시 그리지 않아도 된다.
 
 이렇게 하면 console창에는 이름이 바뀌면서 출력되지만 브라우저 화면에는 이름이 바뀌지 않는다.
 
-```reactjs
-import React from "react";
+```js
+import React from 'react'
 
 export default function Hello() {
-  let name = "Mike";
+  let name = 'Mike'
 
   //이름이 Mike일 때는 이름을 Jane으로, Jane일 때는 Mike로 바꿔주는 함수
   function changeName() {
-    name = name === "Mike" ? "Jane" : "Mike";
-    console.log(name);
+    name = name === 'Mike' ? 'Jane' : 'Mike'
+    console.log(name)
   }
   return (
     <div>
@@ -62,7 +62,7 @@ export default function Hello() {
       {/* 클릭하면 이름을 바꿔주는 버튼 = 이름바꾸는 함수를 실행시키는 버튼 */}
       <button onClick={changeName}>Change</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -92,29 +92,29 @@ export default function Hello() {
 }
 ```
 
-리액트에서 브라우저에 출력되는 이름을 바꿔주려면 useState를 사용해야한다.<br/>
+리액트에서 브라우저에 출력되는 이름을 바꿔주려면 `useState`를 사용해야 한다.<br/>
 Hook은 React 16.8버전부터 사용할 수 있다.
 
-초기 react는 state와 라이프 사이클을 관리하려면 클래스형 컴포넌트를 만들어야 했다.<br/>
+초기 react는 `state`와 라이프 사이클을 관리하려면 클래스형 컴포넌트를 만들어야 했다.<br/>
 그리고 단순히 ui만 표현해주는 컴포넌트만 함수형으로 제작했다.<br/>
 하지만 16.8 버전부터는 모든 컴포넌트를 함수형으로 만들 수 있게 되었고<br/>
-이 react훅을 이용해서 함수형 컴포넌트에서도 state와 라이프 사이클 관리가 가능해졌다.
+이 react훅을 이용해서 함수형 컴포넌트에서도 `state`와 라이프 사이클 관리가 가능해졌다.
 
-자주 쓰는 훅들 중 하나인 useState훅을 사용해보자.
+자주 쓰는 훅들 중 하나인 `useState`훅을 사용해보자.
 
-```reactjs
-import React from "react";
-import { useState } from "react";
+```js
+import React from 'react'
+import { useState } from 'react'
 
 export default function Hello() {
-  const [name, setName] = useState('Mike');
+  const [name, setName] = useState('Mike')
   //Mike는 초기값.
   //[]안에는 변수와 변수를 바꿔줄 함수를 넣으면 된다.
   //이 문법은 배열 구조 분해를 사용한 것이다. - 익숙하지 않으면 구조 분해 할당 강의 참고.
 
   //이름이 Mike일 때는 이름을 Jane으로, Jane일 때는 Mike로 바꿔주는 함수
   function changeName() {
-    const newName =  name === "Mike" ? "Jane" : "Mike";
+    const newName = name === 'Mike' ? 'Jane' : 'Mike'
     setName(newName)
     //위의 코드 두 줄은 아래처럼 한 줄로 줄일 수 있다.
     //setName(name === "Mike" ? "Jane" : "Mike");
@@ -125,11 +125,11 @@ export default function Hello() {
       <h1 id="name">{name}</h1>
       <button onClick={changeName}>Change</button>
     </div>
-  );
+  )
 }
 ```
 
-아니면 버튼 onClick안에 setName함수를 바로 넣어줄 수도 있다.
+아니면 버튼 `onClick`안에 `setName`함수를 바로 넣어줄 수도 있다.
 
 ```reactjs
 import React from "react";
@@ -154,5 +154,5 @@ export default function Hello() {
 }
 ```
 
-동일한 컴포넌트라도 state는 각각 관리된다.<br/>
-다른 스테이트에 영향을 미치지 않는다.
+동일한 컴포넌트라도 `state`는 각각 관리된다.<br/>
+다른 `state`에 영향을 미치지 않는다.
