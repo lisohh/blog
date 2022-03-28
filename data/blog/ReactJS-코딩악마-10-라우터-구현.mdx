@@ -1,0 +1,160 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #10 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. **라우터 구현 react-router-dom**
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# 라우터 구현 react-router-dom 설치
+
+라우터 구현을 위해 react-router-dom을 설치한다.<br/>
+터미널에 `npm install react-router-dom` 명령어를 입력하면 된다.
+
+설치 후 App.js에 BrowserRouter, Route, Switch를 import한다.<br/>
+설치 후 App.js는 아래와 같이 바꿔준다.
+
+```js
+import React from 'react'
+import './App.css'
+import Header from './component/Header'
+import DayList from './component/DayList'
+import Day from './component/Day'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Switch>
+          <DayList />
+          <Day />
+        </Switch>
+      </div>
+    </BrowserRouter>
+  )
+}
+
+export default App
+```
+
+이렇게 하면 Switch 내부는 url에 따라 다른 페이지를 보여주고<br/>
+외부는 모든 페이지에 공통으로 노출된다.
+
+그 다음은 Route를 작성하는데<br/>
+`<Route path="/"></Route>`라고 작성하면<br/>
+기본적으로 첫 페이지로 이동하도록 설정되어 있다.
+
+```js
+import React from 'react'
+import dummy from '../db/data.json'
+
+export default function Day() {
+  //dummy.words
+  //해당 날짜에 지정된 단어만 나오게 하려면 filter함수를 사용한다.
+  const day = 1
+  const wordList = dummy.words.filter((word) => word.day === day)
+  console.log(wordList)
+
+  return (
+    <div>
+      <h2>Day {day}</h2>
+      <table>
+        <tbody>
+          {wordList.map((word) => (
+            <tr key={word.id}>
+              <td>{word.eng}</td>
+              <td>{word.kor}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+```
+
+다음은 DayList.js파일에 가서 각 버튼에 맞는 페이지를 연결하는 건데<br/>
+HTML태그는 a 태그를 사용하지만<br/>
+react-router-dom은 link를 사용한다.
+
+DayList.js
+
+```js
+import React from 'react'
+import dummy from '../db/data.json'
+import { Link } from 'react-router-dom'
+
+export default function DayList() {
+  return (
+    <ul className="list_day">
+      {dummy.days.map((day) => (
+        <li key={day.id}>
+          <Link to="/day">Day {day.day}</Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+그러나 지금은 날짜들을 눌렀을 때 계속 같은 날짜만 출력하므로,
+각 날짜에 맞는 단어들을 부르기 위해서는 Link를 수정한다.
+
+DayList.js
+`<Link to={`/day/${day.day}`}>Day {day.day}</Link>`
+
+App.js에서는 ':'을 이용해 dynamic한 url 사용을 할 수 있게 해준다.<br/>
+useParams도 import해야 쓸 수 있다.<br/>
+`<Route path="/day/:day">`
+
+route에 정해주지 않은 주소를 브라우저에 입력했을 경우에는<br/>
+지정된 단어가 없으므로 단어가 출력되지 않는다.<br/>
+이런 경우를 고려해 EmptyPage.js라는 컴포넌트를 하나 만들고 에러메시지를 작성한다.<br/>
+App.js파일에 EmptyPage.js도 import한다.<br/>
+그리고 Switch태그 안에서 가장 밑에 EmptyPage를 넣어준다. => 위에 작성하면 모든 페이지가 EmptyPage로 가게되기 때문!
+
+```js
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+export default function EmptyPage() {
+  return (
+    <>
+      <h2>잘못된 접근입니다.</h2>
+      <Link to="/">돌아가기</Link>
+    </>
+  )
+}
+```

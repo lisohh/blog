@@ -1,0 +1,106 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #14 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. **PUT(수정),DELETE(삭제)**
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# PUT(수정),DELETE(삭제)
+
+각 함수를 만들고 fetch와 then을 이용해서 코드를 작성한다.
+
+```js
+import { useState } from "react";
+
+export default function Word({ word: w }) {
+  const [word, setWord] = useState(w);
+  const [isShow, setIsShow] = useState(false);
+  const [isDone, setIsDone] = useState(word.isDone);
+
+@@ -9,7 +10,36 @@ export default function Word({ word }) {
+  }
+
+//수정
+  function toggleDone() {
+    fetch(`http://localhost:3001/words/${word.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...word,
+        isDone: !isDone,
+      }),
+    }).then(res => {
+      if (res.ok) {
+        setIsDone(!isDone);
+      }
+    });
+  }
+
+//삭제
+  function del() {
+    if (window.confirm("삭제 하시겠습니까?")) {
+      fetch(`http://localhost:3001/words/${word.id}`, {
+        method: "DELETE",
+      }).then(res => {
+        if (res.ok) {
+          setWord({ id: 0 });
+        }
+      });
+    }
+  }
+
+  if (word.id === 0) {
+    return null;
+  }
+
+  return (
+@@ -21,8 +51,15 @@ export default function Word({ word }) {
+      <td>{isShow && word.kor}</td>
+      <td>
+        <button onClick={toggleShow}>뜻 {isShow ? "숨기기" : "보기"}</button>
+        <button onClick={del} className="btn_del">
+          삭제
+        </button>
+      </td>
+    </tr>
+  );
+}
+
+// Create - POST
+// Read - GET
+// Update - PUT
+// Delete - DELETE
+```

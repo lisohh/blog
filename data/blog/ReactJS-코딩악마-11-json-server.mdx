@@ -1,0 +1,90 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #11 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. **json-server,REST API**
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# json-server,REST API
+
+뜻보기 버튼을 눌렀을 때 의미가 보였다가 사라졌다가 하게 하려면<br/>
+버튼을 컴포넌트로 분리해 state를 사용하는게 좋다.
+
+```js
+import { useState } from 'react'
+
+export default function Word({ word }) {
+  const [isShow, setIsShow] = useState(false)
+  //버튼을 누를 때 마다 보였다가 안보였다가 하게 상태만들기. 처음은 안보이게 false
+  const [isDone, setIsDone] = useState(word.isDone)
+  //외웠을 때와 안외웠을 때 구분하는 check의 state를 만들어준다.
+
+  function toggleShow() {
+    setIsShow(!isShow)
+  }
+
+  function toggleDone() {
+    setIsDone(!isDone)
+  }
+
+  return (
+    <tr className={isDone ? 'off' : ''}>
+      <td>
+        <input type="checkbox" checked={isDone} onChange={toggleDone} />
+      </td>
+      <td>{word.eng}</td>
+      <td>{isShow && word.kor}</td>
+      <td>
+        <button onClick={toggleShow}>뜻 {isShow ? '숨기기' : '보기'}</button>
+        <button className="btn_del">삭제</button>
+      </td>
+    </tr>
+  )
+}
+```
+
+지금 여기서 새로 고침을 하게 되면 이 상태로 다시 돌아오게 된다.<br/>
+왜냐하면 정의 데이터는 고정된 채로 변경되지 않았기 때문이다.
+
+이제 사용자 액션에 따라서 데이터를 읽고 쓰고 업데이트하고 삭제하는 방법을 알아보자.<br/>
+그러기 위해서는 db를 구축하고 api를 만들어야 한다.<br/>
+json server를 이용해서 restful api를 만들어보겠다.<br/>
+프론트엔드 공부를 하다 보면 앱도 마찬가지고 제일 귀찮은 일 중 하나가 api를 만드는 것..<br/>
+프론트 공부하고 연습할 시간도 부족해 죽겠는데 익숙하지도 않은 백엔드도 찾아보고 디비 설치하고 이러면 힘들기 때문.<br/>
+그럴 때 써볼 만한 게 json server다.<br/>
+json server는 빠르고 쉽게 rest api를 구축해준다.<br/>
+지금처럼 공부 목적이나 prototype 아니면 작은 프로젝트 같은 데 쓸 수 있다.
+
+rest api는 쉽게 말해서 url 주소와 메서드로 crud 요청을 하는 것.<br/>
+crud는 create read update delete를 의미한다.

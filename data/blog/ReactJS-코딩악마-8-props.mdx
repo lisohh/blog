@@ -1,0 +1,179 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #8 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  **props**
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# props
+
+props는 properties의 약자로 속성 값을 의미한다.
+
+먼저 App.js에서 props값을 만든다.
+
+```js
+import React from 'react'
+import './App.css'
+import Hello from './component/Hello'
+import styles from './App.module.css'
+
+function App() {
+  return (
+    <div className="App">
+      <h3>props : properties</h3>
+      <Hello age={10} />
+      <Hello age={20} />
+      <Hello age={30} />
+    </div>
+  )
+}
+
+export default App
+```
+
+그다음 Hello.js에서는 Hello함수에 props값을 받아온다.
+
+```js
+import React from 'react'
+import { useState } from 'react'
+
+export default function Hello(props) {
+  console.log(props)
+  const [name, setName] = useState('Mike')
+
+  return (
+    <div>
+      <h1>state</h1>
+      <h1 id="name">
+        {name}({props.age}세)
+        {/* props.age는 컴포넌트 내부에서 변경할 수 없고 넘겨받은 그대로 사용해야 한다. */}
+        {/* 만약 값을 변경하고 싶다면 컴포넌트 내부에서 state를 다시 만들어야 한다. */}
+      </h1>
+      <button
+        onClick={() => {
+          setName(name === 'Mike' ? 'Jane' : 'Mike')
+        }}
+      >
+        Change
+      </button>
+    </div>
+  )
+}
+```
+
+컴포넌트 내부에서 state를 다시 만들게 되면 아래와 같이 작성하면 된다.
+
+<mark>이건 넘겨받은 props값을 바꾸는 게 아니라 state를 바꿔주는 것이다.!!</mark>
+<br />
+props 값은 Read-only이다.
+
+```js
+import React from 'react'
+import { useState } from 'react'
+
+export default function Hello(props) {
+  console.log(props)
+  const [name, setName] = useState('Mike')
+  const [age, setAge] = useState(props.age)
+  //컴포넌트 내부에서 props.age를 초기값으로 받아오는 age state를 만들었다.
+
+  return (
+    <div>
+      <h1>state</h1>
+      <h1 id="name">
+        {name}({age}세)
+        {/* 바뀌는 age값을 반영하기 위해 여기 써주고 */}
+      </h1>
+      <button
+        onClick={() => {
+          setName(name === 'Mike' ? 'Jane' : 'Mike')
+          setAge(age + 1)
+          {
+            /* 버튼을 클릭할 때 마다 age가 1씩 증가하는 함수를 만들었다. */
+          }
+        }}
+      >
+        Change
+      </button>
+    </div>
+  )
+}
+```
+
+**화면에 어떤 데이터를 갱신하기 위해서는 항상 props와 state, 이 두 가지를 사용해서 처리하는 게 좋다.**
+
+UserName이라는 컴포넌트를 아래처럼 새로 만들어놓고
+
+```js
+import React from 'react'
+
+export default function Username({ name }) {
+  return <p>Hello, {name}</p>
+}
+```
+
+Hello.js에서 import해보자.<br/>
+
+<mark>이 name은 이 Hello 컴포넌트에서는 state지만 Username 컴포넌트 입장에서는 props다.</mark>
+
+```js
+import React from 'react'
+import { useState } from 'react'
+import Username from './Username'
+
+export default function Hello(props) {
+  console.log(props)
+  const [name, setName] = useState('Mike')
+  const [age, setAge] = useState(props.age)
+
+  return (
+    <div>
+      <h1>state</h1>
+      <h1 id="name">
+        {name}({age}세)
+      </h1>
+      <Username name={name} />
+      {/* 이 name은 이 Hello 컴포넌트에서는 state지만 Username 컴포넌트 입장에서는 props다 */}
+      <button
+        onClick={() => {
+          setName(name === 'Mike' ? 'Jane' : 'Mike')
+          setAge(age + 1)
+        }}
+      >
+        Change
+      </button>
+    </div>
+  )
+}
+```

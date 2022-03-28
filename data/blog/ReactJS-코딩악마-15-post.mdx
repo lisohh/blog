@@ -1,0 +1,111 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #15 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. **POST(생성),useHistory**
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# POST(생성),useHistory
+
+단어추가 컴포넌트를 만들어보자.<br/>
+component폴더 안에 CreateWord.js파일을 만들어주고<br/>
+Header.js안에 create_word로 주소 연결도 해준다.
+
+```js
+import { useRef } from 'react'
+import { useHistory } from 'react-router'
+import useFetch from '../hooks/useFetch'
+
+export default function CreateWord() {
+  //만들어놓은 커스텀 훅 활용
+  const days = useFetch('http://localhost:3001/days')
+  const history = useHistory()
+
+  function onSubmit(e) {
+    //버튼을 눌러도 새로고침을 하지 않도록 방지
+    e.preventDefault()
+
+    fetch(`http://localhost:3001/words/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      //필요한 데이터
+      body: JSON.stringify({
+        day: dayRef.current.value,
+        eng: engRef.current.value,
+        kor: korRef.current.value,
+        isDone: false,
+      }),
+    }).then((res) => {
+      if (res.ok) {
+        alert('생성이 완료 되었습니다')
+        //a태그를 쓰지 않고 생성한 주소로 바로 이동하게 해준다.
+        history.push(`/day/${dayRef.current.value}`)
+      }
+    })
+  }
+
+  //useRef는 dom에 접근하게 해준다.
+  const engRef = useRef(null)
+  const korRef = useRef(null)
+  const dayRef = useRef(null)
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="input_area">
+        <label>Eng</label>
+        <input type="text" placeholder="computer" ref={engRef} />
+      </div>
+      <div className="input_area">
+        <label>Kor</label>
+        <input type="text" placeholder="컴퓨터" ref={korRef} />
+      </div>
+      <div className="input_area">
+        <label>Day</label>
+        <select ref={dayRef}>
+          {days.map((day) => (
+            <option key={day.id} value={day.day}>
+              {day.day}
+            </option>
+          ))}
+        </select>
+      </div>
+      <button>저장</button>
+    </form>
+  )
+}
+```
+
+단어 추가와 같은 논리로 날짜 추가 파일도 만들어준다.

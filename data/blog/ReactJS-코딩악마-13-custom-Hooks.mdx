@@ -1,0 +1,110 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #13 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. **custom Hooks**
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# custom Hooks
+
+src폴더에 hooks폴더를 만들고 그 안에 useFetch.js파일을 만든다.
+
+```js
+import { useEffect, useState } from 'react'
+
+export default function useFetch(url) {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetch(url)
+      .then((res) => {
+        return res.json()
+      })
+      .then((data) => {
+        setData(data)
+      })
+  }, [url])
+
+  return data
+}
+```
+
+이렇게 만든 useFetch훅을 DayList.js에서 불러와서 useEffect대신 사용할 수 있는데<br/>
+이 떄 해당 url주소만 useEffect에게 넘겨주면 된다.
+
+```js
+import { Link } from 'react-router-dom'
+import useFetch from '../hooks/useFetch'
+
+export default function DayList() {
+  const days = useFetch('http://localhost:3001/days')
+
+  return (
+    <ul className="list_day">
+      {days.map((day) => (
+        <li key={day.id}>
+          <Link to={`/day/${day.day}`}>Day {day.day}</Link>
+        </li>
+      ))}
+    </ul>
+  )
+}
+```
+
+Day.js에서도 마찬가지로 useFetch를 import해서 사용할 수 있다.
+
+```js
+import { useParams } from 'react-router-dom'
+import useFetch from '../hooks/useFetch'
+import Word from './Word'
+
+export default function Day() {
+  const { day } = useParams()
+
+  const words = useFetch(`http://localhost:3001/words?day=${day}`)
+
+  return (
+    <>
+      <h2>Day {day}</h2>
+      <table>
+        <tbody>
+          {words.map((word) => (
+            <Word word={word} key={word.id} />
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}
+```

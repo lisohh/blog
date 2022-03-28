@@ -1,0 +1,199 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #9 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  **더미 데이터 구현**
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# 더미 데이터 구현, map() 반복문
+
+본격적인 페이지 만들기 시작!<br/>
+component 폴더에 Header.js파일을 만들어놓고<br/>
+src폴더에는 db폴더를 만들고 그 안에 data.json 파일을 만든다.
+
+Header.js
+
+```js
+import React from 'react'
+
+export default function Header() {
+  return (
+    <div className="header">
+      <h1>
+        <a>토익 영단어(고급)</a>
+      </h1>
+      ;<div className="menu">
+        <a href="#x" className="link">
+          단어 추가
+        </a>
+        <a href="#x" className="link">
+          Day 추가
+        </a>
+      </div>
+    </div>
+  )
+}
+```
+
+data.json
+
+```json
+{
+  "days": [
+    {
+      "id": 1,
+      "day": 1
+    },
+    {
+      "id": 2,
+      "day": 2
+    },
+    {
+      "id": 3,
+      "day": 3
+    },
+    {
+      "day": 4,
+      "id": 4
+    }
+  ],
+  "words": [
+    {
+      "id": 1,
+      "day": 1,
+      "eng": "book",
+      "kor": "책",
+      "isDone": false
+    },
+    {
+      "id": 3,
+      "day": 2,
+      "eng": "car",
+      "kor": "자동차",
+      "isDone": false
+    },
+    {
+      "id": 5,
+      "day": 3,
+      "eng": "school",
+      "kor": "학교",
+      "isDone": false
+    },
+    {
+      "id": 6,
+      "day": 3,
+      "eng": "pencil",
+      "kor": "연필",
+      "isDone": false
+    }
+  ]
+}
+```
+
+그다음 component폴더 안에 DayList.js파일을 만들고 dummy 데이터를 불러온다.
+`import dummy from "../db/data.json";`
+
+map()반복문을 사용해서 단어 수만큼의 li를 만들어 주면 좋다.<br/>
+map()은 배열을 받아서 또 다른 배열을 반환하는 건데 이때 반환되는 배열의 요소는 jsx로 작성하면 된다.<br/>
+화살표 함수로 바로 return문을 작성한다.
+
+```js
+import React from 'react'
+import dummy from '../db/data.json'
+
+export default function DayList() {
+  return (
+    <ul className="list_day">
+      {dummy.days.map((day) => (
+        <li key={day.id}>Day {day.day}</li>
+        //key는 반복되는 요소에 고유한 값을 넣어줘야 하는데
+        //여기서는 day.id값을 넣어준다.
+      ))}
+    </ul>
+  )
+}
+```
+
+마찬가지로 dummy 데이터를 사용하는 Day.js파일도 component폴더안에 만들어준다.<br/>
+그리고 App.js에 Day.js를 import해준다.
+
+```js
+import React from 'react'
+import dummy from '../db/data.json'
+
+export default function Day() {
+  //dummy.words
+
+  return (
+    <div>
+      <table>
+        <tbody>
+          {dummy.words.map((word) => (
+            <tr>
+              <td>{word.eng}</td>
+              <td>{word.kor}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+```
+
+해당 날짜에 맞는 단어만 출력하게 하려면 filter함수를 이용한다.
+
+```js
+import React from 'react'
+import dummy from '../db/data.json'
+
+export default function Day() {
+  //dummy.words
+
+  return (
+    <div>
+      <table>
+        <tbody>
+          {dummy.map((word) => (
+            <tr key={word.id}>
+              <td>{word.eng}</td>
+              <td>{word.kor}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
+}
+```

@@ -1,0 +1,152 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #6 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-27 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  **이벤트 처리**
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. 마치며
+17. 부록: 타입스크립트 적용하기
+
+---
+
+# 이벤트 처리
+
+버튼에 이벤트 처리를 적용해봅니다.
+
+### 이벤트를 만드는 방법 1 : 미리 함수를 만들어놓고 이벤트 걸어주기
+
+```reactjs
+export default function Hello() {
+  //미리 함수를 만들어놓고
+  function showName() {
+    console.log("Mike");
+  }
+
+  function showAge(age) {
+    console.log(age);
+  }
+
+  return (
+    <div>
+      <h1>Hello</h1>
+      <button onClick={showName}>Show name</button>
+      {/* 이벤트 걸어주기 */}
+      {/* onClick={showName()}라고 쓰면 showName이 반환하는 값을 받아온다. */}
+      <button>Show age</button>
+    </div>
+  );
+}
+```
+
+### 이벤트를 만드는 방법 2 : onClick={}의 {}안에 직접 함수 넣기
+
+```reactjs
+
+export default function Hello() {
+  //이렇게 ()안에 age를 넣고 바로 받아올 수 있다.
+  function showAge(age) {
+    console.log(age);
+  }
+
+  return (
+    <div>
+      <h1>Hello</h1>
+
+      <button
+        onClick={() => {
+          showAge(30)
+        }}
+      >
+        Show age
+      </button>
+      {/* 이벤트를 만드는 두번째 방법 : onClick={}의 {}안에 직접 함수 넣기 */}
+      {/* 이 방법의 장점은 매개변수를 전하기 편하다는 점이다. */}
+    </div>
+  );
+}
+```
+
+### 이벤트를 만드는 방법 input
+
+```reactjs
+export default function Hello() {
+
+  //showText 함수는 event를 객체로 받고 event의 target의 value를 찍어준다.
+  function showText(e) {
+    console.log(e.target.value);
+    //target은 입력하는 text가 될 것이고 value는 그 내용을 의미한다.
+    //이렇게 하면 글자를 입력할 때 마다 console창에 입력값이 출력된다.
+  }
+
+  return (
+    <div>
+      <h1>Hello</h1>
+      <input type="text" onChange={showText} />
+    </div>
+  );
+}
+```
+
+아래처럼 줄여서 간단히 작성할 수도 있다.
+
+```reactjs
+export default function Hello() {
+
+  return (
+    <div>
+      <h1>Hello</h1>
+      <input type="text" onChange={(e)=>{
+        console.log(e.target.value)
+      }} />
+    </div>
+  );
+}
+```
+
+매개변수를 그대로 살리려면 아래처럼 함수를 쓰고 변수를 지정하는 방법도 있다.
+
+```reactjs
+export default function Hello() {
+
+  function showText(txt) {
+    console.log(txt);
+  }
+
+  return (
+    <div>
+      <h1>Hello</h1>
+      <input type="text" onChange={(e) => {
+        const txt = e.target.value;
+        showText(txt);
+      }} />
+    </div>
+  );
+}
+```

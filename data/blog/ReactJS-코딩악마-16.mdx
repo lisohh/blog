@@ -1,0 +1,55 @@
+---
+title: '✨ React JS 초보자를 위한 리액트 강좌 #16,17 강의 정리'
+thumbSrc: '/static/images/reactjs.webp'
+date: '2022-03-28 12:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 코딩악마 초보자를 위한 리액트 강좌를 수강한 후 쓴 글입니다.'
+images: ['/static/images/reactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/reactjs.webp)
+
+> ✨ [초보자를 위한 리액트 강좌](https://www.youtube.com/playlist?list=PLZKTXPmaJk8J_fHAzPLH8CJ_HO_M33e7-)
+
+💁🏻
+
+1.  강의 소개
+2.  설치(create-react-app)
+3.  컴포넌트,JSX
+4.  첫 컴포넌트 만들기
+5.  CSS 작성법
+6.  이벤트 처리
+7.  state,useState
+8.  props
+9.  더미 데이터 구현
+10. 라우터 구현 react-router-dom
+11. json-server,REST API
+12. useEffect,fetch()로 API 호출
+13. custom Hooks
+14. PUT(수정),DELETE(삭제)
+15. POST(생성),useHistory
+16. **마치며**
+17. **부록: 타입스크립트 적용하기**
+
+---
+
+# 마무리 및 부록 : 타입스크립트 적용하기
+
+느린 인터넷 환경을 써보려면 개발자 도구 - 네트워크 탭에서 slow 3G를 선택한다.<br/>
+단어가 로딩중일 때는 로딩중이라는 메시지를 보여준다.<br/>
+통신 중일 때는 버튼을 누르지 못하게 만들어준다. => 오류 방지
+
+## 타입스크립트 적용
+
+1. 타입스크립트 설치
+   `npm install typescript @types/node @types/react @types/react-dom @types/jest @types/rect-router-dom`입력
+
+2. js는 tsx로 변경
+
+3. interface를 만들고 type 설정
+   절대 any 타입을 남용하면 안된다.<br/>
+   type명 뒤에 '?'를 붙이면 그 type은 optional하다는 의미이다.
+   interface 앞에 export를 붙여주면 그 interface는 다른 컴포넌트에서도 사용 가능하다.
