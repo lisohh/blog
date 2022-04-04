@@ -1,0 +1,173 @@
+---
+title: '✨ React 2022년 개정판 #6 이벤트'
+thumbSrc: '/static/images/screactjs.webp'
+date: '2022-03-29 18:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 생활코딩 React 2022년 개정판 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/screactjs.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/screactjs.webp)
+
+> ✨ [React 2022년 개정판](https://www.youtube.com/playlist?list=PLuHgQVnccGMCOGstdDZvH41x0Vtvwyxu7)
+
+💁🏻
+
+1.  수업 소개
+2.  실습 환경 구축
+3.  소스코드 수정방법
+4.  컴포넌트 만들기
+5.  props
+6.  **이벤트**
+7.  state
+8.  Create
+9.  Update
+10. Delete & 수업을 마치며
+
+---
+
+## 이벤트
+
+### `html` 태그 - onClick
+
+```
+<input type="button" onClick="alert('hi')">
+```
+
+위의 태그는 사용자가 버튼을 클릭했을 때 hi라고 경고창을 띄울 수 있는 태그
+
+### 이벤트 기능
+
+**컴포넌트에서 어떤 일이 발생했을 때<br/>**
+**사용자가 추가적인 어떤 작업을 처리할 수 있도록 하는 기능**
+
+1. 헤더 컴포넌트에 이벤트 기능 넣기
+2. onChangeMode라고 하는 prop 값으로 함수를 전달
+
+=> 컴포넌트 안에서 링크를 클릭하면 컴포넌트가 이 함수를 호출해서<br/>
+헤더를 클릭했을 때 해야 되는 작업들이 실행되게 하기.<br/>
+ex)헤더라고 하는 경고창이 뜨게 하기
+
+```function Header(props){
+  return <header>
+    <h1><a href="/" onClick={(event)=>{
+      event.preventDefault();
+      props.onChangeMode();
+    }}>{props.title}</a></h1>
+  </header>
+}
+```
+
+---
+
+### 1.1 `a` 태그에 `onClick` 이벤트 걸기
+
+**`a` 태그는 순수한 `html`과 똑같지 않다. = 유사 html**<br/>
+유사 html이기 때문에 리액트가(리액트 개발 환경) 이걸 최종적으로 브라우저가 이해할 수 있는<br/>
+`html`로 컨버팅 해주므로 `html`문법과 100% 일치하지 않는다.
+
+- `onClick={}` / {}안에 함수 쓰기
+
+```function Header(props){
+  return <header>
+    <h1><a href="/" onClick={function(event){
+
+    }}>{props.title}</a></h1>
+  </header>
+}
+```
+
+`a` 태그를 클릭했을 때 {}안의 함수가 호출된다.<br/>
+콜백 함수로 들어간 함수가 호출될 때 리액트는 이벤트 객체를 첫 번째 파라미터로 주입해줌.
+
+- **이벤트 객체와 `event.preventDefault`**
+
+이벤트 객체는 이 이벤트 상황을 제어할 수 있는 여러 가지 정보와 기능이 들어가 있는데<br/>
+`event.preventDefault`를 하게 되면 `a` 태그가 동작하는 기본 동작을 방지한다.<br/>
+만약 a 태그를 클릭했을 때 페이지 리로드가 일어나지 않게 하기 위해서는<br/>
+이벤트 객체에 preventDefault를 쓴다.
+
+`a` 태그의 기본 동작: 클릭했을 때 href에 연결된 페이지로 리로드<br/>
+=> `a` 태그를 방지하면 클릭해도 리로드가 일어나지 않게 된다.
+
+onClick의 함수가 호출됐을 때<br/>
+head의 props로 전달된 onChangeMode가 가리키는 이 함수를 호출.
+
+```function Header(props){
+  return <header>
+    <h1><a href="/" onClick={function(event){
+      event.preventDefault();
+      props.onChangeMode(); =>이 부분에서 함수를 호출하므로 ()를 붙인다.
+    }}>{props.title}</a></h1>
+  </header>
+}
+```
+
+위의 코드는 컴포넌트에 이벤트 기능을 부여해서 컴포넌트 사용자가 헤더를 클릭했을 때<br/>
+해야 될 작업을 정의할 수 있도록 처리해 준 것.
+
+### 1.2 function 축약 -> arrow function으로 교체
+
+```function Header(props){
+  return <header>
+    <h1><a href="/" onClick={(event)=>{ => 이부분
+      event.preventDefault();
+      props.onChangeMode();
+    }}>{props.title}</a></h1>
+  </header>
+}
+```
+
+### 2.1 내비게이션을 클릭했을 때 `2.css`를 클릭하면 경고창에 2가 뜨고 <br/>`3.javascript`를 클릭하면 경고창에 3이 뜨게 만들기
+
+nav 컴포넌트도 onChangeMode함수의 props를 갖는다.
+
+```
+<Nav topics={topics} onChangeMode={()=>{}}</Nav>
+```
+
+props는 함수를 전달하는데 이 함수의 첫 번째 파라미터로 `id` 값이 오게하고<br/>
+함수가 호출될 때 그 `id` 값이 경고창으로 뜨게 한다.<br/>
+nav 태그에서 `a` 태그를 클릭했을 때 이벤트가 발생하게 만들어야한다.
+
+```
+<a href={'/read/'+t.id} onClick={event=>{}}>{t.title}</a>
+```
+
+이렇게 파라미터(event)가 하나인 경우에는 괄호를 생략해도 상관없다.
+
+**그다음에 이 nav의 onChangeMode를 호출.**<br/>
+onChangeMode는 `id` 값을 필요로 하기 때문에 이 함수를 호출할 때 `id` 값을 주입해야 되는데<br/>
+그 `id` 값을 얻어내는 가장 쉬운 방법은 `id` 값을 부여해주는 것이다.<br/>
+함수 안에서 이 이벤트 함수 안에서 `a` 태그의 `id` 속성을 얻어내려면 이벤트 객체를 사용한다.<br/>
+이벤트 객체가 갖고 있는 타겟이라고 하면 그 이벤트를 유발시킨 태그를 가리키고 여기서는 `a` 태그를 가리킨다.<br/>
+그 `a` 태그가 가지고 있는 `id` 값을 가져오고 싶다면 뒤에다가 `id`라고 붙여준다.
+
+```html
+
+function Nav(props){
+const lis = []
+for(let i=0; i<props.topics.length; i++){
+let t = props.topics[i];
+lis.push(<li key={t.id}>
+
+<a id={t.id} href={'/read/'+t.id} onClick={event=>{
+event.preventDefault();
+props.onChangeMode(event.target.id);
+}}>{t.title}</a>
+</li>)
+}
+return <nav>
+<ol>
+{lis}
+</ol>
+
+  </nav>
+}
+```
+
+목록 안에서 링크를 설치하는 법과<br/>
+링크가 이벤트를 호출할 때 어떠한 입력 값을 주는 방법도 배웠다.!
