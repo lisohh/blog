@@ -1,0 +1,309 @@
+---
+title: '✨ 한 눈에 보는 타입스크립트 #4 타입 기본'
+thumbSrc: '/static/images/grts.webp'
+date: '2022-04-10 04:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 구름에듀 한 눈에 보는 타입스크립트 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/grts.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/grts.webp)
+
+> ✨ [한 눈에 보는 타입스크립트](https://www.youtube.com/playlist?list=PLuHgQVnccGMCOGstdDZvH41x0Vtvwyxu7)
+
+💁🏻
+
+1.  Intro
+2.  타입스크립트 개요
+3.  개발환경
+4.  **타입 기본(Types)**
+5.  인터페이스 (Interface)
+6.  타입 별칭 (Type Aliases)
+7.  제네릭 (Generic)
+8.  함수
+9.  클래스
+10. Optional
+11. 모듈
+12. TS 유틸리티 타입
+13. 참고 자료 (References)
+
+---
+
+## 타입 기본 (Types)
+
+#### 타입 지정
+
+타입스크립트는 일반 변수, 매개 변수(Parameter), 객체 속성(Property) 등에 :<br/>
+`TYPE`과 같은 형태로 타입을 지정할 수 있다.
+
+```
+function someFunc(a: TYPE_A, b: TYPE_B): TYPE_RETURN {
+  return a + b;
+}
+let some: TYPE_SOME = someFunc(1, 2);
+```
+
+아래 예시를 보면
+`add`함수의 매개 변수 `a`와 `b`는 `number`타입이어야 한다고 지정했고,<br/>
+그렇게 실행된 함수의 반환 값도 숫자로 추론되므로 `sum`도 `number`타입으로 지정한다.
+
+```
+function add(a: number, b: number) {
+  return a + b;
+}
+const sum: number = add(1, 2);
+console.log(sum); // 3
+```
+
+#### 타입 에러
+
+만약 위의 예시에서 `sum`을 `number`가 아닌 `string`으로 지정했다면,<br/>
+컴파일조차 하지 않고 코드를 작성하는 시점에서 에러가 발생한다.
+
+#### 타입 선언
+
+## **배열: Array**
+
+순차적으로 값을 가지는 일반 배열을 나타낸다.<br/>
+배열은 다음과 같이 두 가지 방법으로 타입을 선언할 수 있다.
+
+```
+// 문자열만 가지는 배열
+let fruits: string[] = ['Apple', 'Banana', 'Mango'];
+// Or
+let fruits: Array<string> = ['Apple', 'Banana', 'Mango'];
+
+// 숫자만 가지는 배열
+let oneToSeven: number[] = [1, 2, 3, 4, 5, 6, 7];
+// Or
+let oneToSeven: Array<number> = [1, 2, 3, 4, 5, 6, 7];
+```
+
+유니언 타입(다중 타입)의 '문자열과 숫자를 동시에 가지는 배열'도 선언할 수 있다.
+
+```
+let array: (string | number)[] = ['Apple', 1, 2, 'Banana', 'Mango', 3];
+// Or
+let array: Array<string | number> = ['Apple', 1, 2, 'Banana', 'Mango', 3];
+```
+
+배열이 가지는 항목의 값을 단언할 수 없다면 `any`를 사용할 수 있다.
+
+```
+let someArr: any[] = [0, 1, {}, [], 'str', false];
+```
+
+인터페이스(Interface)나 커스텀 타입(Type)을 사용할 수도 있다.
+
+```
+interface IUser {
+  name: string,
+  age: number,
+  isValid: boolean
+}
+let userArr: IUser[] = [
+  {
+    name: 'Neo',
+    age: 85,
+    isValid: true
+  },
+  {
+    name: 'Lewis',
+    age: 52,
+    isValid: false
+  },
+  {
+    name: 'Evan',
+    age: 36,
+    isValid: true
+  }
+];
+```
+
+읽기 전용 배열을 생성할 수도 있다.<br/>
+`readonly`키워드나 `ReadonlyArray`타입을 사용하면 된다.
+
+```
+let arrA: readonly number[] = [1, 2, 3, 4];
+let arrB: ReadonlyArray<number> = [0, 9, 8, 7];
+
+arrA[0] = 123; // Error - TS2542: Index signature in type 'readonly number[]' only permits reading.
+arrA.push(123); // Error - TS2339: Property 'push' does not exist on type 'readonly number[]'.
+
+arrB[0] = 123; // Error - TS2542: Index signature in type 'readonly number[]' only permits reading.
+arrB.push(123); // Error - TS2339: Property 'push' does not exist on type 'readonly number[]'.
+```
+
+####튜플: Tuple
+Tuple 타입은 배열과 매우 유사하다.<br/>
+차이점은 튜플은 **정해진 타입의 고정된 길이(length) 배열**을 표현한다는 것.
+
+```
+let tuple: [string, number];
+tuple = ['a', 1];
+tuple = ['a', 1, 2]; // Error - TS2322
+tuple = [1, 'a']; // Error - TS2322
+```
+
+아래처럼 데이터를 개별 변수로 지정하지 않고 단일 Tuple 타입으로 지정해 사용할 수 있다.
+
+```
+// Variables
+let userId: number = 1234;
+let userName: string = 'HEROPY';
+let isValid: boolean = true;
+
+// Tuple
+let user: [number, string, boolean] = [1234, 'HEROPY', true];
+console.log(user[0]); // 1234
+console.log(user[1]); // 'HEROPY'
+console.log(user[2]); // true
+```
+
+위의 방식에서 더 나아가면 Tuple 타입의 2차원 배열을 만들 수도 있다.
+
+```
+let users: [number, string, boolean][];
+// Or
+// let users: Array<[number, string, boolean]>;
+
+users = [[1, 'Neo', true], [2, 'Evan', false], [3, 'Lewis', true]];
+```
+
+Tuple은 **정해진 타입의 고정된 길이 배열**을 표현하지만, 이는 할당(Assign)에 국한된다.<br/>
+`.push()`나 `.splice()` 등을 통해 값을 넣는 행위는 막을 수 없다.
+
+```
+let tuple: [string, number];
+tuple = ['a', 1];
+tuple = ['b', 2];
+tuple.push(3);
+console.log(tuple); // ['b', 2, 3];
+tuple.push(true); // Error - TS2345: Argument of type 'true' is not assignable to parameter of type 'string | number'.
+```
+
+#### 열거형: Enum
+
+---
+
+Enum은 숫자 혹은 문자열 값 집합에 이름(Member)을 부여할 수 있는 타입으로, <br/>
+값의 종류가 일정한 범위로 정해져 있는 경우 유용하다.
+
+기본적으로 `0`부터 시작하며 값은 `1`씩 증가한다.
+
+```
+enum Week {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat
+}
+```
+
+수동으로 값을 변경할 수 있고, 값을 변경한 부분부터 다시 `1`씩 증가한다.
+
+<mark>Enum은 역방향 매핑(Reverse Mapping)을 지원한다.</mark>
+<br />이 말은 열거된 멤버로 값에, 값으로 멤버에 접근할 수 있다는 것을 의미한다.
+
+추가로 Enum은 숫자 값 열거뿐만 아니라 문자열 값으로 초기화할 수 있다.<br/>
+이 방법은 역방향 매핑(Reverse Mapping)을 지원하지 않고 개별적으로 초기화해야한다는 단점이 있다.
+
+#### 모든 타입: Any
+
+Any는 모든 타입을 의미한다.<br/>
+따라서 일반적인 자바스크립트 변수와 동일하게 어떤 타입의 값도 할당할 수 있다.<br/>
+외부 자원을 활용해 개발할 때 불가피하게 타입을 단언할 수 없는 경우 유용할 수 있다.
+
+```
+let any: any = 123;
+any = 'Hello world';
+any = {};
+any = null;
+```
+
+다양한 값을 포함하는 배열을 나타낼 때 사용할 수 있다.
+
+```
+const list: any[] = [1, true, 'Anything!'];
+```
+
+#### 객체: Object
+
+기본적으로 `typeof`연산자가 `"object"`로 반환하는 모든 타입을 나타낸다.<br/>
+여러 타입의 상위 타입이기 때문에 그다지 유용하지는 않다.
+
+#### Void
+
+Void는 일반적으로 값을 반환하지 않는 함수에서 사용한다.<br/>
+`: void` 위치는 함수가 반환 타입을 명시하는 곳이다.
+
+```
+function hello(msg: string): void {
+  console.log(`Hello ${msg}`);
+}
+```
+
+값을 반환하지 않는 함수로는 실제로는 `undefined`를 반환한다.
+
+```
+function hello(msg: string): void {
+  console.log(`Hello ${msg}`);
+}
+const hi: void = hello('world'); // Hello world
+console.log(hi); // undefined
+```
+
+#### 유니언(Union)
+
+2개 이상의 타입을 허용하는 경우, 이를 유니언(Union)이라고 한다.<br/>
+`|`(vertical bar)를 통해 타입을 구분하며, `()`는 선택 사항이다.
+
+#### 타입 단언 (Assertions)
+
+타입스크립트가 타입 추론을 통해 판단할 수 있는 타입의 범주를 넘는 경우, 더이상 추론하지 않도록 지시할 수 있다.<br/>
+이를 '타입 단언'이라고 하며, 프로그래머가 타입스크립트보다 타입에 대해 더 잘 이해하고 있는 상황을 의미한다.
+
+#### Non-null 단언 연산자
+
+`!`를 사용하는 Non-null 단언 연산자를 통해 피연산자가 Nullish(`null`이나 `undefined`)값이 아님을<br/>
+단언할 수 있는데, 변수나 속성에서 간단하게 사용할 수 있기때문에 유용하다.
+
+```
+function hello(msg: string): void {
+  console.log(`Hello ${msg}`);
+}
+const hi: void = hello('world'); // Hello world
+console.log(hi); // undefined
+```
+
+특히 컴파일 환경에서 체크하기 어려운 DOM 사용에서 유용하다.
+물론 일반적인 타입 단언을 사용할 수도 있다.
+
+#### 타입 가드(Guards)
+
+`val`타입을 매번 보장하기 위해 타입 단어를 여러 번 사용하는 경우가 있는데<br/>
+타입 가드를 사용하면 타입스크립트가 추론 가능한 특정 범위(scope)에서 타입을 보장할 수 있다.
+
+```
+// 타입 가드
+function isNumber(val: string | number): val is number {
+  return typeof val === 'number';
+}
+
+function someFunc(val: string | number) {
+  if (isNumber(val)) {
+    val.toFixed(2);
+    isNaN(val);
+  } else {
+    val.split('');
+    val.toUpperCase();
+    val.length;
+  }
+}
+```

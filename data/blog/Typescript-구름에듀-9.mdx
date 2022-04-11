@@ -1,0 +1,63 @@
+---
+title: '✨ 한 눈에 보는 타입스크립트 #9 클래스'
+thumbSrc: '/static/images/grts.webp'
+date: '2022-04-10 09:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 구름에듀 한 눈에 보는 타입스크립트 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/grts.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/grts.webp)
+
+> ✨ [한 눈에 보는 타입스크립트](https://www.youtube.com/playlist?list=PLuHgQVnccGMCOGstdDZvH41x0Vtvwyxu7)
+
+💁🏻
+
+1.  Intro
+2.  타입스크립트 개요
+3.  개발환경
+4.  타입 기본(Types)
+5.  인터페이스 (Interface)
+6.  타입 별칭 (Type Aliases)
+7.  제네릭 (Generic)
+8.  함수
+9.  **클래스**
+10. Optional
+11. 모듈
+12. TS 유틸리티 타입
+13. 참고 자료 (References)
+
+---
+
+## 클래스
+
+#### 클래스란
+
+클래스의 생성자 메소드(`constructor`)와 일반 메소드(Methods) 멤버(Class member)와는<br/> 다르게, 속성(Properties)는 `name:string;`과 같이 클래스 바디에 별도로 타입을 선언한다.
+
+> 클래스 바디는 중괄호 `{}`로 묶여 있는 영역을 의미한다.
+
+```
+class Animal {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+}
+class Cat extends Animal {
+  getName(): string {
+    return `Cat name is ${this.name}.`;
+  }
+}
+let cat: Cat;
+cat = new Cat('Lucy');
+console.log(cat.getName()); // Cat name is Lucy.
+```
+
+#### 추상 (Abstract) 클래스
+
+추상클래스는 다른 클래스가 파생될 수 있는 기본 클래스로, 인터페이스와 굉장히 유사하다.<br/>
+클래스뿐 아니라 속성과 메소드에도 사용할 수 있다.

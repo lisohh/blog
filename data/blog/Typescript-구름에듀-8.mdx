@@ -1,0 +1,81 @@
+---
+title: '✨ 한 눈에 보는 타입스크립트 #8 함수'
+thumbSrc: '/static/images/grts.webp'
+date: '2022-04-10 08:00:00'
+tags: ['JS', 'React']
+draft: false
+summary: '본 포스트는 구름에듀 한 눈에 보는 타입스크립트 강의를 수강한 후 쓴 글입니다.'
+images: ['/static/images/grts.webp']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/grts.webp)
+
+> ✨ [한 눈에 보는 타입스크립트](https://www.youtube.com/playlist?list=PLuHgQVnccGMCOGstdDZvH41x0Vtvwyxu7)
+
+💁🏻
+
+1.  Intro
+2.  타입스크립트 개요
+3.  개발환경
+4.  타입 기본(Types)
+5.  인터페이스 (Interface)
+6.  타입 별칭 (Type Aliases)
+7.  제네릭 (Generic)
+8.  **함수**
+9.  클래스
+10. Optional
+11. 모듈
+12. TS 유틸리티 타입
+13. 참고 자료 (References)
+
+---
+
+## 함수
+
+#### this
+
+타입스크립트 함수의 주요 특징 중 하나.<br/>
+함수 내 `this`는 전역 객체를 참조하거나(sloppy mode),<br/>
+`undefinded`(strict mode)가 되는 등<br/>
+우리가 원하는 콘텍스트(context)를 잃고 다른 값이 되는 경우들이 있다.
+
+이 상황에서 `this`콘텍스트가 정상적으로 유지되어 `a`을 참조할 수 있는 방법은
+
+1. <mark>bind 메소드</mark>를 사용해 `this`를 **직접 연결**
+
+```
+obj.b(); // Hello~
+
+const b = obj.b.bind(obj);
+b(); // Hello~
+
+function someFn(cb: any) {
+  cb();
+}
+someFn(obj.b.bind(obj)); // Hello~
+
+setTimeout(obj.b.bind(obj), 100); // Hello~
+```
+
+2. 화살표 함수 사용
+
+```
+obj.b(); // Hello~
+
+const b = () => obj.b();
+b(); // Hello~
+
+function someFn(cb: any) {
+  cb();
+}
+someFn(() => obj.b()); // Hello~
+
+setTimeout(() => obj.b(), 100); // Hello~
+```
+
+#### 오버로드 (Overloads)
+
+이름은 같지만 매개변수 타입과 반환 타입이 다른 여러 함수를 가질 수 있는것.<br/>
+함수 오버로드를 통해 다양한 구조의 함수를 생성하고 관리할 수 있다.
