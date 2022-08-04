@@ -1,0 +1,312 @@
+---
+title: '🎉 컬러리스트 프로젝트 #2 컬러 선택 기능 구현'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-04'
+tags: ['project', 'colorlist']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 개발 방식
+2. 코드 짜기 전 준비
+3. 코드 짜기 시작
+   3.1 선택한 칸 색깔 추가 🥚
+   3.2 선택한 칸 색깔 삭제(다시 화이트로) 🥚
+   3.3 선택한 칸 색깔 재선택 - 빈 칸 순서대로 🥚
+
+---
+
+## 1. 개발 방식
+
+### BDD(Behavior Driven Development) 🍄
+
+feat.탐정토끼님
+
+토끼님이 회사에서 하시는 BDD방식을 알려주셔서 이번 프로젝트는 BDD를 적용해보기로 했다.
+BDD는 행동 주도 개발로 구현해야 할 액션들을 시나리오로 작성해서 순서대로 개발하는 방식이다.
+이 방식을 선택한 이유는 처음 팀 프로젝트를 하는 과정에서
+
+> - 어떤 기능을 구현해야 하는 지 기억하기 쉽고,
+
+- 정확히 어떤 기능을 구현해야 하는 지 좀 더 명확히 정리할 수 있고,
+- 구현 순서를 액션 별로 나누어 정리하기 좋기 때문이다.
+
+또 초보인 내가 복습하기에도 이 방식이 체계적으로 기록을 볼 수 있어 참 좋았다.
+
+---
+
+## 2. 코드 짜기 전 준비
+
+1. BDD(Behavior Driven Development)개발을 하기위해 feature파일을 만들었다. -> 'App.feture'파일 생성
+2. feature파일에 주석을 달기 위해 Cucumber (Gherkin) Full Support 익스텐션을 설치했다.
+   아래와 같은 이미지의 익스텐션을 설치하면 된다!
+   ![](https://velog.velcdn.com/images/lisohh/post/e10470f7-0cb4-46f8-a588-750c9a04c477/image.png)
+3. bun으로 create-react-app을 실행해 프로젝트를 초기화했다.
+   `bun create react 프로젝트이름`
+4. index.html의 head에 pico.css를 추가
+   pico.css : classless css임! 기본 html을 예쁘게 만들어준다.
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+```
+
+---
+
+## 3. 코드 짜기 시작
+
+App.tsx 작성을 시작했다.
+
+### 기능 0. 색상 파레트 만들기
+
+색상 코드를 hex코드로 배열을 만들어 map으로 버튼에 넣어줍니다.
+
+```tsx
+const WHITE_HEX = '#ffffff'
+const pallete = [
+  '#e6e6e6',
+  '#d2b48c',
+  '#800000',
+  '#7e181e',
+  '#29f9ff',
+  '#a8a8f8',
+  '#5050f1',
+  '#ffb3ba',
+  '#ccff00',
+  '#ff7f50',
+  '#fa8072',
+  '#bada55',
+]
+
+;<div id="pallete" className="flex flex-row flex-wrap">
+  {/* 4번 - pallete도 값이 여러 개이므로 map을 사용한다. */}
+  {pallete.map((hex) => (
+    <button
+      onClick={() => addSelected(hex)}
+      className="roundButton"
+      style={{ backgroundColor: hex }}
+    >
+      {hex}
+    </button>
+  ))}
+</div>
+```
+
+### 기능 1. 선택한 칸 색깔 추가 🥚
+
+![](https://velog.velcdn.com/images/lisohh/post/ca528fb2-e5de-4a3a-9703-00155dbd688a/image.png)
+
+#### 시나리오
+
+```md
+Scenario: 선택된 색깔 목록이 박스에 보인다
+
+# Given - before, 주어진 상황
+
+Given 선택된 색깔들로 문제를 렌더하고
+
+# When - 사용자의 동작 (클릭, 키보드, 스크롤, 탭, 지우기, 복붙)
+
+# Then - after, 결과
+
+Then 선택된 색깔 목록이 보인다
+```
+
+> 먼저 임의의 선택된 색상 배열을 만들어보았다.
+
+```tsx
+const colors = ['red', 'green', 'blue']
+```
+
+> 값이 여러 개인 배열은 map을 써서 element 여러 개로 변환한다..!
+
+```tsx
+{
+  colors.map((color) => (
+    <td
+      style={{
+        backgroundColor: color,
+      }}
+    >
+      {color}
+    </td>
+  ))
+}
+```
+
+> 여러 개의 값을 background에 문자열로 넣어주어 칸에 해당하는 색이 보이도록 한다.
+
+```tsx
+<td
+    style={{
+            backgroundColor: color,
+          }}
+ >
+```
+
+> - 선택한 색깔 보여주기 기능
+
+```tsx
+function App() {
+  //1번- 선택된 색이 여러개인 배열을 만든다
+  const colors = ['red', 'green', 'blue']
+  return (
+    <div className="App">
+      <article>
+        <table className="selectedContainer flex flex-row">
+          <tr>
+            {/* 2번 - map을 써서 배열의 값을 화면에 뿌려준다. */}
+            {colors.map((color) => (
+              <td
+                style={{
+                  backgroundColor: color,
+                }}
+              >
+                {color}
+              </td>
+            ))}
+          </tr>
+        </table>
+        <div id="pallete" className="flex flex-row flex-wrap"></div>
+      </article>
+    </div>
+  )
+}
+```
+
+> - 색깔 선택하기 기능
+
+```tsx
+function App() {
+  //선택된 색이 여러개인 배열을 만든다 - BOX_COUNT 개인 배열을 만들어서 흰색으로 채운다
+  const [colors, setColors] = React.useState(Array(BOX_COUNT).fill(WHITE_HEX)) //문자열
+  //addSelected 함수를 만들어
+  function addSelected(hex: string) {
+    setColors((old) => {
+      // findIndex는 배열의 값 중에서 조건에 맞는 값이 있는 첫 번째 index를 찾는다!
+      // hex 중에서 hex의 색이 white인 첫번째 index를 찾아낸다.
+      const firstWhiteIndex = old.findIndex((hex) => hex === WHITE_HEX)
+      if (firstWhiteIndex === -1) {
+        // 인덱스를 못 찾으면! -1을 반환
+        return old // 원래 colors를 그대로 반환... 더 채울 하얀칸이 없으므로!
+      }
+      // 이미 바뀐 색은 old대로 놔두고
+      const copy = [...old]
+      // 찾아낸 첫 번째 인덱스에 hex값을 넣는다.
+      copy[firstWhiteIndex] = hex
+      return copy // newState !!!
+    })
+  }
+  return (
+    <div className="App">
+      <article>
+        <table className="selectedContainer flex flex-row">
+          {/* map을 써서 배열의 값을 화면에 뿌려준다. */}
+          <tr>
+            {colors.map((color) => (
+              //스타일에 map으로 받아온 color 문자열 값을 backgroundColor로 지정해준다.
+              <td
+                style={{
+                  backgroundColor: color,
+                }}
+              >
+                {color}
+                {/* text node */}
+              </td>
+            ))}
+          </tr>
+        </table>
+        <div id="pallete" className="flex flex-row flex-wrap">
+          {/* pallete도 값이 여러 개이므로 map을 사용한다. */}
+          {pallete.map((hex) => (
+            <button
+              onClick={() => addSelected(hex)}
+              className="roundButton"
+              style={{ backgroundColor: hex }}
+            >
+              {hex}
+            </button>
+          ))}
+        </div>
+      </article>
+    </div>
+  )
+}
+```
+
+### 기능 2. 선택한 칸 색깔 삭제(다시 화이트로) 🥚
+
+![](https://velog.velcdn.com/images/lisohh/post/272dc279-3732-4727-8626-dd0a39ca2df3/image.png)
+
+#### 시나리오
+
+```md
+Scenario: 박스의 칸을 클릭하면 선택한 칸이 흰색으로 변한다
+Given 선택된 색깔들로 문제를 렌더하고
+When 박스의 칸을 클릭하면
+Then 선택한 칸이 흰색으로 변한다
+```
+
+> 특정 칸을 선택하면 그 칸의 index를 받아서
+> 선택되지 않은 칸은 이전의 값을 그대로 받아오고
+> 선택된 칸은 WHITE_HEX를 넣어준다.
+> -> 그대로인 값과 새로운 값을 합쳐 새 state로 만들어준다!
+
+```tsx
+function deleteSelected(targetIndex: number) {
+  setColors((old) => {
+    const copy = [...old]
+    // targetIndex의 값을 흰색 헥스를 넣는다.
+    copy[targetIndex] = WHITE_HEX
+    return copy // newState !!!
+  })
+}
+```
+
+### 기능 3. 선택한 칸 색깔 재선택 - 빈 칸 순서대로 🥚
+
+#### 시나리오
+
+```md
+Scenario: 주보강에 값을 입력할 수 있다
+Given 비어있는 칸을 렌더하고
+When 값을 입력하면
+Then 값이 입력된다
+```
+
+> 처음에 임의로 만든 color값은 값을 마음대로 변경할 수 없으므로,
+> useState를 사용해 colors배열을 반응형(reactive)상태로 만든다.
+
+```tsx
+const [colors, setColors] = React.useState(Array(BOX_COUNT).fill(WHITE_HEX)) // 문자열
+```
+
+> 그 다음 하얀색으로 칠해진 빈 칸 중 첫번째칸부터 순서대로 다시 색을 넣을 수 있도록
+> addSelected 함수에 첫번째 하얀칸 index에 선택된 hex를 넣는 식을 추가한다.
+
+```tsx
+function addSelected(hex: string) {
+  setColors((old) => {
+    // findIndex는 배열의 값 중에서 조건에 맞는 값이 있는 첫 번째 index를 찾는다!
+    // hex 중에서 hex의 색이 white인 첫번째 index를 찾아낸다.
+    const firstWhiteIndex = old.findIndex((hex) => hex === WHITE_HEX)
+    if (firstWhiteIndex === -1) {
+      // 인덱스를 못 찾으면! -1을 반환
+      return old // 원래 colors를 그대로 반환... 더 채울 하얀칸이 없으므로!
+    }
+    // 이미 바뀐 색은 old대로 놔두고
+    const copy = [...old]
+    // 찾아낸 첫 번째 인덱스에 hex값을 넣는다.
+    copy[firstWhiteIndex] = hex
+    return copy // newState !!!
+  })
+}
+```
