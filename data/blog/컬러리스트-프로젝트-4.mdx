@@ -91,8 +91,8 @@ ReactDOM.render(
 
 ##### 2.2 팔레트 탭 구현 🥚
 
-여러가지 색조의 팔레트를 탭으로 구별하여 보여주기 위해<ln />
-`Radix UI`를 사용해 탭 UI를 구현해보았다.<ln />
+여러가지 색조의 팔레트를 탭으로 구별하여 보여주기 위해<br/>
+`Radix UI`를 사용해 탭 UI를 구현해보았다.<br/>
 Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#examples
 
 1. `bun add @radix-ui/react-tabs`를 터미널에 입력해 radix의 react-tabs부분만 설치했다.
@@ -113,17 +113,17 @@ Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#exam
 </Tabs.Root>
 ```
 
-실행해보면 여기서 `Tabs.Root`의 orientation이 탭의 방향이고,<ln/>
+실행해보면 여기서 `Tabs.Root`의 orientation이 탭의 방향이고,<br/>
 `Tabs.Trigger`가 탭 버튼이고 `Tabs.Content`가 탭 안에 들어갈 내용임을 알 수 있다.
 
-> 또 한가지 중요한 것은
-> radix UI 같은 경우 기본 css값이 안정해져있어
-> 나의 경우 'pico.css'의 기본 값이 적용되었다.
-> 이런 경우 직접 해당 파일의 css를 변경해도 되지만
-> 'pico.css'를 주소 링크로 `import`하지 않고 아예 파일을 가져와 'pico.css'안의 내용을 커스텀 할 수 있다.
+> 또 한가지 중요한 것은<br/>
+> radix UI 같은 경우 기본 css값이 안정해져있어<br/>
+> 나의 경우 'pico.css'의 기본 값이 적용되었다.<br/>
+> 이런 경우 직접 해당 파일의 css를 변경해도 되지만<br/>
+> 'pico.css'를 주소 링크로 `import`하지 않고 아예 파일을 가져와 'pico.css'안의 내용을 커스텀 할 수 있다.<br/>
 > 나는 공통적으로 쓰는 버튼 부분을 직접 커스텀했다.
 
-나의 경우는 여러개의 색조 팔레트 값을 불러와야 하므로,<ln/>
+나의 경우는 여러개의 색조 팔레트 값을 불러와야 하므로,<br/>
 `이중map`을 사용해 탭을 누를 때 마다 각각 색조 파레트 안의 색깔 값이 렌더되도록 했다.
 
 4. 먼저 파레트 색조 별 색깔 값을 `json` 파일로 만들고, 'TestForm.tsx'에 `json`파일을 `import한다.
@@ -170,10 +170,10 @@ const palleteTypes = Object.keys(allPallete)
 <Tabs.Root defaultValue="base" orientation="horizontal">
 ```
 
-7.팔레트의 타입마다 `Tabs.Trigger`를 만들어준다. 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다. <ln />
+7.팔레트의 타입마다 `Tabs.Trigger`를 만들어준다. 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다. <br/>
 팔레트의 타입마다 `Tabs.Content`도 만들어준다. 파레트 안에 들어가는 색깔들 값이다.
 
-8. `pallete.json`의 양식이 hex와 colorName으로 두 가지 이상 있으므로 `map`을 사용해서 색깔과 이름을 렌더한다.
+8. `pallete.json`의 양식이 hex와 colorName으로 두 가지 이상 있으므로 `map`을 사용해서 색깔과 이름을 렌더한다.<br/>
    `이중map`을 쓰는 경우다.
 
 ```tsx
@@ -214,4 +214,5 @@ const palleteTypes = Object.keys(allPallete)
 
 ![basePalleteImg](/static/images/basePallete.webp)
 
+<br />
 ![deepPalleteImg](/static/images/deepPallete.webp)
