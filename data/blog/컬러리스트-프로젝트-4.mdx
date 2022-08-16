@@ -58,8 +58,8 @@ Scenario: 탭을 클릭하면 원하는 팔레트로 변경할 수 있다
 
 Nav가 속해있는 Index.tsx에서 작성을 시작했다.
 
-1. bun add react-router-dom 을 터미널에 입력해서 설치했다.
-2. 'Index.tsx'에 { BrowserRouter, Routes, Route } 을 import 해주었다.
+1. `bun add react-router-dom` 을 터미널에 입력해서 설치했다.
+2. 'Index.tsx'에 { BrowserRouter, Routes, Route } 을 `import` 해주었다.
    -> import { BrowserRouter, Routes, Route } from "react-router-dom"; <ln />
    https://goddaehee.tistory.com/305 블로그 글을 참조했다.
 3. 블로그에 있는 기본 구조를 나의 Index.tsx에 맞게 넣어주었다.
@@ -97,8 +97,8 @@ ReactDOM.render(
 `Radix UI`를 사용해 탭 UI를 구현해보았다.<ln />
 Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#examples
 
-1. bun add @radix-ui/react-tabs를 터미널에 입력해 radix의 react-tabs부분만 설치했다.
-2. 'TestForm.tsx'에 Tabs를 import 해준다.
+1. `bun add @radix-ui/react-tabs`를 터미널에 입력해 radix의 react-tabs부분만 설치했다.
+2. 'TestForm.tsx'에 Tabs를 `import` 해준다.
    -> `import * as Tabs from "@radix-ui/react-tabs";`
 3. radix의 기본 tab 코드를 가져와서 화면에 실행해본다.
 
@@ -122,13 +122,13 @@ Tabs.Trigger가 탭 버튼이고 Tabs.Content가 탭 안에 들어갈 내용임�
 > radix UI 같은 경우 기본 css값이 안정해져있어
 > 나의 경우 pico.css의 기본 값이 적용되었다.
 > 이런 경우 직접 해당 파일의 css를 변경해도 되지만
-> pico.css를 주소 링크로 import하지 않고 아예 파일을 가져와 pico.css안의 내용을 커스텀 할 수 있다.
+> `pico.css`를 주소 링크로 `import`하지 않고 아예 파일을 가져와 `pico.css`안의 내용을 커스텀 할 수 있다.
 > 나는 공통적으로 쓰는 버튼 부분을 직접 커스텀했다.
 
 나의 경우는 여러개의 색조 팔레트 값을 불러와야 하므로,<ln/>
 이중 map을 사용해 탭을 누를 때 마다 각각 색조 파레트 안의 색깔 값이 렌더되도록 했다.
 
-4. 먼저 파레트 색조 별 색깔 값을 json 파일로 만들고, 'TestForm.tsx'에 json파일을 import한다.
+4. 먼저 파레트 색조 별 색깔 값을 json 파일로 만들고, 'TestForm.tsx'에 json파일을 `import`한다.
 
 ```json
 {
