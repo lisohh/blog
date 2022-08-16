@@ -1,0 +1,40 @@
+---
+title: '🎉 컬러리스트 프로젝트 #5 왜 빌드가 안될까? vercel 빌드 에러'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-16'
+tags: ['project', 'colorlist', 'vercel', 'debugging']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. vercel 빌드가 났다.
+2. 원인 찾기
+3. 해결!
+
+---
+
+## 1. 갑자기 vercel 빌드 에러가 났다.
+
+##### vercel에 들어갔더니 이런 에러 코드가 주르륵 나온다.
+
+![](/Users/lisyongsyong/repository/blog/public/static/images/vercelError.png)
+
+읽어봐도 모르겠어서 일단 `import`가 들어간 코드를 거의 지우고, 단어는 백틱처리를 해주었다.
+
+그래도 안된다.
+
+에러난 주소 `/vercel/path0/node_modules/esbuild/lib/main.js:1475:15` 에 들어가볼까 했더니
+`Loader`리스트에 `feature`가 없길래 이것 때문인가 하고 그 단어를 지웠다.
+
+그래도 안된다.
+
+---
