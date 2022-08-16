@@ -57,7 +57,7 @@ Scenario: 탭을 클릭하면 원하는 팔레트로 변경할 수 있다
 Nav가 속해있는 Index.tsx에서 작성을 시작했다.
 
 1. `bun add react-router-dom` 을 터미널에 입력해서 설치했다.
-2. 'Index.tsx'에 `{ BrowserRouter, Routes, Route }` 을 `import` 해주었다.
+2. 'Index.tsx'에 `{ BrowserRouter, Routes, Route }` 을 `import` 해주었다.<br/>  
    -> `import { BrowserRouter, Routes, Route } from "react-router-dom";` <ln />
    https://goddaehee.tistory.com/305 블로그 글을 참조했다.
 3. 블로그에 있는 기본 구조를 나의 'Index.tsx'에 맞게 넣어주었다.
@@ -77,22 +77,14 @@ ReactDOM.render(
 )
 ```
 
-> 여기서 잘못했던 게 있었는데,
-> 처음 'Index.tsx'안에 `render`하는 값을 `<div className="app">`으로 감싸놓고
-> 'TestForm.tsx'를 'App.tsx'라고 명명해서 `div` 이름과 App의 `div` 이름이 중복되었다.
-> 그때문에 'App.css'에 준 `div`의 css값이 여기서도 적용되어서
-> Nav에 원하지 않는 패딩 값이 계속 들어갔다.
-> 이를 해결하기 위해 'App.tsx'의 이름을 좀 더 구체적인 'TestForm.tsx'로 바꾸고
-> 불필요한 'Index.tsx'안의 `div`를 삭제해 문제를 해결했다.
-> -> `className`을 잘 지어야 하고, 동일한 `className`은 파일이 달라도
-> css속성이 똑같이 적용된다는 것을 배웠다.
+> 여기서 잘못했던 게 있었는데,<br/> 처음 'Index.tsx'안에 `render`하는 값을 `<div className="app">`으로 감싸놓고<br /> 'TestForm.tsx'를 'App.tsx'라고 명명해서 `div` 이름과 App의 `div` 이름이 중복되었다.<br /> 그때문에 'App.css'에 준 `div`의 css값이 여기서도 적용되어서<br /> Nav에 원하지 않는 패딩 값이 계속 들어갔다. <br /> 이를 해결하기 위해 'App.tsx'의 이름을 좀 더 구체적인 'TestForm.tsx'로 바꾸고 <br /> 불필요한 'Index.tsx'안의 `div`를 삭제해 문제를 해결했다. <br /> -> `className`을 잘 지어야 하고, 동일한 `className`은 파일이 달라도 <br /> css속성이 똑같이 적용된다는 것을 배웠다.
 
 ---
 
 ##### 2.2 팔레트 탭 구현 🥚
 
-여러가지 색조의 팔레트를 탭으로 구별하여 보여주기 위해<ln/>
-`Radix UI`를 사용해 탭 UI를 구현해보았다.<ln/>
+여러가지 색조의 팔레트를 탭으로 구별하여 보여주기 위해<br/>  
+`Radix UI`를 사용해 탭 UI를 구현해보았다.<br/>  
 Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#examples
 
 1. `bun add @radix-ui/react-tabs`를 터미널에 입력해 radix의 react-tabs부분만 설치했다.
@@ -165,8 +157,8 @@ const palleteTypes = Object.keys(allPallete)
 <Tabs.Root defaultValue="base" orientation="horizontal">
 ```
 
-7.팔레트의 타입마다 `Tabs.Trigger`를 만들어준다.
-아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다.<br/>
+7.팔레트의 타입마다 `Tabs.Trigger`를 만들어준다.<br/>  
+ 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다.<br/>
 팔레트의 타입마다 `Tabs.Content`도 만들어준다. 파레트 안에 들어가는 색깔들 값이다.
 
 8. `pallete.json`의 양식이 hex와 colorName으로 두 가지 이상 있으므로 `map`을 사용해서 색깔과 이름을 렌더한다.<br/>  
