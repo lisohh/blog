@@ -29,7 +29,6 @@ images: ['/static/images/colorlist.png']
 ##### 탭을 구현하는 시나리오
 
 ```
-
 Feature: Nav
 
 Scenario: 네비게이터에서 원하는 페이지로 이동할 수 있다
@@ -42,7 +41,6 @@ Scenario: 네비게이터에서 원하는 페이지로 이동할 수 있다
 ##### 라우팅을 하는 시나리오
 
 ```
-
 Feature: TestForm
 
 Scenario: 탭을 클릭하면 원하는 팔레트로 변경할 수 있다
@@ -60,9 +58,9 @@ Nav가 속해있는 Index.tsx에서 작성을 시작했다.
 
 1. `bun add react-router-dom` 을 터미널에 입력해서 설치했다.
 2. 'Index.tsx'에 { BrowserRouter, Routes, Route } 을 `import` 해주었다.
-   -> import { BrowserRouter, Routes, Route } from "react-router-dom"; <ln />
+   -> `import { BrowserRouter, Routes, Route } from "react-router-dom";` <ln />
    https://goddaehee.tistory.com/305 블로그 글을 참조했다.
-3. 블로그에 있는 기본 구조를 나의 Index.tsx에 맞게 넣어주었다.
+3. 블로그에 있는 기본 구조를 나의 'Index.tsx'에 맞게 넣어주었다.
 
 ```tsx
 ReactDOM.render(
@@ -80,12 +78,12 @@ ReactDOM.render(
 ```
 
 > 여기서 잘못했던 게 있었는데,
-> 처음 Index.tsx안에 render하는 값을 <div className="app">으로 감싸놓고
-> TestForm.tsx를 App.tsx라고 명명해서 div 이름과 App의 div 이름이 중복되었다.
-> 그때문에 App.css에 준 div의 css값이 여기서도 적용되어서
+> 처음 'Index.tsx'안에 render하는 값을 <div className="app">으로 감싸놓고
+> 'TestForm.tsx'를 'App.tsx'라고 명명해서 div 이름과 App의 div 이름이 중복되었다.
+> 그때문에 'App.css'에 준 div의 css값이 여기서도 적용되어서
 > Nav에 원하지 않는 패딩 값이 계속 들어갔다.
-> 이를 해결하기 위해 App.tsx의 이름을 좀 더 구체적인 TestForm.tsx로 바꾸고
-> 불필요한 Index.tsx안의 div를 삭제해 문제를 해결했다.
+> 이를 해결하기 위해 'App.tsx'의 이름을 좀 더 구체적인 'TestForm.tsx'로 바꾸고
+> 불필요한 'Index.tsx'안의 div를 삭제해 문제를 해결했다.
 > -> className을 잘 지어야 하고, 동일한 className은 파일이 달라도
 > css속성이 똑같이 적용된 다는 것을 배웠다.
 
@@ -115,20 +113,20 @@ Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#exam
 </Tabs.Root>
 ```
 
-실행해보면 여기서 Tabs.Root의 orientation이 탭의 방향이고,<ln/>
-Tabs.Trigger가 탭 버튼이고 Tabs.Content가 탭 안에 들어갈 내용임을 알 수 있다.
+실행해보면 여기서 `Tabs.Root`의 orientation이 탭의 방향이고,<ln/>
+`Tabs.Trigger`가 탭 버튼이고 `Tabs.Content`가 탭 안에 들어갈 내용임을 알 수 있다.
 
 > 또 한가지 중요한 것은
 > radix UI 같은 경우 기본 css값이 안정해져있어
-> 나의 경우 pico.css의 기본 값이 적용되었다.
+> 나의 경우 'pico.css'의 기본 값이 적용되었다.
 > 이런 경우 직접 해당 파일의 css를 변경해도 되지만
-> `pico.css`를 주소 링크로 `import`하지 않고 아예 파일을 가져와 `pico.css`안의 내용을 커스텀 할 수 있다.
+> 'pico.css'를 주소 링크로 `import`하지 않고 아예 파일을 가져와 'pico.css'안의 내용을 커스텀 할 수 있다.
 > 나는 공통적으로 쓰는 버튼 부분을 직접 커스텀했다.
 
 나의 경우는 여러개의 색조 팔레트 값을 불러와야 하므로,<ln/>
-이중 map을 사용해 탭을 누를 때 마다 각각 색조 파레트 안의 색깔 값이 렌더되도록 했다.
+`이중map`을 사용해 탭을 누를 때 마다 각각 색조 파레트 안의 색깔 값이 렌더되도록 했다.
 
-4. 먼저 파레트 색조 별 색깔 값을 json 파일로 만들고, 'TestForm.tsx'에 json파일을 `import한다.
+4. 먼저 파레트 색조 별 색깔 값을 `json` 파일로 만들고, 'TestForm.tsx'에 `json`파일을 `import한다.
 
 ```json
 {
@@ -172,11 +170,11 @@ const palleteTypes = Object.keys(allPallete)
 <Tabs.Root defaultValue="base" orientation="horizontal">
 ```
 
-7.팔레트의 타입마다 Tabs.Trigger를 만들어준다. 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다. <ln />
-팔레트의 타입마다 Tabs.Content도 만들어준다. 파레트 안에 들어가는 색깔들 값이다.
+7.팔레트의 타입마다 `Tabs.Trigger`를 만들어준다. 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다. <ln />
+팔레트의 타입마다 `Tabs.Content`도 만들어준다. 파레트 안에 들어가는 색깔들 값이다.
 
-8. pallete.json의 양식이 hex와 colorName으로 두 가지 이상 있으므로 map을 사용해서 색깔과 이름을 렌더한다.
-   이중 map을 쓰는 경우다.
+8. `pallete.json`의 양식이 hex와 colorName으로 두 가지 이상 있으므로 `map`을 사용해서 색깔과 이름을 렌더한다.
+   `이중map`을 쓰는 경우다.
 
 ```tsx
 <div id="pallete-box">
