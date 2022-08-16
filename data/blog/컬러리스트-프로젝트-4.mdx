@@ -1,0 +1,238 @@
+---
+title: '🎉 컬러리스트 프로젝트 #4 라우팅 구현 및 탭 ui 구현'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-16'
+tags: ['project', 'colorlist', 'Radix UI']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 시나리오 쓰기
+2. 코드 짜기 시작
+
+- 2.1 라우팅 구현 🥚
+- 2.2 팔레트 탭 구현 🥚
+
+---
+
+## 1. 시나리오 쓰기(시나리오는 사용자의 입장에서 서술!)
+
+##### 탭을 구현하는 시나리오
+
+```feature
+
+Feature: Nav
+
+Scenario: 네비게이터에서 원하는 페이지로 이동할 수 있다
+  Given 메뉴와 네비게이터를 렌더하고
+  When 링크를 클릭하면
+  Then 링크에 해당하는 페이지로 이동한다
+
+```
+
+##### 라우팅을 하는 시나리오
+
+```feature
+
+Feature: TestForm
+
+Scenario: 탭을 클릭하면 원하는 팔레트로 변경할 수 있다
+  Given 파레트를 렌더하고
+  When 탭에서 원하는 팔레트 버튼을 클릭하면
+  Then 원하는 팔레트로 변경된다
+
+```
+
+## 2. 코드 짜기 시작
+
+##### 2.1 라우팅 구현 🥚
+
+Nav가 속해있는 Index.tsx에서 작성을 시작했다.
+
+1. bun add react-router-dom 을 터미널에 입력해서 설치했다.
+2. 'Index.tsx'에 { BrowserRouter, Routes, Route } 을 import 해주었다.
+   -> import { BrowserRouter, Routes, Route } from "react-router-dom"; <ln />
+   https://goddaehee.tistory.com/305 블로그 글을 참조했다.
+3. 블로그에 있는 기본 구조를 나의 Index.tsx에 맞게 넣어주었다.
+
+   ```tsx
+   import * as React from 'react'
+   import ReactDOM from 'react-dom'
+   import { BrowserRouter, Routes, Route } from 'react-router-dom'
+   import './index.css'
+   import './pico.css'
+   import TestForm from './TestForm'
+   import Nav from './Nav'
+   import Login from './Login'
+   import Notfound from './Notfound'
+   ```
+
+ReactDOM.render(
+
+{' '}
+
+<React.StrictMode>
+  <BrowserRouter>
+    <Nav />
+    <Routes>
+      <Route path="/" element={<TestForm />} />
+      <Route path="/login/*" element={<Login />} />
+      {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
+      <Route path="*" element={<Notfound />}></Route>
+    </Routes>
+  </BrowserRouter>
+</React.StrictMode>
+, document.getElementById("root") );
+
+````
+
+> 여기서 잘못했던 게 있었는데,
+> 처음 Index.tsx안에 render하는 값을 <div className="app">으로 감싸놓고
+> TestForm.tsx를 App.tsx라고 명명해서 div 이름과 App의 div 이름이 중복되었다.
+> 그때문에 App.css에 준 div의 css값이 여기서도 적용되어서
+> Nav에 원하지 않는 패딩 값이 계속 들어갔다.
+> 이를 해결하기 위해 App.tsx의 이름을 좀 더 구체적인 TestForm.tsx로 바꾸고
+> 불필요한 Index.tsx안의 div를 삭제해 문제를 해결했다.
+> -> className을 잘 지어야 하고, 동일한 className은 파일이 달라도
+> css속성이 똑같이 적용된 다는 것을 배웠다.
+
+----
+
+##### 2.2 팔레트 탭 구현 🥚
+
+여러가지 색조의 팔레트를 탭으로 구별하여 보여주기 위해<ln />
+`Radix UI`를 사용해 탭 UI를 구현해보았다.<ln />
+Radix tab 주소 : https://www.radix-ui.com/docs/primitives/components/tabs#examples
+
+1. bun add @radix-ui/react-tabs를 터미널에 입력해 radix의 react-tabs부분만 설치했다.
+2. 'TestForm.tsx'에 Tabs를 import 해준다.
+  -> `import * as Tabs from "@radix-ui/react-tabs";`
+3. radix의 기본 tab 코드를 가져와서 화면에 실행해본다.
+
+```tsx
+import * as Tabs from '@radix-ui/react-tabs';
+
+export default () => (
+  <Tabs.Root defaultValue="tab1" orientation="vertical">
+    <Tabs.List aria-label="tabs example">
+      <Tabs.Trigger value="tab1">One</Tabs.Trigger>
+      <Tabs.Trigger value="tab2">Two</Tabs.Trigger>
+      <Tabs.Trigger value="tab3">Three</Tabs.Trigger>
+    </Tabs.List>
+    <Tabs.Content value="tab1">Tab one content</Tabs.Content>
+    <Tabs.Content value="tab2">Tab two content</Tabs.Content>
+    <Tabs.Content value="tab3">Tab three content</Tabs.Content>
+  </Tabs.Root>
+);
+````
+
+실행해보면 여기서 Tabs.Root의 orientation이 탭의 방향이고,<ln/>
+Tabs.Trigger가 탭 버튼이고 Tabs.Content가 탭 안에 들어갈 내용임을 알 수 있다.
+
+> 또 한가지 중요한 것은
+> radix UI 같은 경우 기본 css값이 안정해져있어
+> 나의 경우 pico.css의 기본 값이 적용되었다.
+> 이런 경우 직접 해당 파일의 css를 변경해도 되지만
+> pico.css를 주소 링크로 import하지 않고 아예 파일을 가져와 pico.css안의 내용을 커스텀 할 수 있다.
+> 나는 공통적으로 쓰는 버튼 부분을 직접 커스텀했다.
+
+나의 경우는 여러개의 색조 팔레트 값을 불러와야 하므로,<ln/>
+이중 map을 사용해 탭을 누를 때 마다 각각 색조 파레트 안의 색깔 값이 렌더되도록 했다.
+
+4. 먼저 파레트 색조 별 색깔 값을 json 파일로 만들고, 'TestForm.tsx'에 json파일을 import한다.
+
+```json
+{
+  "base": [
+    { "hex": "#CC1313", "colorName": "R" },
+    { "hex": "#FF6B00", "colorName": "YR" },
+    { "hex": "#FFC700", "colorName": "Y" },
+    { "hex": "#90B81F", "colorName": "GY" },
+    { "hex": "#2D7B4C", "colorName": "G" },
+    { "hex": "#1B6553", "colorName": "BG" },
+    { "hex": "#126C72", "colorName": "B" },
+    { "hex": "#4E6192", "colorName": "PB" },
+    { "hex": "#6A377C", "colorName": "P" },
+    { "hex": "#833359", "colorName": "RP" }
+  ],
+  "deep": [
+    { "hex": "#CC1313", "colorName": "R/dp" },
+    { "hex": "#FF6B00", "colorName": "YR/dp" },
+    { "hex": "#FFC700", "colorName": "Y/dp" },
+    { "hex": "#90B81F", "colorName": "GY/dp" },
+    { "hex": "#2D7B4C", "colorName": "G/dp" },
+    { "hex": "#1B6553", "colorName": "BG/dp" },
+    { "hex": "#126C72", "colorName": "B/dp" },
+    { "hex": "#4E6192", "colorName": "PB/dp" },
+    { "hex": "#6A377C", "colorName": "P/dp" },
+    { "hex": "#833359", "colorName": "RP/dp" }
+  ]
+}
+```
+
+5. 색조 이름을 key값으로 만들어 변수 palleteTypes에 넣는다.
+
+```tsx
+// ["base", "deep"]
+const palleteTypes = Object.keys(allPallete)
+```
+
+6. 그다음 기본 파레트 값은 base 파레트로 지정해주고
+
+```tsx
+<Tabs.Root defaultValue="base" orientation="horizontal">
+```
+
+7.팔레트의 타입마다 Tabs.Trigger를 만들어준다. 아까 말했듯이 트리거는 탭 버튼안에 쓰이는 값이다. <ln />
+팔레트의 타입마다 Tabs.Content도 만들어준다. 파레트 안에 들어가는 색깔들 값이다.
+
+8. pallete.json의 양식이 hex와 colorName으로 두 가지 이상 있으므로 map을 사용해서 색깔과 이름을 렌더한다.
+   이중 map을 쓰는 경우다.
+
+```tsx
+<div id="pallete-box">
+  <Tabs.Root defaultValue="base" orientation="horizontal">
+    <Tabs.List aria-label="select pallete type">
+      {/_ 팔레트의 타입마다 Tabs.Trigger를 만들어준다 _/}
+      {palleteTypes.map((value) => (
+        <Tabs.Trigger key={value} value={value}>
+          {value}
+        </Tabs.Trigger>
+      ))}
+    </Tabs.List>
+    {/_ ["base", "deep"]_/}
+    {/_ 팔레트의 타입마다 Tabs.Content를 만들어준다_/}
+    {palleteTypes.map((value) => (
+      <Tabs.Content key={value} value={value}>
+        <div id="pallete" className="flex flex-row flex-wrap">
+          {/_ 4번 - pallete도 값이 여러 개이므로 map을 사용한다. _/}
+          {allPallete[value].map(({ hex, colorName }, index) => (
+            <button
+              key={index}
+              onClick={() => addSelected(hex)}
+              className="roundButton"
+              style={{ backgroundColor: hex }}
+            >
+              {colorName}
+            </button>
+          ))}
+        </div>
+      </Tabs.Content>
+    ))}
+  </Tabs.Root>
+</div>
+```
+
+이렇게 하면 아래처럼 여러 개의 탭으로 파레트를 왔다갔다 이동할 수 있다.
+
+![](public/static/images/basePallete.png)
+![](public/static/images/deepPallete.png)
