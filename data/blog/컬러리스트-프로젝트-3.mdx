@@ -1,0 +1,131 @@
+---
+title: '🎉 컬러리스트 프로젝트 #3 로그인 기능 구현'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-04'
+tags: ['project', 'colorlist']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 시나리오 쓰기
+2. 코드 짜기 시작
+
+- 2.1 로그인 폼 만들기 🥚
+- 2.2 구조분해할당 및 에러메시지 구현 🥚
+
+---
+
+## 1. 시나리오 쓰기
+
+```feature
+Feature: Login
+
+Scenario: login form을 만든다
+  Given login form 렌더하고
+  When 이메일과 비밀번호를 입력하고
+  When "로그인" button을 클릭하면
+  Then 환영합니다 문구가 뜬다!
+  Then nav의 login이 프로필 사진과 이름으로 바뀐다
+```
+
+아직은 문구가 뜨는 것까지만 구현했다.
+
+## 2. 코드 짜기 시작
+
+Login.tsx 작성을 시작했다.
+
+1. bun add react-hook-form 을 터미널에 입력해서 설치했다.
+2. 'Login.tsx'에 useForm을 import 해주었다.
+   -> `import { useForm } from "react-hook-form";` <ln />
+   https://react-hook-form.com/get-started 참조
+3. 이메일과 비밀번호를 입력하는 기본 로그인 폼을 만들어준다.
+
+   ```tsx
+   <article className="login-form">
+     <form>
+       <h2>Login</h2>
+       <label>
+         이메일
+         <input type="email" />
+       </label>
+
+       <label>
+         비밀번호
+         <input type="password" />
+       </label>
+       <button type="submit">로그인</button>
+     </form>
+   </article>
+   ```
+
+4. input에 입력한 값을 기존 값과 비교하기 위해 값을 보내주어야 하니까, <ln />
+   register과 handleSubmit를 만들어서, 객체를 구조분해 할당(destructuring)...해준다.
+
+   > 참고로 options, config, props..는 다 비슷한 말!
+
+```tsx
+function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+      //기본 값은 다 ""로 정해놓는다.
+    },
+  })
+
+  return (
+    <article className="login-form">
+      {/* handleSubmit은 폼이 제출 되었을 때 form의 data를 쏙 꺼내준다 */}
+      {/* 이걸 서버로 보내주면 끝! */}
+      <form
+        onSubmit={handleSubmit((data) => {
+          alert(JSON.stringify(data))
+          //지금은 보내준 값을 alert창에서 보게해주는 정도로 만들었다.
+        })}
+      >
+        <h2>Login</h2>
+        <label>
+          이메일
+          <input
+            type="email"
+            {...register('email', {
+              required: '이메일을 입력해주세요!',
+            })}
+          />
+        </label>
+        {errors.email && <li role="alert">{errors.email.message}</li>}
+        //에러가 나면 작성한 인풋내용과 이메일의 에러메시지를 input칸 밑에서 보여준다.
+        <label>
+          비밀번호
+          <input
+            type="password"
+            {...register('password', {
+              required: '비밀번호를 입력해주세요!',
+            })}
+          />
+        </label>
+        {errors.password && <li role="alert">{errors.password.message}</li>}
+        //에러가 나면 작성한 인풋내용과 비밀번호의 에러메시지를 input칸 밑에서 보여준다.
+        <button type="submit">로그인</button>
+      </form>
+    </article>
+  )
+}
+
+export default Login
+```
+
+![](public/static/images/inputError.png)
