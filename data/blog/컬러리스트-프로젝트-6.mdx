@@ -1,0 +1,110 @@
+---
+title: '🎉 컬러리스트 프로젝트 #6 vite 설치 '
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-16'
+tags: ['project', 'colorlist', 'vite']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. vite 설치 및 설정
+2. tailwind ui 설치 및 설정
+3. daisy ui 설치 및 설정
+
+---
+
+## 1. vite를 깔거에요.
+
+### 1-1. vite와 @vitejs/plugin-react를 devDependency로 설치!
+
+```bash
+bun add -d vite @vitejs/plugin-react
+```
+
+### 1-2. vite.contig.ts 설정을 해줄거에요.
+
+```ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  server: {
+    port: 3000,
+  },
+  // options 객체
+  plugins: [react()],
+})
+```
+
+### 1-3. vite의 명령어(command)를 package.json의 scripts에 추가합니다.
+
+```json
+{
+  // ...
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  }
+  // ...
+}
+```
+
+## 2. daisy ui를 깔 건데 그 전에 tailwind ui도 깔 거에요.
+
+### 2-1 tailwind 설치
+
+[tailwind vite 설치 공식 문서](https://tailwindcss.com/docs/guides/vite)
+
+```bash
+bun add -d tailwindcss postcss autoprefixer
+bun run tailwindcss init -p
+```
+
+### 2-2 tailwind.config.js
+
+```
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  theme: {
+    extend: {},
+  },
+  plugins: [require("daisyui")],
+};
+```
+
+### 2-3 daisyui 설치
+
+[daisyui 설치 공식 문서](https://daisyui.com/docs/install/)
+
+```bash
+bun add daisyui
+```
+
+### 2-4 daisyui 설정
+
+# 과제
+
+##### drawer 만들어보기 - daisy ui로
+
+[drawer component](https://daisyui.com/components/drawer/)
+
+##### pallete를 컴포넌트로 만들어보기
+
+##### 선택칸 하나 더 만들기 - 적용 각각 되게 할 수 있음 하기
+
+##### 마이페이지 디자인해오기
+
+##### trigger 너비 맞추기
