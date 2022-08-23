@@ -1,0 +1,225 @@
+---
+title: '🎉 컬러리스트 프로젝트 #7 drawer 만들고 pallete 컴포넌트 분리 '
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-23'
+tags: ['project', 'colorlist', 'drawer']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. drawer 만들기
+2. pallete 컴포넌트 분리
+
+---
+
+## 1. drawer 사용법 익히기 - 슬롯,칠드런 쓰는 법
+
+### 1-1. daisy ui로 drawer을 만들기 위해 `Drawer.tsx`를 만들어줍니다.
+
+[drawer component](https://daisyui.com/components/drawer/)
+
+```tsx
+import * as React from 'react'
+import './Nav.css'
+
+//Drawer을 여는 오픈 버튼을 따로 만들어줍니다.
+//저는 이미지를 쓸 거라 label사이에 img를 넣어주었어요.
+export function DrawerOpenButton() {
+  return (
+    <label role="button" htmlFor="my-drawer" className="drawer-button">
+      <img src="src/img/icons8-menu.svg"></img>
+    </label>
+  )
+}
+
+//여기 Drawer()안에 들어있는 {children}이
+//Drawer을 열었을 때 들어갈 내용들입니다.
+function Drawer({ children }) {
+  return (
+    <div className="drawer">
+      <input id="my-drawer" type="checkbox" className="drawer-toggle" />
+      {/* drawer-content안에 children을 넣으면 된다. */}
+      <div className="drawer-content">{children}</div>
+      <div className="drawer-side">
+        <label htmlFor="my-drawer" className="drawer-overlay"></label>
+
+        <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content mb-0">
+          <li>
+            <a>Sidebar Item 1</a>
+          </li>
+          <li>
+            <a>Sidebar Item 2</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+export default Drawer
+```
+
+### 1-2. 이렇게 'Drawer.tsx'를 만들었으면, 이 컴포넌트를 넣을 페이지를 골라야하죠.
+
+저의 경우는 위의 네비게이션까지도 덮기를 희망했기 때문에 'Index.tsx'에 `import`했습니다.
+
+```tsx
+import Drawer from './Drawer'
+```
+
+이렇게 `import`를 해주었으면,
+Drawer가 열릴 때 가려질 요소들을 모두 감싸도록 `<Drawer><Drawer />`를 넣어줍니다.
+
+```tsx
+ReactDOM.render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Drawer>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<TestForm />} />
+          <Route path="/login/*" element={<Login />} />
+          {/* 상단에 위치하는 라우트들의 규칙을 모두 확인, 일치하는 라우트가 없는경우 처리 */}
+          <Route path="*" element={<Notfound />}></Route>
+        </Routes>
+      </Drawer>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById('root')
+)
+```
+
+이렇게 하면 Drawer 만들기는 끝!
+
+## 2. 이번엔 pallete를 컴포넌트로 분리합니다.
+
+### 2-1. 먼저 'Pallete.tsx'라는 파일을 만들고 명령어 `rfce`로 기본 틀을 만들어줍니다.
+
+### 2-2.pallete안의 `Tooltip.provider`를 pallete table 위에 감싸고 그 안에 있는 모든 요소를 옮겨줍니다..
+
+    이 때 미리 지정해놓은 WHITEHEX와 colors 배열 등 Pallete에 필요한 요소들도 함께 옮겨줍니다.
+
+```tsx
+import React from 'react'
+import * as Tabs from '@radix-ui/react-tabs'
+import * as Tooltip from '@radix-ui/react-tooltip'
+import allPallete from './pallete.json'
+
+// ["base", "deep"]
+const palleteTypes = Object.keys(allPallete)
+const BOX_COUNT = 10
+const WHITE_HEX = '#ffffff'
+
+function Pallete() {
+  const [colors, setColors] = React.useState(Array(BOX_COUNT).fill(WHITE_HEX)) // 문자열
+
+  //6번 - addSelected 함수를 만들어
+  function addSelected(hex: string) {
+    setColors((old) => {
+      // findIndex는 배열의 값 중에서 조건에 맞는 값이 있는 첫 번째 index를 찾는다!
+      // hex 중에서 hex의 색이 white인 첫번째 index를 찾아낸다.
+      const firstWhiteIndex = old.findIndex((hex) => hex === WHITE_HEX)
+      if (firstWhiteIndex === -1) {
+        // 인덱스를 못 찾으면! -1을 반환
+        return old // 원래 colors를 그대로 반환... 더 채울 하얀칸이 없으므로!
+      }
+
+      // 이미 바뀐 색은 old대로 놔두고
+      const copy = [...old]
+      // 찾아낸 첫 번째 인덱스에 hex값을 넣는다.
+      copy[firstWhiteIndex] = hex
+      return copy // newState !!!
+    })
+  }
+
+  //7번 - deleteSelected 함수를 만들어
+  function deleteSelected(targetIndex: number) {
+    setColors((old) => {
+      const copy = [...old]
+      // targetIndex의 값을 흰색 헥스를 넣는다.
+      copy[targetIndex] = WHITE_HEX
+      return copy // newState !!!
+    })
+  }
+
+  return (
+    <Tooltip.Provider delayDuration={800} skipDelayDuration={500}>
+      <input hidden type="text" name="colors" value={JSON.stringify(colors)} />
+      <table className="selectedContainer flex flex-row">
+        <tbody>
+          {/* 2번 - map을 써서 배열의 값을 화면에 뿌려준다. */}
+          {/* https://beta.reactjs.org/learn/rendering-lists */}
+          <tr>
+            {/* 7.2번 - targetIndex는 여기서 index를 받아온 값이다. */}
+            {colors.map((color, index) => (
+              // 3번 - 스타일에 map으로 받아온 color 문자열 값을 backgroundColor로 지정해준다.
+              <td
+                key={`${color}-${index}`}
+                // 이게 선택한 칸의 index
+                onClick={() => deleteSelected(index)}
+                style={{
+                  backgroundColor: color,
+                }}
+              >
+                {color}
+              </td>
+            ))}
+          </tr>
+        </tbody>
+      </table>
+      <div id="pallete-box">
+        <Tabs.Root defaultValue={Object.keys(allPallete)[0]} orientation="horizontal">
+          <Tabs.List aria-label="select pallete type">
+            {/* 팔레트의 타입마다 Tabs.Trigger를 만들어준다*/}
+            {palleteTypes.map((value) => (
+              <Tabs.Trigger key={value} value={value} className="bg-yellow-200">
+                {value}
+              </Tabs.Trigger>
+            ))}
+          </Tabs.List>
+          {/* ["base", "deep"]*/}
+          {/* 팔레트의 타입마다 Tabs.Content를 만들어준다*/}
+          {palleteTypes.map((value) => (
+            <Tabs.Content key={value} value={value}>
+              <div id="pallete" className="flex flex-row flex-wrap">
+                {/* 4번 - pallete도 값이 여러 개이므로 map을 사용한다. */}
+                {allPallete[value].map(({ hex, colorName }, index) => (
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild>
+                      <button
+                        key={index}
+                        onClick={() => addSelected(hex)}
+                        className="roundButton"
+                        style={{ backgroundColor: hex }}
+                      >
+                        {colorName}
+                      </button>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content className="tooltip-content">
+                      {hex}
+                      <Tooltip.Arrow className="tooltip-arrow" width="20" height="10" />
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                ))}
+              </div>
+            </Tabs.Content>
+          ))}
+        </Tabs.Root>
+      </div>
+    </Tooltip.Provider>
+  )
+}
+
+export default Pallete
+```
+
+이렇게 Pallete를 컴포넌트로 분리하면 `TestForm.tsx`의 코드가 130줄이나 줄어들어 훨씬 보기 편해집니다.
