@@ -282,3 +282,48 @@ export default function Pagination() {
   <div className="w-20 opacity-0">숨김</div>
 </footer>
 ```
+
+## 4. `filter`용 `Select` 버튼 만들기
+
+그 다음은 문제 목록을 필터링하기 위해 `filter`용 `select`버튼을 만들었습니다.
+
+> 사실은 `dribbble`에서 본 플러스 버튼을 눌러 필터를 하나씩 추가하는 식의 버튼을 만들고 싶었는데,<Br/>아직 그 부분은 어떻게 구현할 지 모르겠어서<br/>일단 옵션 중에서 고를 수 있는 필터 버튼을 만들어보았습니다.
+
+이 버튼도 `SelectGroup`이라는 컴포넌트로 분리해 만들었습니다.
+
+```tsx
+import React from 'react'
+
+function SelectGroup() {
+  return (
+    <div className="select-group mb-1">
+      <select className="select w-32 mr-4 pop-box-shadow text-center text-base">
+        <option disabled selected>
+          2022
+        </option>
+        <option>2021</option>
+        <option>2020</option>
+        <option>2019</option>
+      </select>
+      <select className="select w-32 mr-4 pop-box-shadow text-center text-base">
+        <option disabled selected>
+          1회차
+        </option>
+        <option>2회차</option>
+        <option>3회차</option>
+      </select>
+      <select className="select w-40 mr-4 pop-box-shadow text-center text-base">
+        <option disabled selected>
+          1,2번 유형
+        </option>
+        <option>3번 유형</option>
+      </select>
+    </div>
+  )
+}
+
+export default SelectGroup
+```
+
+`<select className="select w-32 mr-4 pop-box-shadow text-center text-base">`라는 `daisy ui`의 `css`를 가져와서 적용해줍니다.
+기본적으로 보여지는 옵션은 `<option disabled selected></option>`로 감싸줍니다.
