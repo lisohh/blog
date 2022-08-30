@@ -192,37 +192,36 @@ export const problemList = [
 아까 만들어놓은 `problemList`를 `import`해서 `map`을 통해<br/>
 `{item.year}`,`{item.round}`식으로 넣어주었습니다.
 
-```
-<table
-            className="table table-zebra w-full"
-            aria-labelledby="Mostviewd-list-heading"
-          >
-            <thead>
-              <tr>
-                <th>선택</th>
-                <th>연도</th>
-                <th>회차</th>
-                <th>유형</th>
-                <th>문제 이름</th>
-                <th>푼 날짜</th>
-              </tr>
-            </thead>
-            <tbody>
-              {problemList.slice(0, 5).map((item) => (
-                <tr>
-                  <td>
-                    <input type="checkbox" className="checkbox checkbox-" />
-                  </td>
-                  <td>{item.year}</td>
-                  <td>{item.round}</td>
-                  <td>{item.type}</td>
-                  <td>{item.title}</td>
-                  <td>{item.solvedAt}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
+```tsx
+<div className="most-solved-list">
+  <h3 className="mostSolved-Q-list-heading ml-4">가장 많이 푼 문제</h3>
+  <table className="table table-zebra w-full" aria-labelledby="Mostsolved-list-heading">
+    <thead>
+      <tr>
+        <th>선택</th>
+        <th>연도</th>
+        <th>회차</th>
+        <th>유형</th>
+        <th>문제 이름</th>
+        <th>푼 날짜</th>
+      </tr>
+    </thead>
+    <tbody>
+      {problemList.slice(0, 5).map((item) => (
+        <tr>
+          <td>
+            <input type="checkbox" className="checkbox checkbox-" />
+          </td>
+          <td>{item.year}</td>
+          <td>{item.round}</td>
+          <td>{item.type}</td>
+          <td>{item.title}</td>
+          <td>{item.solvedAt}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 ```
 
 그리고 위와 같은 경우 가장 조회수가 높은 문제만 따로 볼 수 있도록 만든 `table`이라
