@@ -1,0 +1,105 @@
+---
+title: '🎉 컬러리스트 프로젝트 #10 문제 목록 페이지 만들기 '
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-08-29'
+tags: ['project', 'colorlist', '문제목록']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 문제 목록 Table 만들기 및 문제 리스트 객체화
+2. 출력 버튼 만들기
+3. pagination만들기
+4. filter용 Select 버튼 만들기
+5. filter 컴포넌트 분리
+6. 문제 목록 페이지 만들기
+
+---
+
+## 1. 문제 목록 Table 만들기 및 문제 리스트 객체화
+
+### 1.1 문제 목록을 보여주기 위해 일단 mockdata를 만들고 table로 보여줍니다.
+
+```ts
+const problemList = [
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+  {
+    year: '2022년도',
+    round: '1회차',
+    type: '1-2',
+    title: '문제 제목 얼레벌레 블라블라',
+    solvedAt: '2022.7.23',
+  },
+]
+```
