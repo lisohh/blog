@@ -244,3 +244,41 @@ export const problemList = [
 ```
 
 버튼의 `className`에 화면에 배치될 때의 길이와 색상을 `tawilwind.css`에 있는 `button css`를 보고 넣어주었습니다.
+
+## 3. 그리고 `pagination`을 만들어줍니다.
+
+똑같이 `footer`안에 넣어주는데, 대신 `pagination`은 따로 컴포넌트로 분리해 만들어주었습니다.
+
+```tsx
+import React from 'react'
+
+export default function Pagination() {
+  return (
+    <div className="flex flex-row">
+      <button className="btn btn-ghost">이전 페이지</button>
+      <button className="btn btn-ghost">1</button>
+      <button className="btn btn-ghost">2</button>
+      <button className="btn btn-ghost">3</button>
+      <button className="btn btn-ghost">4</button>
+      <button className="btn btn-ghost">5</button>
+      <button className="btn btn-ghost">다음 페이지</button>
+    </div>
+  )
+}
+```
+
+한 줄에 쭉 나열하기 위해 `className`을 `flex flex-row`로 해둡니다.
+
+이렇게 `button`과 `pagination`을 만들면 정렬이 틀어지는데요.
+
+### 3-1. 가짜 `div`를 만들어서 버튼의 반대편에 배치를 하고, `opacity:0`처리로 숨겨줍니다.
+
+```tsx
+<footer className="flex flex-row justify-between">
+  <button type="button" className="w-20 bg-yellow-300">
+    출력
+  </button>
+  <Pagination />
+  <div className="w-20 opacity-0">숨김</div>
+</footer>
+```
