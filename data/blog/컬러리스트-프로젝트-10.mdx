@@ -109,7 +109,7 @@ const problemList = [
 ]
 ```
 
-지금은 문제 수가 별로 많지 않지만, 나중에 늘어날 것에 대비해 문제 data를 객체화 시켜줍니다.
+지금은 문제 수가 별로 많지 않지만, 나중에 늘어날 것에 대비해 문제 `data`를 객체화 시켜줍니다.
 
 ```ts
 export const problemList = [
@@ -233,7 +233,7 @@ export const problemList = [
 
 출력버튼은 왼쪽 하단 노란색 바탕으로 있는 작은 버튼입니다.
 
-먼저 `footer`를 만든 다음에 그 안에 button을 만들어줍니다.
+먼저 `footer`를 만든 다음에 그 안에 `button`을 만들어줍니다.
 
 ```ts
 <footer className="flex flex-row justify-between">
@@ -243,11 +243,11 @@ export const problemList = [
 </footer>
 ```
 
-버튼의 `className`에 화면에 배치될 때의 길이와 색상을 tawilwind.css에 있는 button css를 보고 넣어주었습니다.
+버튼의 `className`에 화면에 배치될 때의 길이와 색상을 `tawilwind.css`에 있는 `button css`를 보고 넣어주었습니다.
 
-## 3. 그리고 pagination을 만들어줍니다.
+## 3. 그리고 `pagination`을 만들어줍니다.
 
-똑같이 `footer`안에 넣어주는데, 대신 pagination은 따로 컴포넌트로 분리해 만들어주었습니다.
+똑같이 `footer`안에 넣어주는데, 대신 `pagination`은 따로 컴포넌트로 분리해 만들어주었습니다.
 
 ```tsx
 import React from 'react'
@@ -267,9 +267,9 @@ export default function Pagination() {
 }
 ```
 
-한 줄에 쭉 나열하기 위해 className을 `flex flex-row`로 해둡니다.
+한 줄에 쭉 나열하기 위해 `className`을 `flex flex-row`로 해둡니다.
 
-이렇게 button과 pagination을 만들면 정렬이 틀어지는데요.
+이렇게 `button`과 `pagination`을 만들면 정렬이 틀어지는데요.
 
 ### 3-1. 가짜 `div`를 만들어서 버튼의 반대편에 배치를 하고, `opacity:0`처리로 숨겨줍니다.
 
@@ -283,9 +283,9 @@ export default function Pagination() {
 </footer>
 ```
 
-4. filter용 Select 버튼 만들기
+4. `filter`용 `Select` 버튼 만들기
 
-그 다음은 문제 목록을 필터링하기 위해 filter용 select 버튼을 만들었습니다.
+그 다음은 문제 목록을 필터링하기 위해 `filter`용 `select`버튼을 만들었습니다.
 
 > 사실은 `dribbble`에서 본 플러스 버튼을 눌러 필터를 하나씩 추가하는 식의 버튼을 만들고 싶었는데,<Br/>아직 그 부분은 어떻게 구현할 지 모르겠어서<br/>일단 옵션 중에서 고를 수 있는 필터 버튼을 만들어보았습니다.
 
@@ -325,7 +325,7 @@ function SelectGroup() {
 export default SelectGroup
 ```
 
-`<select className="select w-32 mr-4 pop-box-shadow text-center text-base">`라는 daisy ui의 css를 가져와서 적용해줍니다.
+`<select className="select w-32 mr-4 pop-box-shadow text-center text-base">`라는 `daisy ui`의 `css`를 가져와서 적용해줍니다.
 기본적으로 보여지는 옵션은 `<option disabled selected></option>`로 감싸줍니다.
 
 5. 문제 목록 페이지 만들기
