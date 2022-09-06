@@ -42,22 +42,22 @@ Scenario: 선택칸의 가로 길이를 마음대로 늘리거나 줄일 수 있
 
 라이브러리를 쓰는 방법은 크게 두 가지가 있다.
 
-1. 컴포넌트로 쓰는 것 예) Radix
-2. 훅처럼 Props들을 가지고 쓰는 것 예) React table
-   ; pagination도 쉽게 지원할 수 있고 커스텀 디자인에 맞춰 넣을 수 있다.
+> 1.  컴포넌트로 쓰는 것 예) Radix
+> 2.  훅처럼 Props들을 가지고 쓰는 것 예) React table
+>     ; pagination도 쉽게 지원할 수 있고 커스텀 디자인에 맞춰 넣을 수 있다.
 
 오늘은 React table을 사용해보려고 한다.
 
 ## 1-2. react table - column resizing
 
-[리액트 테이블 - 컬럼 리사이징](https://react-table-v7.tanstack.com/docs/examples/column-resizing)
+[리액트 테이블 - 컬럼 리사이징 사이트](https://react-table-v7.tanstack.com/docs/examples/column-resizing)
 
 사이트에서 볼 수 있듯이 `헤더`를 움직여서 컬럼의 가로 폭을 조절할 수 있는 기능이다.
 
 ## 1-3. react table 설치
 
 터미널에 아래처럼 React-table을 설치하고, 맞는 타입도 설치해준다.
-`bun add react-table`
+`bun add react-table`<br/>
 `bun add -d @types/react-table`
 
 ## 1-4. 데모 코드 적용
@@ -158,7 +158,7 @@ return (
 
 ## 1-5. pallete에 맞게 적용
 
-나는 이미 팔레트의 테이블이 있기 때문에,
+나는 이미 팔레트의 테이블이 있기 때문에,<br/>
 그 값을 이용해서 배열을 객체로 만들고, 다시 그 객체를 배열에 집어넣었다.
 
 ```js
@@ -217,7 +217,7 @@ function App() {
 export default App
 ```
 
-![boxcount 배열](/static/images/boxcount 배열.png)
+![boxcount 배열](/static/images/boxcount-array.png)(300px)
 
 ```tsx
 const columns = Array.from({ length: BOX_COUNT }, (_, i) => {
@@ -233,7 +233,7 @@ console.log(columns)
 
 그리고 data같은 경우
 
-![entries,row](/static/images/entries_row.png)
+![entries,row](/static/images/entries_row.png)(300px)
 
 ```tsx
 // 이 모양을 어떻게 data에 맞게 변형할까? map과 fromEntries를 활용했다
@@ -246,9 +246,9 @@ const row = Object.fromEntries(entries)
 console.log('row', row)
 ```
 
-![row array](/static/images/row_array.png)
+![row array](/static/images/row_array.png)(300px)
 
-색들을 `map`함수를 이용해 인덱스와 컬러 코드를 짝맞추어 배열로 만들어주고,
+색들을 `map`함수를 이용해 인덱스와 컬러 코드를 짝맞추어 배열로 만들어주고,<br/>
 `row`라는 변수에 `fromEntries`함수를 써서 다시 객체로 만들어주었다.
 
 ```tsx
@@ -337,7 +337,7 @@ return (
       >
 ```
 
-여기서 `role`대신 `{...getTableProps()}`를 넣어주었다.
+여기서 `role`대신 `{...getTableProps()}`를 넣어주었다.<br/>
 그 이유는 지금은 `props`가 하나이지만 나중에는 여러개를 받을 수 있기 때문이다.
 
 그리고 `thead`안에 `headerGroups`를 넣어서 컬럼의 폭을 조정할 수 있도록 조정가능한 컬럼을 나열한다.
@@ -402,13 +402,13 @@ return (
 </tbody>
 ```
 
-이런 식으로 라이브러리에서 사용한 `Props`들을
-나의 경우에 맞추어 변형하고,
+이런 식으로 라이브러리에서 사용한 `Props`들을<br/>
+나의 경우에 맞추어 변형하고,<br/>
 변형한 객체들을 알맞게 넣어주려고 노력했다.
 
-아직 `get~~~Props`의 역할을 정확히 이해하지는 못한 것 같아서
+아직 `get~~~Props`의 역할을 정확히 이해하지는 못한 것 같아서<br/>
 몇번 더 읽고 분석해보면서 이해해야겠다.
 
-그리고 라이브러리를 사용하니까 이미 정해둔 폭 이외에 정렬이나 최대 폭 크기를 마음대로
-정하는 데 어려운 부분이 있어서, 이부분은 후에 팔레트를 pure css로 구현해서 다시 `react-table`을 입혀보면서
+그리고 라이브러리를 사용하니까 이미 정해둔 폭 이외에 정렬이나 최대 폭 크기를 마음대로<br/>
+정하는 데 어려운 부분이 있어서, 이부분은 후에 팔레트를 pure css로 구현해서 다시 `react-table`을 입혀보면서<br/>
 좀 더 정확히 코드를 짜봐야할 것 같다.
