@@ -230,7 +230,7 @@ function App() {
 export default App
 ```
 
-![boxcount 배열](/static/images/boxcount-array.png){: width="300" }
+![boxcount 배열](/static/images/boxcount-array.png)
 
 ```tsx
 const columns = Array.from({ length: BOX_COUNT }, (_, i) => {
@@ -246,7 +246,7 @@ console.log(columns)
 
 그리고 data같은 경우
 
-![entries,row](/static/images/entries_row.png){: width="300" }
+![entries,row](/static/images/entries_row.png)
 
 ```tsx
 // 이 모양을 어떻게 data에 맞게 변형할까? map과 fromEntries를 활용했다
@@ -259,7 +259,7 @@ const row = Object.fromEntries(entries)
 console.log('row', row)
 ```
 
-![row array](/static/images/row_array.png){: width="300" }
+![row array](/static/images/row_array.png)
 
 색들을 `map`함수를 이용해 인덱스와 컬러 코드를 짝맞추어 배열로 만들어주고,<br/>
 `row`라는 변수에 `fromEntries`함수를 써서 다시 객체로 만들어주었다.
