@@ -46,9 +46,9 @@ Scenario: 선택칸의 가로 길이를 마음대로 늘리거나 줄일 수 있
 
 > 1.  컴포넌트로 쓰는 것 예) Radix
 > 2.  훅처럼 Props들을 가지고 쓰는 것 예) React table
->     ; pagination도 쉽게 지원할 수 있고 커스텀 디자인에 맞춰 넣을 수 있다.
+>     <br />; pagination도 쉽게 지원할 수 있고 커스텀 디자인에 맞춰 넣을 수 있다.
 
-오늘은 React table을 사용해보려고 한다.
+오늘은 `React table`을 사용해보려고 한다.
 
 ---
 
@@ -62,10 +62,10 @@ Scenario: 선택칸의 가로 길이를 마음대로 늘리거나 줄일 수 있
 
 ## 1-3. react table 설치
 
-터미널에 아래처럼 React-table을 설치하고, 맞는 타입도 설치해준다.<br />
-`bun add react-table`
+터미널에 아래처럼 React-table을 설치하고, <br />
+`bun add react-table`<br />
 
-<br />
+맞는 타입도 설치해준다.<br />
 `bun add -d @types/react-table`
 
 ---
@@ -229,7 +229,7 @@ function App() {
 export default App
 ```
 
-![boxcount 배열](/static/images/boxcount-array.png)(150px)
+![boxcount 배열](/static/images/boxcount-array.png){: width="300"){: .center}
 
 ```tsx
 const columns = Array.from({ length: BOX_COUNT }, (_, i) => {
@@ -245,7 +245,7 @@ console.log(columns)
 
 그리고 data같은 경우
 
-![entries,row](/static/images/entries_row.png)(150px)
+![entries,row](/static/images/entries_row.png){: width="300"){: .center}
 
 ```tsx
 // 이 모양을 어떻게 data에 맞게 변형할까? map과 fromEntries를 활용했다
@@ -258,7 +258,7 @@ const row = Object.fromEntries(entries)
 console.log('row', row)
 ```
 
-![row array](/static/images/row_array.png)(150px)
+![row array](/static/images/row_array.png){: width="300"){: .center}
 
 색들을 `map`함수를 이용해 인덱스와 컬러 코드를 짝맞추어 배열로 만들어주고,<br/>
 `row`라는 변수에 `fromEntries`함수를 써서 다시 객체로 만들어주었다.
