@@ -1,0 +1,414 @@
+---
+title: '🎉 컬러리스트 프로젝트 #11 Pallete table - resizable columns '
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-09-06'
+tags: ['project', 'colorlist', 'resizable columns']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 선택칸 테이블 width 조절하게 해보기
+   1-1. 라이브러리를 쓰는 방법
+   1-2. react table - column resizing
+   1-3. react table 설치
+   1-4. 데모 코드 적용
+   1-5. pallete에 맞게 적용
+
+---
+
+# 선택칸 테이블 width 조절하게 해보기
+
+![선택칸 폭 변경하기](/static/images/resizable-columns.gif)
+
+> 시나리오
+
+```feature
+Scenario: 선택칸의 가로 길이를 마음대로 늘리거나 줄일 수 있다
+  Given 선택칸을 렌더하고
+  When 원하는 칸을 선택해서 잡아당기면
+  Then 선택칸을 줄이거나 늘일 수 있다
+```
+
+## 1-1. 라이브러리를 쓰는 방법
+
+라이브러리를 쓰는 방법은 크게 두 가지가 있다.
+
+1. 컴포넌트로 쓰는 것 예) Radix
+2. 훅처럼 Props들을 가지고 쓰는 것 예) React table
+   ; pagination도 쉽게 지원할 수 있고 커스텀 디자인에 맞춰 넣을 수 있다.
+
+오늘은 React table을 사용해보려고 한다.
+
+## 1-2. react table - column resizing
+
+[리액트 테이블 - 컬럼 리사이징](https://react-table-v7.tanstack.com/docs/examples/column-resizing)
+
+사이트에서 볼 수 있듯이 `헤더`를 움직여서 컬럼의 가로 폭을 조절할 수 있는 기능이다.
+
+## 1-3. react table 설치
+
+터미널에 아래처럼 React-table을 설치하고, 맞는 타입도 설치해준다.
+`bun add react-table`
+`bun add -d @types/react-table`
+
+## 1-4. 데모 코드 적용
+
+일단 사이트에 있는 코드들을 가져와서 적용해본다.
+
+```js
+//먼저 react-table에서 쓸 것들을 import해준다.
+import { useTable, useBlockLayout, useResizeColumns } from 'react-table'
+
+function Table({ columns, data }) {
+  //기본 column의 크기를 지정해주는 곳. 나중에 이걸 바꾸고 싶었지만 아직 어떻게 바꿀지 모르겠다.
+  const defaultColumn = React.useMemo(
+    () => ({
+      minWidth: 30,
+      width: 150,
+      maxWidth: 400,
+    }),
+    []
+  )
+```
+
+```js
+//우리가 필요한 부분은 getTableProps,headerGroups,rows,prepareRow이다.
+//처음엔 getTableBodyProps를 두고 headerGroups를 없앴는데, column의 가로 폭을 조절하는 것이
+//header 부분에서 가능한 걸 알고 headerGroups를 놔두기로 했다.
+const {
+  getTableProps,
+  getTableBodyProps,
+  headerGroups,
+  rows,
+  prepareRow,
+  state,
+  resetResizing,
+} = useTable(
+  {
+    columns,
+    // 여기의 column들이 우리가 바꿀 가로폭들을 지칭한다.
+    data,
+    // 여기의 data가 각 column에 들어가는 컬러 코드 값들을 의미한다.
+    defaultColumn,
+  },
+  useBlockLayout,
+  useResizeColumns
+)
+```
+
+이 아래 부분은 데모 코드와 Pallete.tsx와 좀 많이 다르다.
+
+```js
+return (
+  <>
+    <button onClick={resetResizing}>Reset Resizing</button>
+    <div>
+      <div {...getTableProps()} className="table">
+        <div>
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+              {headerGroup.headers.map((column) => (
+                <div {...column.getHeaderProps()} className="th">
+                  {column.render('Header')}
+                  {/* Use column.getResizerProps to hook up the events correctly */}
+                  <div
+                    {...column.getResizerProps()}
+                    className={`resizer ${column.isResizing ? 'isResizing' : ''}`}
+                  />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        <div {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <div {...row.getRowProps()} className="tr">
+                {row.cells.map((cell) => {
+                  return (
+                    <div {...cell.getCellProps()} className="td">
+                      {cell.render('Cell')}
+                    </div>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </div>
+    <pre>
+      <code>{JSON.stringify(state, null, 2)}</code>
+    </pre>
+  </>
+)
+}
+```
+
+## 1-5. pallete에 맞게 적용
+
+나는 이미 팔레트의 테이블이 있기 때문에,
+그 값을 이용해서 배열을 객체로 만들고, 다시 그 객체를 배열에 집어넣었다.
+
+```js
+function App() {
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        columns: [
+          {
+            Header: 'First Name',
+            accessor: 'firstName',
+          },
+          {
+            Header: 'Last Name',
+            accessor: 'lastName',
+          },
+        ],
+      },
+      {
+        Header: 'Info',
+        columns: [
+          {
+            Header: 'Age',
+            accessor: 'age',
+            width: 50,
+          },
+          {
+            Header: 'Visits',
+            accessor: 'visits',
+            width: 60,
+          },
+          {
+            Header: 'Status',
+            accessor: 'status',
+          },
+          {
+            Header: 'Profile Progress',
+            accessor: 'progress',
+          },
+        ],
+      },
+    ],
+    []
+  )
+
+  const data = React.useMemo(() => makeData(10), [])
+
+  return (
+    <Styles>
+      <Table columns={columns} data={data} />
+    </Styles>
+  )
+}
+
+export default App
+```
+
+![boxcount 배열](/static/images/boxcount 배열.png)
+
+```tsx
+const columns = Array.from({ length: BOX_COUNT }, (_, i) => {
+  return {
+    Header: `Column ${i}`,
+    accessor: i.toString(),
+  }
+})
+console.log(columns)
+```
+
+이런식으로 박스 카운트의 길이를 배열로 가져와서 인덱스 값을 가져와, 헤더와 액세서에 넣어준다.
+
+그리고 data같은 경우
+
+![entries,row](/static/images/entries_row.png)
+
+```tsx
+// 이 모양을 어떻게 data에 맞게 변형할까? map과 fromEntries를 활용했다
+// input: colors ["#ffffff","#ffffff","#ffffff","#ffffff", ...,"#ffffff"]
+
+const entries = colors.map((v, i) => [i.toString(), v])
+console.log('entries', entries)
+
+const row = Object.fromEntries(entries)
+console.log('row', row)
+```
+
+![row array](/static/images/row_array.png)
+
+색들을 `map`함수를 이용해 인덱스와 컬러 코드를 짝맞추어 배열로 만들어주고,
+`row`라는 변수에 `fromEntries`함수를 써서 다시 객체로 만들어주었다.
+
+```tsx
+const {
+  getTableProps,
+  headerGroups,
+  rows,
+  prepareRow,
+  // getTableBodyProps,
+  // state,
+  // resetResizing,
+} = useTable(
+  {
+    columns,
+    data: [row],
+    defaultColumn,
+  },
+  useBlockLayout,
+  useResizeColumns
+)
+```
+
+여기에 다시 배열안에 `row`를 넣어 객체를 배열로 만들어서 넣어주었다.
+
+```tsx
+return (
+    <Tooltip.Provider delayDuration={800} skipDelayDuration={500}>
+      <input type="text" name="colors" value={JSON.stringify(colors)} hidden />
+      <table
+        className="selectedContainer flex flex-col max-w-full"
+        {...getTableProps()}
+      >
+        {/* 2번 - map을 써서 배열의 값을 화면에 뿌려준다. */}
+        {/* https://beta.reactjs.org/learn/rendering-lists */}
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>
+                  {column.id}
+                  <div
+                    {...(column as any).getResizerProps()}
+                    className={`resizer ${
+                      (column as any).isResizing ? "isResizing" : ""
+                    }`}
+                  />
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody className="flex flex-row">
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => {
+                  return (
+                    <td
+                      {...cell.getCellProps()}
+                      onClick={() => deleteSelected(parseInt(cell.column.id))}
+                      style={{
+                        backgroundColor: cell.value,
+                        width: cell.column.width,
+                      }}
+                    >
+                      {cell.value}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+```
+
+위의 코드는 나에게 맞게 바뀐 부분인데
+
+일단
+
+```tsx
+<table
+        className="selectedContainer flex flex-col max-w-full"
+        {...getTableProps()}
+      >
+```
+
+여기서 `role`대신 `{...getTableProps()}`를 넣어주었다.
+그 이유는 지금은 `props`가 하나이지만 나중에는 여러개를 받을 수 있기 때문이다.
+
+그리고 `thead`안에 `headerGroups`를 넣어서 컬럼의 폭을 조정할 수 있도록 조정가능한 컬럼을 나열한다.
+
+```tsx
+<thead>
+  //headerGroup은 headerGroup을 map을 하는데
+  {headerGroups.map((headerGroup) => (
+    //tr에 getHeaderGroupProps를 나열한다.
+    <tr {...headerGroup.getHeaderGroupProps()}>
+      //headerGroup.headers은 column을 map으로 나열하는데
+      {headerGroup.headers.map((column) => (
+        //th에 column의 getHeaderProps를 나열해 넣어준다.
+        <th {...column.getHeaderProps()}>
+          //column.id는 컬럼의 인덱스값으로 이 값을 객체로 넣어주어 나열한다.
+          {column.id}
+          //이 div은 getResizerProps함수를 통한 값을 나열하는데, 아마도 리사이징한 값을 나열해주는
+          것 같다.
+          <div
+            {...(column as any).getResizerProps()}
+            className={`resizer ${(column as any).isResizing ? 'isResizing' : ''}`}
+          />
+        </th>
+      ))}
+    </tr>
+  ))}
+</thead>
+```
+
+`tbody`에는
+
+```tsx
+<tbody className="flex flex-row">
+  //rows를 map으로 나열해주는데
+  {rows.map((row) => {
+    //일단 초기상태의 row를 prepareRow로 return해주고
+    prepareRow(row)
+    return (
+      //색깔을 선택해서 값이 바뀌면 getRowProps의 값을 나열해주는 거 같다.
+      <tr {...row.getRowProps()}>
+        {row.cells.map((cell) => {
+          return (
+            <td
+              {...cell.getCellProps()}
+              //만약 이미 선택된 색을 지우려고 하면 해당 칸의 id인 index를 string에서 int로 바꾸어 삭제해준다.
+              onClick={() => deleteSelected(parseInt(cell.column.id))}
+              style={{
+                //스타일에 배경에는 선택한 cell의 색인 value를 넣어주고
+                //width에는 header에서 내려온 column의 width가 동일하게 적용되도록 한다.
+                backgroundColor: cell.value,
+                width: cell.column.width,
+              }}
+            >
+              //선택된 색깔 칸에는 해당 색 코드도 string으로 나타내어준다.
+              {cell.value}
+            </td>
+          )
+        })}
+      </tr>
+    )
+  })}
+</tbody>
+```
+
+이런 식으로 라이브러리에서 사용한 `Props`들을
+나의 경우에 맞추어 변형하고,
+변형한 객체들을 알맞게 넣어주려고 노력했다.
+
+아직 `get~~~Props`의 역할을 정확히 이해하지는 못한 것 같아서
+몇번 더 읽고 분석해보면서 이해해야겠다.
+
+그리고 라이브러리를 사용하니까 이미 정해둔 폭 이외에 정렬이나 최대 폭 크기를 마음대로
+정하는 데 어려운 부분이 있어서, 이부분은 후에 팔레트를 pure css로 구현해서 다시 `react-table`을 입혀보면서
+좀 더 정확히 코드를 짜봐야할 것 같다.
