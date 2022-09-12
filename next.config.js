@@ -11,7 +11,7 @@ module.exports = withBundleAnalyzer({
   experimental: { esmExternals: true },
   webpack: (config, { dev, isServer }) => {
     config.module.rules.push({
-      test: /\.(png|jpe?g|gif|mp4)$/i,
+      test: /\.(png|jpeg|jpg|gif|mp4)$/i,
       use: [
         {
           loader: 'file-loader',
