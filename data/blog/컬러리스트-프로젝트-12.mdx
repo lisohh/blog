@@ -90,7 +90,7 @@ Scenario: 선택칸의 가로 길이를 마음대로 늘리거나 줄일 수 있
 
 그보다 먼저, 클릭 후 드래그를 한 후 마우스를 놓으면`(mouseUp)` 더이상 변경이 되지 않도록 <br/>
 상태값을 `false`로 바꿔주어야 하구요. 그 다음 변경 중 모드를 나타내는 상태인 ‘isChanging’을 <br/>
-~배열에 넣어주면 드래그가 끝났을 때는 더 이상 초록 상자의 너비가 변경되지 않습니다.
+의존성 배열에 넣어주면 드래그가 끝났을 때는 더 이상 초록 상자의 너비가 변경되지 않습니다.
 
 두번째는, 마우스를 움직일 수 있는 최대 거리와 최소 거리를 따져주어야 하는 것인데요.<br/>
 만약 이 두 거리를 정해주지 않는다면, 초록 상자의 크기가 파란 상자를 침범해 삼켜버리거나<br/>
@@ -133,4 +133,120 @@ if (isChanging) {
   setSegments(newSegments)
   console.log(newSegments)
 }
+```
+
+### 코드
+
+```tsx
+import React, { useEffect, useState } from 'react'
+
+const width = 512
+
+// 구조 분해 할당
+// https://beta.reactjs.org/learn/passing-props-to-a-component
+function ResizableBoxes({
+  colors,
+  deleteSelected,
+}: {
+  colors: string[]
+  deleteSelected: (targetIndex: number) => void
+}) {
+  const BOX_COUNT = colors.length
+
+  const [segments, setSegments] = useState<number[]>(Array(BOX_COUNT).fill(1 / BOX_COUNT))
+  const [oldSegments, setOldSegments] = useState<number[]>(Array(BOX_COUNT).fill(1 / BOX_COUNT))
+  const [startX, setStartX] = useState(0)
+  const [changingIndex, setChangingIndex] = useState(0)
+  const [isChanging, setIsChanging] = useState(false)
+
+  useEffect(() => {
+    //마우스가 움직일 때 마다 박스 크기를 조절해주는 핸들러
+    function moveHandler(e: MouseEvent) {
+      if (isChanging) {
+        // 처음 시작할 때 왼쪽 박스랑, 오른쪽 박스 크기를 가져온다
+        const left = oldSegments[changingIndex]
+        const right = oldSegments[changingIndex + 1]
+
+        // 왼쪽 오른쪽 박스 너비의 합에서...
+        // 최대는? 합 - 1/16
+        // 최소 1/16
+        const maxRatio = left + right - 1 / 16
+
+        // 현재 마우스 위치와, 꾹 누르기 시작한 위치와의 차이
+        const diff = e.clientX - startX
+        // 마우스가 움직인 변위가... 전체 크기에서 비율로 얼마를 차지하는지?
+        const diffAsRatio = diff / width
+
+        // const 최댓값 = 1 / 2;
+        // Math.min(1, 최댓값); // => 1/2 최댓값까지 가능!
+        // Math.min(1 / 3, 1 / 2); // => 1/3
+
+        // const 최솟값 = 1 / 16;
+        // Math.max(1 / 2, 최솟값); // => 1/2
+        // Math.max(0, 최솟값); // => 1/16
+
+        const newLeft = Math.max(Math.min(left + diffAsRatio, maxRatio), 1 / 16)
+        const newRight = Math.max(Math.min(right - diffAsRatio, maxRatio), 1 / 16)
+        const newSegments = [...oldSegments]
+        newSegments[changingIndex] = newLeft
+        newSegments[changingIndex + 1] = newRight
+        setSegments(newSegments)
+      }
+    }
+
+    // 1. 마우스를 떼었을 때... 더 이상 변경되지 않게 해주는 친구
+    function upHandler() {
+      // 2.
+      setIsChanging(false)
+    }
+    // 이 두 핸들러를 윈도우(화면)에 달아줌
+    window.addEventListener('mousemove', moveHandler)
+    window.addEventListener('mouseup', upHandler)
+
+    // cleanup => 3.
+    return () => {
+      // 핸들러를 윈도우에서 떼어줌...
+      window.removeEventListener('mousemove', moveHandler)
+      window.removeEventListener('mouseup', upHandler)
+    }
+    // 의존성 배열에 isChanging이 false로 변하면?
+  }, [isChanging, oldSegments, startX])
+
+  return (
+    <table className="selectedContainer flex flex-row">
+      <tr className="flex flex-row w-1/2 h-48">
+        {segments.map((segment, i) => (
+          <td
+            className="flex flex-row p-0"
+            key={i}
+            style={{
+              width: `${segment * 100}%`,
+              backgroundColor: colors[i],
+            }}
+          >
+            <div className="h-full w-11/12" onClick={() => deleteSelected(i)}>
+              {colors[i]}
+            </div>
+            {i < segments.length - 1 && (
+              <div
+                className="bg-blue-600 w-0.5 hover:w-2 transition-all p-0 m-0 h-full cursor-pointer"
+                //시작 좌표를 기록하기 위해 모서리를 꾹 누르면
+                onMouseDown={(e) => {
+                  console.log('x', e.clientX, 'y', e.clientY)
+                  setStartX(e.clientX) // 시작 x좌표
+                  setChangingIndex(i) // 바꾸려는 그 인덱스
+                  setOldSegments(segments) // 시작할 때 박스 크기
+                  setIsChanging(true) // 변경 중임을 알려주는 flag
+                }}
+              ></div>
+            )}
+          </td>
+        ))}
+      </tr>
+    </table>
+  )
+  // https://tailwindcss.com/docs/cursor
+}
+
+export default ResizableBoxes
 ```
