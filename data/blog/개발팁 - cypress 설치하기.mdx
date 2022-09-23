@@ -1,0 +1,81 @@
+---
+title: '💖 개발팁 - `cypress` 설치하기'
+thumbSrc: '/static/images/developertip.png'
+date: '2022-09-23'
+tags: ['tip']
+draft: false
+summary: '본 포스트는 개발 팁을 나누는 글입니다.'
+images: ['/static/images/developertip.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/developertip.png)
+
+---
+
+# cypress 설치하기
+
+`bun add cypress -d`로 설치한 후
+`bun run cypress install`로 한번 더 설치해준다.
+
+그다음
+`bun run cypress open`를 해서 `cypress`를 열어준다.
+
+`tsx`를 사용할 때는
+`tsconfig.json`와 `tsconfig.node.json`를 만들어준다.
+
+`tsconfig.json`
+
+```tsx
+{
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "types": ["cypress", "@testing-library/cypress"],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
+```
+
+`tsconfig.node.json`
+
+```tsx
+{
+  "compilerOptions": {
+    "composite": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "rootDir": "..",
+    "types": ["cypress", "@testing-library/cypress"]
+  },
+  "include": ["vite.config.ts"]
+}
+```
+
+그리고 장애인과 약자들을 위한 테스트까지 짤 수 있는 library도 설치해주었다.
+`bun add -d @testing-library/cypress`
+`bun add -d @types/testing-library__cypress`
+
+---
