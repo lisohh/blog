@@ -4,7 +4,7 @@ const siteMetadata = {
   headerTitle: 'lil.dev',
   description: '항상 궁금한 개발자 lisoh의 궁금 저장소',
   language: 'ko-KR',
-  siteUrl: 'https://www.lisohh.tech',
+  siteUrl: 'https://lisohh-blog-lisohh.vercel.app/',
   siteRepo: 'https://www.github.com/lisohh/blog',
   siteLogo: '/static/images/lisoh_profile.png',
   image: '/static/images/lisoh_profile.png',
