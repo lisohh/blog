@@ -1,0 +1,222 @@
+---
+title: '🎉 컬러리스트 프로젝트 #13 Pallete table - 두 개의 선택칸 분할'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-09-11'
+tags: ['project', 'colorlist', 'resizable columns']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 선택칸 테이블을 2개로 분할하고 각각이 다른 색깔 값을 갖도록 만들기
+   1-1. `useState`없애기
+   1-2. `formData.getAll` 적용하기
+   1-3. 인덱스 순서로 반 갈라주기
+
+---
+
+# 선택칸 테이블을 2개로 분할하고 각각이 다른 색깔 값을 갖도록 만들기
+
+![선택칸 2개로 분할](/static/images/선택칸 2개로 분할.png)
+
+---
+
+## 1-1. useState없애기
+
+오늘은 기존의 선택칸을 두 개로 늘리고 <br/>
+각 선택칸이 서로 다른 색이 적용될 수 있도록 <br/>
+선택칸을 분할합니다.<br/>
+
+기존의 선택칸은 10개의 box를 가진 칸이었는데<br/>
+컴포넌트 자체를 복사하면 두 개의 선택칸에 같은 색이 적용되는 문제가 발생했다.
+
+이 문제를 해결하기 위해 `useState`를 사용했던 코드를 삭제하고 <br/>
+`form`의 모든 값을 일단 다 가져오는 `formData.getAll`을 사용해<br/>
+모든 데이터를 가져와 반 잘라주는 식으로 진행했다.
+
+기존에 있었던 주조색,보조색,강조색,설명 상태를 모두 없앴다.
+
+```tsx
+//9번 - 기본 텍스트를 넣어주기 위해 기본 텍스트를 상태로 만들어준다.
+const [mainColor, setMainColor] = React.useState('주조색:')
+
+const [subColor, setSubColor] = React.useState('보조색:')
+
+const [pointColor, setPointColor] = React.useState('강조색:')
+
+const [explanation, setExplanation] = React.useState('컨셉:\n주조색:\n보조색:\n강조색:\n배색 기법:')
+```
+
+그리고 하나의 선택칸일때 `colors`로 저장해 색값을 가져오는 코드도 모두 삭제해주었다.
+
+```tsx
+const rawData = new FormData(event.target as HTMLFormElement)
+
+const colors = rawData.get('colors')
+
+if (colors !== null) {
+  // 전처리, preprocess
+  const data = [
+    {
+      jubogang: {
+        ju: rawData.get('ju'),
+        bo: rawData.get('bo'),
+        gang: rawData.get('gang'),
+      },
+      box: JSON.parse(colors as string),
+      answer: rawData.get('answer'),
+    },
+  ]
+  saveColors(data as MyColors[])
+}
+```
+
+또 주조색,보조색,강조색을 각각의 `value`로 가져왔던 객체와 `event`코드도 삭제했다.
+
+```tsx
+<input
+  id="color-selection"
+  placeholder="주조색:"
+  value={mainColor}
+  onChange={(event) => setMainColor(event.target.value)}
+/>
+```
+
+이런식으로 보조색,강조색,설명의 `input`에 있는 `value`와 `onChange`코드를 다 삭제해주었다.
+
+## 1-2. `formData.getAll` 적용하기 && 1-3. 인덱스 순서로 반 갈라주기
+
+상태를 없앴으니 그 다음 `formData.getAll`을 사용해 `input`의 모든 값을 가져오는 코드를 넣었다.
+
+```tsx
+<form
+        onSubmit={(event) => {
+          event.preventDefault();
+          const formData = new FormData(event.target as HTMLFormElement);
+
+          const colors = formData.get("colors");
+          const rawData = {
+            box: JSON.parse(colors as string),
+            ju: formData.getAll("ju"),
+            bo: formData.getAll("bo"),
+            gang: formData.getAll("gang"),
+            answer: formData.getAll("answer"),
+          };
+
+          if (colors !== null) {
+            // 전처리, preprocess
+            const data = [
+              //첫번째 선택칸은 0부터 9까지의 값을 잘라 가지고, 설명은 총 2개이므로 첫번째 값들만 가진다.
+              {
+                box: rawData.box.slice(0, 10),
+                jubogang: {
+                  ju: rawData.ju[0],
+                  bo: rawData.bo[0],
+                  gang: rawData.gang[0],
+                },
+                answer: rawData.answer[0],
+              },
+              //두번째 선택칸은 10부터 19까지의 값을 잘라 가지고, 설명의 2번째 값들을 가진다.
+              {
+                box: rawData.box.slice(10, 20),
+                jubogang: {
+                  ju: rawData.ju[1],
+                  bo: rawData.bo[1],
+                  gang: rawData.gang[1],
+                },
+                answer: rawData.answer[1],
+              },
+            ];
+            alert(JSON.stringify(data));
+            // saveColors(data as MyColors[]);
+          }
+        }}
+      >
+```
+
+이런식으로 데이터를 가져오는 코드를 작성해준 후<br/>
+`input`에서는 `type`과 `name`을 작성해 각각의 `formData`에 해당하는 이름을 썼다.
+
+```tsx
+<label className="color-label" htmlFor="main-color">
+          주조색
+        </label>
+        <input
+          id="color-selection"
+          placeholder="주조색:"
+          type="text"
+          name="ju"
+        />
+        <label className="color-label" htmlFor="sub-color">
+          보조색
+        </label>
+        <input
+          id="color-selection"
+          placeholder="보조색:"
+          type="text"
+          name="bo"
+        />
+        <label className="color-label" htmlFor="point-color">
+          강조색
+        </label>
+        <input
+          id="color-selection"
+          placeholder="강조색:"
+          type="text"
+          name="gang"
+        />
+        <label className="color-label" htmlFor="explanation" id="explanation">
+          배색 설명
+        </label>
+        <textarea
+          id="explanation"
+          name="answer"
+          placeholder={"컨셉:\n주조색:\n보조색:\n강조색:\n배색 기법:"}
+        />
+        <p id="allColor">주보강 기입</p>
+        <label className="color-label" htmlFor="main-color">
+          주조색
+        </label>
+        <input
+          id="color-selection"
+          type="text"
+          name="ju"
+          placeholder="주조색:"
+        />
+        <label className="color-label" htmlFor="sub-color">
+          보조색
+        </label>
+        <input
+          id="color-selection"
+          type="text"
+          name="bo"
+          placeholder="보조색:"
+        />
+        <label className="color-label" htmlFor="point-color">
+          강조색
+        </label>
+        <input
+          id="color-selection"
+          type="text"
+          name="gang"
+          placeholder="강조색:"
+        />
+        <label className="color-label" htmlFor="explanation" id="explanation">
+          배색 설명
+        </label>
+        <textarea
+          id="explanation"
+          name="answer"
+          placeholder={"컨셉:\n주조색:\n보조색:\n강조색:\n배색 기법:"}
+        />
+```
+
+이렇게 하면 일단 선택칸은 각각의 색을 적용하고, 지울 수 있는 상태가 된다.<br/>
