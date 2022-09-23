@@ -17,6 +17,6 @@ input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-.cursive {
+/* .cursive {
   font-family: 'Press Start 2P', cursive;
-}
+} */
