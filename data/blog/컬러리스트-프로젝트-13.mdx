@@ -97,7 +97,7 @@ if (colors !== null) {
 상태를 없앴으니 그 다음 `formData.getAll`을 사용해 `input`의 모든 값을 가져오는 코드를 넣었다.
 
 ```tsx
-<form
+    <form
         onSubmit={(event) => {
           event.preventDefault();
           const formData = new FormData(event.target as HTMLFormElement);
@@ -146,7 +146,7 @@ if (colors !== null) {
 `input`에서는 `type`과 `name`을 작성해 각각의 `formData`에 해당하는 이름을 썼다.
 
 ```tsx
-<label className="color-label" htmlFor="main-color">
+        <label className="color-label" htmlFor="main-color">
           주조색
         </label>
         <input
