@@ -1,0 +1,52 @@
+---
+title: '🫐 프로그래머스 - 자연수 뒤집어 배열로 만들기'
+thumbSrc: '/static/images/programmers.png'
+date: '2022-09-23'
+tags: ['programmers', '프로그래머스', '알고리즘']
+draft: false
+summary: '본 포스트는 프로그래머스 알고리즘 문제를 풀이한 글입니다.'
+images: ['/static/images/programmers.png']
+---
+
+# 📌 목차
+
+- 🍑 링크
+- 🍋 문제 설명
+- 🍐 제한 조건
+- 🍊 풀이
+
+![Welcome](/static/images/programmers.png)
+
+---
+
+## 🍑 링크
+
+[자연수 뒤집어 배열로 만들기](https://school.programmers.co.kr/learn/courses/30/lessons/12932)
+
+## 🍋 문제 설명
+
+> 자연수 n을 뒤집어 각 자리 숫자를 원소로 가지는 배열 형태로 리턴해주세요. 예를들어 n이 12345이면 [5,4,3,2,1]을 리턴합니다.
+
+## 🍐 제한 조건
+
+> n은 10,000,000,000이하인 자연수입니다.
+
+## 🍊 풀이
+
+```js
+//인덱스 값을 이용해보자
+//reverse()를 이용해보자
+
+//Array.from({ length: n }, (_ , i) => i)
+// [0,1,2,3,4]
+
+function solution(n) {
+  return Array.from(n + '')
+    .reverse()
+    .map((n) => +n)
+}
+```
+
+배열을 ''로 나누고 <br/>
+나눈 원소들을 반대로 뒤집어서
+다시 나열한다.
