@@ -1,0 +1,140 @@
+---
+title: '🎉 컬러리스트 프로젝트 #14 무작위 랜덤 버튼 만들기'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-10-05'
+tags: ['project', 'colorlist', 'random button', 'map']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌 목차
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+💁🏻
+
+1. 문제를 무작위로 볼 수 있는 랜덤 버튼 만들기
+   1-1. `qList.json`에 index 달기
+   1-2. 주소의 `path variable(params)`에 따라서 페이지 렌더링
+   1-3. 랜덤 버튼을 클릭하면 무작위 `id`로 이동
+
+---
+
+## 1-1. `qList.json`에 index 달기
+
+오늘은 랜덤 버튼을 눌러 <br/>
+무작위로 다양한 문제 페이지로 이동할 수 있도록 <br/>
+버튼을 만들고 라우팅을 조정합니다.<br/>
+
+버튼을 누를 때 마다 다른 문제 페이지로 이동해야하므로 <br/>
+주소를 이동해야하기 때문에 일단 문제마다 `id`번호를 붙여줍니다.
+
+#### json에 id 달기
+
+```js
+const qlist = {
+  quiz: [
+    // ...
+  ],
+}
+
+// quiz의 내용은?
+qlist.quiz
+//(26) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+
+// quiz의 첫 번째 값은?
+qlist.quiz[0]
+// {class: '2022년도 2회차 기출', type: '1', quizContent: '따뜻하고 풍요로운 이미지와 차갑고 쓸쓸한 이미지 두가지를 연출해 보세요.', condition: '(3색상 이상 10칸 이상)'}
+
+// 그대로 복사
+qlist.quiz.map((q) => ({ ...q }))
+//(26) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+
+// 복사한 값에 index를 id로 추가
+qlist.quiz.map((q, index) => ({ ...q, id: index + 1 }))
+// {
+//   class: "2022년도 2회차 기출"
+//   condition: "(3색상 이상 10칸 이상)"
+//   id: 1
+//   quizContent: "따뜻하고 풍요로운 이미지와 차갑고 쓸쓸한 이미지 두가지를 연출해 보세요."
+//   type: "1"
+// }
+
+// id가 추가된 quiz를 JSON 문자열로 직렬화
+JSON.stringify(qlist.quiz.map((q, index) => ({ ...q, id: index + 1 })))
+```
+
+## 1-2. 주소의 `path variable(params)`에 따라서 페이지 렌더링
+
+`index.tsx`에서 `params`를 이용해 `id`로 라우팅하도록 해주었다.
+
+//use params 문서 보기 (react router dom문서에서)
+
+```tsx
+//index.tsx
+;<Route path="/quiz/:quizId" element={<TestForm />} />
+{
+  /* /problem/:problemId */
+}
+{
+  /* /problem/1 */
+}
+{
+  /* /problem/2 */
+}
+```
+
+그다음 `Testform.tsx`에서 문제별 `id`를 찾을 수 있도록 변수를 만들어 주었다.
+
+```tsx
+//Testform.tsx
+
+const params = useParams() // url에 있는 파라미터(path variable, dynamic routes)를 가져옴!
+// ?? 널 병합 연산자. 왼쪽이 null이나 undefined면 오른쪽의 값을 fallback으로 써라
+const quizId = parseInt((params['quizId'] as string | undefined) ?? '1') // ex 1
+const quiz = QuizList.quiz[quizId - 1] // index는 0부터 셈으로...
+```
+
+## 1-3. 랜덤 버튼을 클릭하면 무작위 `id`로 이동
+
+다음으로 무작위로 숫자를 넣어 문제 수 안에서 랜덤으로 페이지를 이동할 수 있는 `link`를 만들어주었다.
+
+```tsx
+<Link to={`/quiz/${Math.min(Math.floor(Math.random() * 26 + 1), 26)}`}>무작위 문제 보기</Link>
+```
+
+위의 식은 아래와 같은 순서로 만들어졌다.
+
+```tsx
+// 0부터 1사이의 값
+Math.random()
+
+// 0부터 26사이의 값
+Math.random() * 26
+
+// 1부터 27 사이의 값 (소수 포함)
+Math.random() * 26 + 1
+
+// 1부터 27사이의 정수 (27이 나올 가능성이 매우매우 적음)
+Math.floor(Math.random() * 26 + 1)
+
+// 1부터 26사이의 값
+Math.min(Math.floor(Math.random() * 26 + 1), 26)
+```
+
+그 다음 해당 문제에 맞는 내용과 조건을 보여줄 수 있게 리턴 값을 조정했다.
+
+```tsx
+<div className="quiz-paragraph">
+  <a className="category" href="">
+    {quiz.class}
+  </a>
+  <h1 className="text-2xl mb-2">Q. {quiz.quizContent}</h1>
+  <h2 id="condition" className="text-lg">
+    {quiz.condition}
+  </h2>
+</div>
+```
