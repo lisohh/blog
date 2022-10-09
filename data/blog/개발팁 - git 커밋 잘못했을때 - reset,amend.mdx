@@ -1,0 +1,25 @@
+---
+title: '💖 개발팁 - git 커밋 잘못했을때 - reset, amend'
+thumbSrc: '/static/images/developertip.png'
+date: '2022-09-23'
+tags: ['tip']
+draft: false
+summary: '본 포스트는 개발 팁을 나누는 글입니다.'
+images: ['/static/images/developertip.png']
+---
+
+# 📌
+
+![Welcome](/static/images/developertip.png)
+
+---
+
+# 유용한 깃 커맨드
+
+- `git reset --soft HEAD^`
+  - 최근 커밋 한 개(`HEAD^`)를 취소하되, 변경 내용은 보존(`--soft`)
+- `git commit --amend --no-edit`
+  - 최근 커밋 한 개에 현재 staging된 변경사항을 병합
+  - 메세지는 수정하지 않음(`--no-edit`)
+
+---
