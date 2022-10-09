@@ -1,0 +1,57 @@
+---
+title: '🫐 프로그래머스 - 약수의 합'
+thumbSrc: '/static/images/programmers.png'
+date: '2022-09-23'
+tags: ['programmers', '프로그래머스', '알고리즘']
+draft: false
+summary: '본 포스트는 프로그래머스 알고리즘 문제를 풀이한 글입니다.'
+images: ['/static/images/programmers.png']
+---
+
+# 📌 목차
+
+- 🍑 링크
+- 🍋 문제 설명
+- 🍐 제한 조건
+- 🍊 풀이
+
+![Welcome](/static/images/programmers.png)
+
+---
+
+## 🍑 링크
+
+[약수의 합](https://school.programmers.co.kr/learn/courses/30/lessons/12928)
+
+## 🍋 문제 설명
+
+> 정수 n을 입력받아 n의 약수를 모두 더한 값을 리턴하는 함수, solution을 완성해주세요.
+
+## 🍐 제한 조건
+
+> n은 0 이상 3000이하인 정수입니다.
+
+## 🍊 풀이
+
+```jsx
+//약수 구하는 법
+//모두 더하는 거 -Reduce
+//https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
+
+const arrDivisor = [];
+let answer = 0;
+let i = 1;
+
+function solution(n) {
+
+    while (i < = n){
+        if( n % i === 0){
+            arrDivisor.push(i);
+        }
+        i += 1;
+        answer = arrDivisor.reduce((preVal,curVal) => preVal + curVal, 0)
+    }
+
+    return answer;
+}
+```
