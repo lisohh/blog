@@ -1,0 +1,164 @@
+---
+title: '🎉 컬러리스트 프로젝트 #17 button 컴포넌트 분리 - 디자인 시스템'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-11-04'
+tags: ['project', 'colorlist', 'component', 'design_system']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+오늘은 현재 프로젝트에 중복해서 보이는 버튼을
+디자인 시스템처럼 따로 컴포넌트를 분리해
+각각의 타입과 클래스네임에 맞게 변형할 수 있도록 해보았다.
+또한 제너릭을 사용해 다른 태그에도 공통적으로 사용할 수 있도록 다형적인 컴포넌트까지 시도해보았다.
+
+## 버튼 컴포넌트 분리
+
+테스트 폼의 하단 저장하기 버튼을 기준으로 삼아서 버튼 컴포넌트를 분리한다. <br/>
+
+분리하는 이유는 디자인 시스템을 사용하는 이유와 같은데, <br/>
+중복되는 버튼들을 한번에 수정하기가 쉬워지고, 일관성 있는 화면을 만들 수 있기 때문이다.
+
+### 1단계 기존 화면에서 특정한 부분을 잘라서, Button.tsx 로 분리했다
+
+```tsx
+import React from 'react'
+
+function Button() {
+  return (
+    <button type="submit" className="bg-yellow-300 p-4 rounded-xl">
+      저장하기
+    </button>
+  )
+}
+
+export default Button
+```
+
+### 2단계 props로 바뀌는 부분을 받기 - 추출할 때는 변하는 부분과 변하지 않은 부분을 구분해야
+
+```tsx
+import React from 'react'
+
+// "string" => string literal type => 원소가 1개인 집합
+// string => 모든 가능한 문자열들의 타입 => 원소가 매우 많은 집합!
+
+function Button({ type, children }: { type: 'submit' | 'button'; children: string }) {
+  return (
+    <button type={type} className="bg-yellow-300 p-4 rounded-xl">
+      {children}
+    </button>
+  )
+}
+
+export default Button
+```
+
+### 3단계 type을 간소화하고, className을 추가할 수 있게 만들기
+
+`React component`로써 `button`이 가질 수 있는 모든 `props`를 넘겨줌으로써<br/>
+`type`을 하나하나 지정해주지 않아도 간단하게 모든 `props`를 받을 수 있는 `button`을 만들 수 있다.<br/>
+
+<br />
+`className`을 `props`에 넣어주어 각 페이지에서 추가로 필요한 `className`(tailwind를 사용하기 때문에 `className`을
+이용해 css를 수정한다.)을 넣을 수 있도록 한다.
+
+```tsx
+import React from 'react'
+
+type ButtonProps = React.ComponentProps<'button'> // <- 중요!
+
+function Button({ type, children, className }: ButtonProps) {
+  return (
+    <button type={type} className={'bg-yellow-300 p-4 rounded-xl ' + className}>
+      {children}
+    </button>
+  )
+}
+
+export default Button
+```
+
+### 4단계 polymorphic component (다형적인 컴포넌트)
+
+같은 디자인 시스템 컴포넌트를... 서로 다른 태그로 사용할 수 있게 해줌!<br/>
+
+"더 많은 사용례를 지원하려면 더 복잡하거나, 단순하더라도 더 이해하기 어려운 개념이 필요하다"<br/>
+
+제네릭은... 타입을 매개변수로 받을 수 있다. C로 뭘 받느냐에 따라서 "button"도 이제 가능하고 "a"도 가능!
+
+- 스프레드 연산자로 구조분해할당된 매개변수를 받기
+
+- 스프레드 연산자로 react component에 props를 넘기기
+
+```tsx
+import React from 'react'
+
+type ButtonProps<C extends React.ElementType = 'button'> = React.ComponentProps<C> & {
+  as?: C
+  className: string
+  children: React.ReactElement
+}
+
+function Button<C extends React.ElementType>({
+  as,
+  className,
+  children,
+  ...props // as, className, children을 제외한 나머지 props는 props 객체로 받는다
+}: ButtonProps<C>) {
+  const Component = as || 'button'
+
+  return (
+    <Component
+      className={
+        'bg-yellow-300 hover:bg-yellow-400 transition-colors duration-200 p-4 rounded-xl ' +
+        className
+      }
+      {...props} // props 객체에 있는 모든 prop을 Component에 넘긴다
+    >
+      {children}
+    </Component>
+  )
+}
+
+export default Button
+```
+
+## 디자인 시스템
+
+### 만드는 이유
+
+디자인의 통일성!, 공통되는 로직을 재사용해서 생산성도 높이고, 변경 사항도 반영하기 쉽게 만듬(유지보수성)
+
+### 만드는 방법
+
+상향식 => 그냥 페이지를 만들고 비슷해 보이는 컴포넌트들을 묶어서 추출해나간다 (초기!) <br/>
+하향식 => 회사 규모도 크고, 아니면 처음부터 체계를 갖추고 싶고, 기존의 베스트 프랙티스나 이해도가 높을 때!<br/>
+
+지금 나와 같은 경우는, 토이프로젝트로 아주 작은 규모이므로 상향식으로 만든다.
+
+## css reset을 하는 이유
+
+1. 브라우저마다 기본 CSS가 다르기 때문에 아예 CSS를 초기화시켜놓고 처음부터 모두 똑같은 화면을 볼 수 있도록 만든다.
+
+2. semantic과 시각적 형태는 분리되어야 한다
+
+## variant
+
+같은 용도여도 시각적 차이가 있을때는 variant를 만들어 사용할 수 있다.<br/>
+함수에서의 `variant`와 헷갈리지 말 것.
+
+## 반응형 UI와 tailwind
+
+`tailwind`에서 사용하는 `class`를 "utility class"라고 한다.<br/>
+
+`css`와 다르지 않다! `className`을 쓰는 게 다를 뿐~<br/>
+
+`clsx` => `className`을 여러 개로 쪼개서 구분해서 관리할 수 있음
