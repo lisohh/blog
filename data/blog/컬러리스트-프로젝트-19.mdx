@@ -16,7 +16,7 @@ images: ['/static/images/colorlist.png']
 
 ## Form 추상화
 
-회원가입 페이지와 로그인 페이지는 비슷한 용도와 형태를 가진 `form`을 가지고 있다.<Br/>
+회원가입 페이지와 로그인 페이지는 비슷한 용도와 형태를 가진 `form`을 가지고 있다.<br/>
 그러므로 두 페이지의 `form`을 각각 만들기보다, 추상화된 `form`을 만들어 각각의 페이지에<br/>
 맞게 변형할 수 있다면 일관성이 높은 페이지를 만들 수 있게된다.
 
@@ -29,71 +29,3 @@ images: ['/static/images/colorlist.png']
 그리고 `input`들은 `children`으로 만들어 `VerticalForm`안에 `fragment`를 넣고
 (`VerticalForm`안에는 하나의 `<>`만 넣을 수 있으므로 )
 그 안에 옮겨준다.
-
-```tsx
-import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
-import Button from '~/components/Button'
-import VerticalForm from '~/components/VerticalForm'
-
-function Register() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  })
-
-  return (
-    <VerticalForm
-      title="회원가입"
-      submitLabel="가입하기"
-      onSubmit={handleSubmit((data) => {
-        alert(JSON.stringify(data))
-      })}
-      after={
-        <Button as={Link} to="/login" className="text-center">
-          로그인으로 이동
-        </Button>
-      }
-    >
-      <>
-        <label className="flex flex-col gap-2">
-          <span className="text-xl">이메일</span>
-          <input
-            type="email"
-            className="input input-bordered"
-            {...register('email', {
-              required: '이메일을 입력해주세요!',
-            })}
-          />
-        </label>
-        {errors.email && <li role="alert">{errors.email.message}</li>}
-
-        <label className="flex flex-col gap-2">
-          <span className="text-xl">비밀번호</span>
-          <input
-            type="password"
-            className="input input-bordered"
-            {...register('password', {
-              required: '비밀번호를 입력해주세요!',
-            })}
-          />
-        </label>
-        {errors.password && <li role="alert">{errors.password.message}</li>}
-      </>
-    </VerticalForm>
-  )
-}
-
-// react jsx에 내장되어 있는... 즉 원래 html element에도 있는 타입들은... 문자열로 쓸 수 있다! "a" "button" "input"
-
-export default Register
-```
-
-위의 코드안에 있는 `title`,`submitLabel`과 `after`안에 들어가는 문자열은
-`Form`안에 써주는대로 페이지마다 보이는 내용이 달라진다.
