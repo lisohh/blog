@@ -1,0 +1,94 @@
+---
+title: '🎉 컬러리스트 프로젝트 #19 VerticalForm - Form 추상화'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-11-07'
+tags: ['project', 'colorlist', 'form 추상화']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+## Form 추상화
+
+회원가입 페이지와 로그인 페이지는 비슷한 용도와 형태를 가진 `form`을 가지고 있다.<Br/>
+그러므로 두 페이지의 `form`을 각각 만들기보다, 추상화된 `form`을 만들어 각각의 페이지에<br/>
+맞게 변형할 수 있다면 일관성이 높은 페이지를 만들 수 있게된다.
+
+1. 기존의` Login`` 페이지에 있는  `form`
+
+로그인 페이지에서 가지고 있는 페이지의 제목과 버튼안에 들어가는 텍스트들은 페이지마다 바뀌므로
+타입을 정해주고 `props`로 빼낸다. 버튼 같은 경우 버튼 자체 컴포넌트를 덩어리로 이동하는게 더 좋으므로,
+고차 컴포넌트를 이용해 컴포넌트 전체를 after라는 타입에 넣어 처리해준다.
+
+그리고 `input`들은 `children`으로 만들어 VerticalForm안에 `fragment`를 넣고
+(VerticalForm안에는 하나의 <>만 넣을 수 있으므로 )
+그 안에 옮겨준다.
+
+```tsx
+function Login() {
+  // https://react-hook-form.com/get-started
+  //3. register과 handleSubmit를 만들어서, 객체를 구조분해 할당(destructuring)...
+
+  // options, config, props... 다 비슷한 말!
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  return (
+    <VerticalForm
+      title="로그인"
+      submitLabel="로그인하기"
+      onSubmit={handleSubmit((data) => {
+        alert(JSON.stringify(data))
+      })}
+      after={
+        <Button as={Link} to="/register" className="text-center">
+          회원가입으로 이동
+        </Button>
+      }
+    >
+      <>
+        <label className="flex flex-col gap-2">
+          <span className="text-xl">이메일</span>
+          <input
+            type="email"
+            className="input input-bordered"
+            {...register('email', {
+              required: '이메일을 입력해주세요!',
+            })}
+          />
+        </label>
+        {errors.email && <li role="alert">{errors.email.message}</li>}
+
+        <label className="flex flex-col gap-2">
+          <span className="text-xl">비밀번호</span>
+          <input
+            type="password"
+            className="input input-bordered"
+            {...register('password', {
+              required: '비밀번호를 입력해주세요!',
+            })}
+          />
+        </label>
+        {errors.password && <li role="alert">{errors.password.message}</li>}
+      </>
+    </VerticalForm>
+  )
+}
+```
+
+위의 코드안에 있는 `title`,`submitLabel`과 `after`안에 들어가는 문자열은
+`Form`안에 써주는대로 페이지마다 보이는 내용이 달라진다.
