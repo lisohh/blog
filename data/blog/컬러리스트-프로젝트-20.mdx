@@ -47,3 +47,25 @@ if (response.ok) {
           navigate("/login");
         }
 ```
+
+### 로그인 Login.tsx도 동일하게
+
+`Login.tsx`도 일단 동일하게 로그인에 성공했을 경우만 코드로 작성했다.<br/>
+조금 다르게 한 것은 로그인에 성공했을 경우 전달된 `jwt`토큰 값을 `result`에 넣고<br/>
+`alert`창에 띄워 볼 수 있게 했다.
+
+```tsx
+onSubmit={handleSubmit(async (data) => {
+        const response = await api.login(data);
+
+        if (response.ok) {
+          const result = await response.json(); // body로 온 json을 파싱함!
+
+          alert(JSON.stringify(result));
+          navigate("/");
+        }
+      })}
+```
+
+이렇게 해서 현재 회원가입과 로그인에 성공했을 경우를 간단히 작동시킬 수 있게 되었다.<br/>
+중간에 `input` 타입에 에러가 나서 `forwardRef`로 수정을 했는데 이 부분에 대해서는 나중에 정리해보겠다.
