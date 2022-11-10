@@ -41,7 +41,7 @@ onSubmit={handleSubmit((data) => {
 <br />
 `post`는 `method`중 하나로 `data`를 보내기 위한 방법이다.
 
-그런데 이번엔 `fetch함`수를 좀 더 편하게 쓰기 위해<br/>
+그런데 이번엔 `fetch`함수를 좀 더 편하게 쓰기 위해<br/>
 `post`함수로 한번 감싸서(캡슐화) `method`와 `header`, `body`를 미리 정하고 사용한다.<br/>
 이렇게 사용하면 1. 사용하기가 쉽고 2. 나중에 교체하기가 간편하며 3. 실수를 방지하기 좋다.
 
@@ -96,7 +96,9 @@ type UserInfoT = {
 import * as api from '../../api'
 ```
 
-여기서 `* as api`라고 쓰는 이유는 해당 파일안에는 여러 함수가 있는데, 하나만 쓸거면 해당 함수 이름을 `{}`안에 넣고 가져오면 되지만 모두 가져오면 이것저것 쓰기가 훨씬 편해지므로 모두 가져오기로 했다.
+여기서 `* as api`라고 쓰는 이유는 해당 파일안에는 여러 함수가 있는데,
+하나만 쓸거면 해당 함수 이름을 `{}`안에 넣고 가져오면 되지만
+모두 가져오면 이것저것 쓰기가 훨씬 편해지므로 모두 가져오기로 했다.
 
 ```tsx
 onSubmit={handleSubmit(async (data) => {
@@ -106,7 +108,7 @@ onSubmit={handleSubmit(async (data) => {
 ### 회원가입 성공시 페이지 이동하기
 
 그리고 `response`의 반응이 200번대나 300번대, 즉 성공 범위 안에 있을 경우<br/>
-ok로 성공을 간주하고, `react-router-dom`에 있는 `useNavigate()`를 이용해 로그인 페이지로 이동한다.
+`ok`로 성공을 간주하고, `react-router-dom`에 있는 `useNavigate()`를 이용해 로그인 페이지로 이동한다.
 
 > **ok**<br>
 > ok는 status의 200-299의 값을 추상화한 boolean인데 200-299사이의 status이면 true를 가지게 된다.<br>
@@ -128,7 +130,7 @@ if (response.ok) {
 ### 로그인 Login.tsx도 동일하게
 
 `Login.tsx`도 일단 동일하게 로그인에 성공했을 경우만 코드로 작성했다.<br/>
-조금 다르게 한 것은 로그인에 성공했을 경우 전달된 `jwt`토큰 값을 result에 넣고<br/>
+조금 다르게 한 것은 로그인에 성공했을 경우 전달된 `jwt`토큰 값을 `result`에 넣고<br/>
 `alert`창에 띄워 볼 수 있게 했다.
 
 ```tsx
