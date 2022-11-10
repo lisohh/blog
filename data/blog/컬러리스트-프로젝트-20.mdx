@@ -27,3 +27,24 @@ images: ['/static/images/colorlist.png']
 onSubmit={handleSubmit((data) => {
         alert(JSON.stringify(data));
 ```
+
+### 회원가입 성공시 페이지 이동하기
+
+그리고 `response`의 반응이 200번대나 300번대, 즉 성공 범위 안에 있을 경우<br/>
+`ok`로 성공을 간주하고, `react-router-dom`에 있는 `useNavigate()`를 이용해 로그인 페이지로 이동한다.
+
+> **ok**<br/> > `ok`는 `status`의 200-299의 값을 추상화한 `boolean`인데 200-299사이의 `status`이면 `true`를 가지게 된다.<br>
+> 출처: https://velog.io/@daybreak/React-Fetch%ED%95%A8%EC%88%98
+
+```tsx
+import { Link, useNavigate } from "react-router-dom";
+  ...
+
+function Register() {
+  const navigate = useNavigate();
+  ...
+
+if (response.ok) {
+          navigate("/login");
+        }
+```
