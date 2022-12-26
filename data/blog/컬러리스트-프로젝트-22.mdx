@@ -1,0 +1,51 @@
+---
+title: '🎉 컬러리스트 프로젝트 #22 무작위(shuffle) 함수 사용'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-11-10'
+tags: ['project', 'colorlist', 'shuffle']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+메인 페이지 상단의 캐로셀 안에 문제 제목 링크를 무작위로 넣어주려고 했다.
+
+일단 문제목록을 가져와야 하므로
+`import { problemList } from "../qlists/problemList";`
+문제목록이 적힌 파일에서 problemList를 불러온다.
+
+그 다음 `map`함수를 이용해 문제를 하나씩 꺼내어 캐로셀에 넣어준다.
+
+<ln />
+하지만 문제를 꺼내어 넣으니 순서가 바뀌지 않은 상태로 문제들이 캐로셀안에 들어갔다. 그래서 구글링으로
+찾은 `shuffle`함수 구현 방법을 이용해 먼저 문제 목록을 얇게 복사해온뒤 `shuffle`함수를 만들고 부수 효과로
+무작위로 섞인 배열을 다시 반환해온다.
+
+```ts
+function shuffle<T>(array: T[]) {
+  const copied = [...array]
+  copied.sort(() => Math.random() - 0.5) //부수 효과
+  return copied
+}
+```
+
+> 여기서 부수 효과란, ~인데 함수에 어떤 값을 넣었을 때 반환값이 변하는 것도 부수 효과 중에 하나이다.
+
+    부수효과 중에는
+    1. 무작위로 값이 섞이는 것
+    2. 기존의 값을 변형하는 것
+    3. 외부에 입출력을 하는 것
+    이 있는데,
+    1. 무작위로 값이 섞이는 것 -> seed로 해결
+    2. 기존의 값을 변형하는 것 -> 불변과 복사로 해결
+    3. 외부에 입출력을 하는 것 -> 입출력과 핵심 로직의 분리로 해결
+    이러한 해결 방법이 있다고 한다.
+
+참고로 부수 효과가 일어나지 않는 함수는 pure function, 순수 함수라고 하는데<ln>
+똑같은 걸 넣으면 똑같은 게 나오는 예측 가능한 함수를 뜻한다. 예로 map 함수가 있다.

@@ -1,0 +1,166 @@
+---
+title: '🎉 컬러리스트 프로젝트 #21 Input Component 추출하기'
+thumbSrc: '/static/images/colorlist.png'
+date: '2022-11-10'
+tags: ['project', 'colorlist', 'component']
+draft: false
+summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
+images: ['/static/images/colorlist.png']
+---
+
+# 📌
+
+![Welcome](/static/images/colorlist.png)
+
+> ✨ [컬러리스트 사이트(아직 없음](https://www.)
+
+이전에 VerticalForm사이에 children으로 들어있던 Input들을 component로 추출해
+좀 더 심플한 Register.tsx, Login.tsx를 만들어보고자 한다.
+
+이전의 코드는 아래와 같은 모양이었다.
+각각의 input마다 label과 span,className을 모두 따로 지정해주어야했다.
+
+```tsx
+;<label className="flex flex-col gap-2">
+  <span className="text-xl">이메일</span>
+  <input
+    type="email"
+    className="input input-bordered"
+    {...register('email', {
+      required: '이메일을 입력해주세요!',
+    })}
+  />
+</label>
+{
+  errors.email && <li role="alert">{errors.email.message}</li>
+}
+;<label className="flex flex-col gap-2">
+  <span className="text-xl">비밀번호</span>
+  <input
+    type="password"
+    className="input input-bordered"
+    {...register('password', {
+      required: '비밀번호를 입력해주세요!',
+    })}
+  />
+</label>
+{
+  errors.password && <li role="alert">{errors.password.message}</li>
+}
+```
+
+이 부분을 빼서 Input.tsx에 따로 컴포넌트를 추출했다.
+
+일단 DataT라는 타입에 현재 존재하는 두 개의 input type인 email과 password의 type을 설정했다.
+참고: https://www.typescriptlang.org/docs/handbook/2/objects.html
+
+```tsx
+type DataT = {
+  email: string
+  password: string
+}
+```
+
+이렇게 하면 이메일과 비밀번호에 문자열을 넣었을때만 에러가 뜨지 않는다.
+
+```tsx
+let a: DataT = {
+  email: 'test@naver.com',
+  password: 'test',
+}
+```
+
+그리고 DataKey라는 타입을 설정해 DataT에 있는 키들을 타입으로 설정한다.
+참고: https://www.typescriptlang.org/docs/handbook/2/keyof-types.html
+
+```tsx
+type DataKeys = keyof DataT // 'email' | 'password' 이 두개만 타입으로 올 수 있다.
+
+function hello(name: DataKeys) {
+  console.log(name)
+}
+
+hello('email')
+hello('password')
+// hello("test"); // <- 타입 에러!
+```
+
+그 다음은 에러가 났을때 올 수 있는 데이터를 설정해준다.
+
+```tsx
+type ErrorData = {
+  [key in keyof DataT]: { message?: string }
+  //앞에는 email이나 password만 올 수 있고 :뒤에는 메시지가 올 수도, 안 올 수도 있는데, 오면 문자열이어야 한다.
+}
+```
+
+위에서 만든 에러데이터를 가지고 에러가 났을때 콘솔에 에러메시지를 찍어주는 함수를 만들었다.
+
+```tsx
+function logError(errors: ErrorData) {
+  console.error(errors)
+}
+// {
+//   email: {
+//       message: string;
+//   };
+//   password: {
+//       message: string;
+//   };
+// }
+
+// logError({
+//   email: "test@naver.com",
+//   password: "test",
+// }); // 다른 타입!
+//        객체로 와야해~~
+
+logError({
+  email: { message: 'test@naver.com' },
+  password: {}, // message는 optional ? 이니까
+})
+```
+
+하지만 위의 경우는 무조건 두개의 키가 다 입력되어야한다.
+하나만 입력했을때도 에러 메시지가 뜨게 하려면 어떻게 해야할까?
+이는 Partial type을 이용해서 해결할 수 있다.
+Partial은 부분집합같은 개념으로, logError안에 있는 모든 정보가 와도 되고, 일부만 와도 된다.
+참고: https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype
+
+```tsx
+type PartialE = Partial<ErrorData>
+
+// {
+//   email?: {
+//       message: string;
+//   } | undefined;
+//   password?: {
+//       message: string;
+//   } | undefined;
+// }
+```
+
+이렇게 PartialE라는 타입을 정하고
+새로운 logError2함수를 만들면 email,password 둘 중에 하나만 입력하지 않아도 에러메시지가 뜬다.
+
+```
+function logError2(errors: PartialE, name: keyof DataT) {
+  console.error(errors[name]);
+}
+
+// logError2({}, "test");
+
+logError2(
+  {
+    email: { message: "필수 입력입니다!" },
+  },
+  "email"
+);
+
+logError2(
+  {
+    password: { message: "필수 입력입니다!" },
+  },
+  "password"
+);
+```
