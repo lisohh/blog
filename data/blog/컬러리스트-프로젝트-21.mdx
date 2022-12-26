@@ -1,7 +1,7 @@
 ---
 title: '🎉 컬러리스트 프로젝트 #21 Input Component 추출하기'
 thumbSrc: '/static/images/colorlist.png'
-date: '2022-11-10'
+date: '2022-11-12'
 tags: ['project', 'colorlist', 'component']
 draft: false
 summary: '본 포스트는 컬러리스트 연습을 위한 사이트를 만들며 작성한 글입니다.'
@@ -14,11 +14,11 @@ images: ['/static/images/colorlist.png']
 
 > ✨ [컬러리스트 사이트(아직 없음](https://www.)
 
-이전에 VerticalForm사이에 children으로 들어있던 Input들을 component로 추출해
+이전에 VerticalForm사이에 `children`으로 들어있던 Input들을 component로 추출해
 좀 더 심플한 Register.tsx, Login.tsx를 만들어보고자 한다.
 
 이전의 코드는 아래와 같은 모양이었다.
-각각의 input마다 label과 span,className을 모두 따로 지정해주어야했다.
+각각의 `input`마다 `label`과 ` span``, `className`을 모두 따로 지정해주어야했다.
 
 ```tsx
 ;<label className="flex flex-col gap-2">
