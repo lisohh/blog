@@ -14,8 +14,8 @@ images: ['/static/images/colorlist.png']
 
 > ✨ [컬러리스트 사이트(아직 없음](https://www.)
 
-이전에 VerticalForm사이에 `children`으로 들어있던 Input들을 component로 추출해
-좀 더 심플한 Register.tsx, Login.tsx를 만들어보고자 한다.
+이전에 VerticalForm사이에 `children`으로 들어있던 `Input`들을 `component`로 추출해
+좀 더 심플한 `Register.tsx, Login.tsx`를 만들어보고자 한다.
 
 이전의 코드는 아래와 같은 모양이었다.
 각각의 `input`마다 `label`과 ` span``, `className`을 모두 따로 지정해주어야했다.
@@ -49,9 +49,9 @@ images: ['/static/images/colorlist.png']
 }
 ```
 
-이 부분을 빼서 Input.tsx에 따로 컴포넌트를 추출했다.
+이 부분을 빼서 `Input.tsx`에 따로 컴포넌트를 추출했다.
 
-일단 DataT라는 타입에 현재 존재하는 두 개의 input type인 email과 password의 type을 설정했다.
+일단 DataT라는 타입에 현재 존재하는 두 개의 `input type`인 email과 password의 `type`을 설정했다.
 참고: https://www.typescriptlang.org/docs/handbook/2/objects.html
 
 ```tsx
