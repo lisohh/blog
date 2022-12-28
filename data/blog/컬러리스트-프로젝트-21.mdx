@@ -14,11 +14,11 @@ images: ['/static/images/colorlist.png']
 
 > ✨ [컬러리스트 사이트(아직 없음](https://www.)
 
-이전에 VerticalForm사이에 `children`으로 들어있던 `Input`들을 `component`로 추출해
+이전에 `VerticalForm`사이에 `children`으로 들어있던 `Input`들을 `component`로 추출해
 좀 더 심플한 `Register.tsx, Login.tsx`를 만들어보고자 한다.
 
 이전의 코드는 아래와 같은 모양이었다.
-각각의 `input`마다 `label`과 ` span``, `className`을 모두 따로 지정해주어야했다.
+각각의 `input`마다 `label`과 `span`, `className`을 모두 따로 지정해주어야했다.
 
 ```tsx
 ;<label className="flex flex-col gap-2">
@@ -51,7 +51,7 @@ images: ['/static/images/colorlist.png']
 
 이 부분을 빼서 `Input.tsx`에 따로 컴포넌트를 추출했다.
 
-일단 DataT라는 타입에 현재 존재하는 두 개의 `input type`인 email과 password의 `type`을 설정했다.
+일단 DataT라는 타입에 현재 존재하는 두 개의 `input type`인 `email`과 `password`의 `type`을 설정했다.
 참고: https://www.typescriptlang.org/docs/handbook/2/objects.html
 
 ```tsx
@@ -70,7 +70,7 @@ let a: DataT = {
 }
 ```
 
-그리고 DataKey라는 타입을 설정해 DataT에 있는 키들을 타입으로 설정한다.
+그리고 `DataKey`라는 타입을 설정해 `DataT`에 있는 키들을 타입으로 설정한다.
 참고: https://www.typescriptlang.org/docs/handbook/2/keyof-types.html
 
 ```tsx
@@ -123,8 +123,8 @@ logError({
 
 하지만 위의 경우는 무조건 두개의 키가 다 입력되어야한다.
 하나만 입력했을때도 에러 메시지가 뜨게 하려면 어떻게 해야할까?
-이는 Partial type을 이용해서 해결할 수 있다.
-Partial은 부분집합같은 개념으로, logError안에 있는 모든 정보가 와도 되고, 일부만 와도 된다.
+이는 `Partial type`을 이용해서 해결할 수 있다.
+`Partial`은 부분집합같은 개념으로, `logError`안에 있는 모든 정보가 와도 되고, 일부만 와도 된다.
 참고: https://www.typescriptlang.org/docs/handbook/utility-types.html#partialtype
 
 ```tsx
@@ -140,27 +140,27 @@ type PartialE = Partial<ErrorData>
 // }
 ```
 
-이렇게 PartialE라는 타입을 정하고
-새로운 logError2함수를 만들면 email,password 둘 중에 하나만 입력하지 않아도 에러메시지가 뜬다.
+이렇게 `PartialE`라는 타입을 정하고
+새로운 `logError2`함수를 만들면 `email`,`password` 둘 중에 하나만 입력하지 않아도 에러메시지가 뜬다.
 
-```
+```ts
 function logError2(errors: PartialE, name: keyof DataT) {
-  console.error(errors[name]);
+  console.error(errors[name])
 }
 
 // logError2({}, "test");
 
 logError2(
   {
-    email: { message: "필수 입력입니다!" },
+    email: { message: '필수 입력입니다!' },
   },
-  "email"
-);
+  'email'
+)
 
 logError2(
   {
-    password: { message: "필수 입력입니다!" },
+    password: { message: '필수 입력입니다!' },
   },
-  "password"
-);
+  'password'
+)
 ```
