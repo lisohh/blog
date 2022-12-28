@@ -61,7 +61,7 @@ type DataT = {
 }
 ```
 
-이렇게 하면 이메일과 비밀번호에 문자열을 넣었을때만 에러가 뜨지 않는다.
+이렇게 하면 이메일과 비밀번호에 문자열을 넣었을 때만 에러가 뜨지 않는다.
 
 ```tsx
 let a: DataT = {
@@ -143,7 +143,7 @@ type PartialE = Partial<ErrorData>
 이렇게 `PartialE`라는 타입을 정하고
 새로운 `logError2`함수를 만들면 `email`,`password` 둘 중에 하나만 입력하지 않아도 에러메시지가 뜬다.
 
-```ts
+```tsx
 function logError2(errors: PartialE, name: keyof DataT) {
   console.error(errors[name])
 }
