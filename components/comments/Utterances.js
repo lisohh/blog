@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useTheme } from 'next-themes'
 
 import siteMetadata from '@/data/siteMetadata'
@@ -10,32 +10,40 @@ const Utterances = () => {
       ? siteMetadata.comment.utterancesConfig.darkTheme
       : siteMetadata.comment.utterancesConfig.theme
 
-  const COMMENTS_ID = 'comments-container'
+  const scriptParentNodeRef = useRef(null)
 
   useEffect(() => {
-    const scriptParentNode = document.getElementById(COMMENTS_ID)
+    const scriptParentNode = scriptParentNodeRef.current
     if (!scriptParentNode) return
+    let isExecuted = false
+    const timeoutId = setTimeout(() => {
+      const script = document.createElement('script')
 
-    const script = document.createElement('script')
-    script.src = 'https://utteranc.es/client.js'
-    script.async = true
-    script.setAttribute('repo', siteMetadata.comment.utterancesConfig.repo)
-    script.setAttribute('issue-term', siteMetadata.comment.utterancesConfig.issueTerm)
-    script.setAttribute('label', siteMetadata.comment.utterancesConfig.label)
-    script.setAttribute('theme', commentsTheme)
-    script.setAttribute('crossorigin', 'anonymous')
+      script.src = 'https://utteranc.es/client.js'
+      script.async = true
+      script.setAttribute('repo', siteMetadata.comment.utterancesConfig.repo)
+      script.setAttribute('issue-term', siteMetadata.comment.utterancesConfig.issueTerm)
+      script.setAttribute('label', siteMetadata.comment.utterancesConfig.label)
+      script.setAttribute('theme', commentsTheme)
+      script.setAttribute('crossorigin', 'anonymous')
 
-    scriptParentNode.appendChild(script)
+      scriptParentNode.appendChild(script)
+      isExecuted = true
+    }, 1000)
 
     return () => {
       // cleanup - remove the older script with previous theme
-      scriptParentNode.removeChild(scriptParentNode.firstChild)
+      if (isExecuted === false) {
+        clearTimeout(timeoutId)
+      } else {
+        scriptParentNode.removeChild(scriptParentNode.firstChild)
+      }
     }
-  }, [COMMENTS_ID, commentsTheme])
+  }, [commentsTheme])
 
   return (
     <div className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300">
-      <div className="relative utterances-frame" id={COMMENTS_ID} />
+      <div className="relative utterances-frame" ref={scriptParentNodeRef}></div>
     </div>
   )
 }

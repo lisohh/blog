@@ -35,47 +35,50 @@ export default function Home({ posts }) {
             return (
               <li key={slug} className="py-14 items-center">
                 <article>
-                  <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
-                    <div className="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0">
-                      <div className="rounded-md overflow-hidden">
+                  <div className="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0">
+                    <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
+                      <div className="rounded-md overflow-hidden w-full">
                         <Image
                           className="object-cover object-center transform scale-100 transition-all duration-300 ease-in-out hover:scale-110"
                           src={thumbSrc}
                           alt={thumbSrc}
                           blurDataURL={thumbSrc}
-                          width="100%"
-                          height="65%"
+                          width={300}
+                          height={300}
                           placeholder="blur"
                           loading="lazy"
-                          layout="responsive"
                         />
                       </div>
-                      <div className="space-y-5 xl:col-span-3 xl:ml-5">
-                        <div className="space-y-6">
-                          <div>
+                    </Link>
+                    <div className="space-y-5 xl:col-span-3 xl:ml-5">
+                      <div className="space-y-6">
+                        <div>
+                          <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
                             <h2 className="text-2xl font-bold leading-8 tracking-tight">{title}</h2>
-                            <div className="flex flex-wrap pt-3">
-                              {tags.map((tag) => (
-                                <Tag key={tag} text={tag} />
-                              ))}
-                            </div>
+                          </Link>
+                          <div className="flex flex-wrap pt-3">
+                            {tags.map((tag) => (
+                              <Tag key={tag} text={tag} />
+                            ))}
                           </div>
+                        </div>
+                        <Link href={`/blog/${slug}`} className="text-gray-900 dark:text-gray-100">
                           <div className="prose text-gray-500 max-w-none dark:text-gray-400 truncate">
                             {summary}
                           </div>
-                        </div>
-                        <div className="text-base font-medium leading-6">
-                          <Link
-                            href={`/blog/${slug}`}
-                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                            aria-label={`Read "${title}"`}
-                          >
-                            더 보기 &rarr;
-                          </Link>
-                        </div>
+                        </Link>
+                      </div>
+                      <div className="text-base font-medium leading-6">
+                        <Link
+                          href={`/blog/${slug}`}
+                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          aria-label={`Read "${title}"`}
+                        >
+                          더 보기 &rarr;
+                        </Link>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </article>
               </li>
             )
