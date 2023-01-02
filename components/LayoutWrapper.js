@@ -6,6 +6,10 @@ import SectionContainer from './SectionContainer'
 import Footer from './Footer'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
+import { Press_Start_2P } from '@next/font/google'
+
+// https://nextjs.org/docs/basic-features/font-optimization#single-page-usage
+const sub = Press_Start_2P({ subsets: ['latin'], weight: '400' })
 
 const LayoutWrapper = ({ children }) => {
   return (
@@ -19,7 +23,7 @@ const LayoutWrapper = ({ children }) => {
                   <Logo />
                 </div>
                 {typeof siteMetadata.headerTitle === 'string' ? (
-                  <div className="hidden cursive leading-5 h-4 text-xl font-semibold sm:block">
+                  <div className={'cursive leading-5 h-4 text-xl sm:block ' + sub.className}>
                     {siteMetadata.headerTitle}
                   </div>
                 ) : (
