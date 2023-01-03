@@ -1,0 +1,55 @@
+---
+title: '💖 개발팁 - 신택스 하이라이팅(Syntax hilighting) 오류 해결 - remark 플러그인 오타'
+thumbSrc: '/static/images/developertip.png'
+date: '2023-01-03'
+tags: ['tip']
+draft: false
+summary: '본 포스트는 개발 팁을 나누는 글입니다.'
+images: ['/static/images/developertip.png']
+---
+
+# 📌
+
+![Welcome](/static/images/developertip.png)
+
+---
+
+# 신택스 하이라이팅(Syntax hilighting) 오류 해결 - remark 플러그인 오타
+
+블로그에서 잘되던 코드 신택스 하이라이팅이 갑자기 작동하지 않았다. <br/>
+처음엔 그냥 css가 잘못되었나? 했지만 <br/>
+알고보니 신택스 하이라이팅을 해주는 코드가 어떻게 작동되는지 그 입력과 결과물을 파악하고 원인을 찾아내야했다.<br/>
+
+`md`(마크다운)파일은 보통 `remark`(구문 구조 분석)과 'rehype'(`html`로 변환)하는 플러그인을 쓴다.<br/>
+
+```html
+<pre>
+<code>
+const WHITE_HEX = '#ffffff'
+</code>
+</pre>
+```
+
+위 처럼 되어 있던 코드가 두 플러그인을 거치면
+
+```html
+<pre class="language-typescript">
+<code>
+<span class="token keyworld">const</span> WHITE_HEX <span class="token operator">=</span> <span class="token string">'#ffffff'</span>
+</code>
+</pre>
+```
+
+이런 식으로 정리되어 변환된다.
+
+신택스 하이라이팅 옵션이 작동되지 않는 블로그 포스트의 `Html`을 읽어보니 위처럼 정리되지 않고 문자열이 그대로 남아있었다.<br/>
+remark 플러그인이 작동하지 않은 것 같았다.<br/>
+그래서 현재 블로그 레포에 있는 코드 중 remark를 검색해 보니 `mdx.js`에 remark가 작동하는 코드가 존재했다.<br/>
+코드의 어느 부분이 잘못되었는지 보기위해 구글에 remark를 검색해보았다.<br/>
+Remark의 레포지터리가 있어 들어가 options를 검색해보았다. 코드가 있었다.<br/>
+내 코드와 비교해보니 내 코드는 함수 이름이 `mdx`가 아닌 `xdm`으로 거꾸로 쓰여있었다.<br/>
+혹시나 해서 오타를 수정하고 빌드해보니 신택스 하이라이팅이 정상 작동한다!!<Br/><Br/><Br/>
+
+간단하지만 코드가 작동하는 흐름을 파악하고 원인을 찾아보는 좋은 경험이었다. 앞으로도 오류를 잡아낼때는 먼저 현재 문서가 어떤 식으로 작동하는 지 생각해보고 작동 단계를 나누어 첫 단계부터 차례대로 입력과 결과를 확인하고 원인을 파악하는 방식을 사용해봐야겠다.
+
+---
